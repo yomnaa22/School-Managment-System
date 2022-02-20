@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\ApiResponseTrait;
 use App\Models\contactUs;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ContactUsController extends Controller
 {
+    use ApiResponseTrait;
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +18,9 @@ class ContactUsController extends Controller
     public function index()
     {
         //
+        $contact_us = contactUs::get();
+        // return $this->apiResponse($contact_us);
+        return response()->json($contact_us, 200);
     }
 
     /**
@@ -36,6 +42,25 @@ class ContactUsController extends Controller
     public function store(Request $request)
     {
         //
+        $validation = $this->validation($request);
+        if ($validation instanceof Response) {
+            return $validation;
+        }
+        if (is_null($validation)) {
+            $contact_us = contactUs::create([
+                'email' => $request->email,
+                'name' => $request->name,
+                'subject' => $request->subject,
+                'message' => $request->message,
+
+            ]);
+            if ($contact_us) {
+                // return $this->createdResponse($contact_us);
+                return response()->json($contact_us, 200);
+            }
+        }
+        // $this->unKnowError();
+        return response()->json("Cannot send this message", 400);
     }
 
     /**
@@ -44,9 +69,16 @@ class ContactUsController extends Controller
      * @param  \App\Models\contactUs  $contactUs
      * @return \Illuminate\Http\Response
      */
-    public function show(contactUs $contactUs)
+    public function show($id)
     {
         //
+        $contact_us = contactUs::find($id);
+        if ($contact_us) {
+            // return $this->apiResponse($contact_us);
+            return response()->json($contact_us, 200);
+        }
+        // return $this->notFoundResponse();
+        return response()->json("Not Found", 404);
     }
 
     /**
@@ -55,7 +87,7 @@ class ContactUsController extends Controller
      * @param  \App\Models\contactUs  $contactUs
      * @return \Illuminate\Http\Response
      */
-    public function edit(contactUs $contactUs)
+    public function edit($id)
     {
         //
     }
@@ -67,9 +99,22 @@ class ContactUsController extends Controller
      * @param  \App\Models\contactUs  $contactUs
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, contactUs $contactUs)
+    public function update(Request $request, $id)
     {
         //
+        $contact_us = contactUs::find($id);
+        if ($contact_us) {
+            if ($request->isMethod('put')) {
+                $validation = $this->validation($request);
+                if ($validation instanceof Response) {
+                    return $validation;
+                }
+            }
+
+            $contact_us->update($request->all());
+            return response()->json($contact_us, 200);
+        }
+        return response()->json("Not found", 404);
     }
 
     /**
@@ -78,8 +123,24 @@ class ContactUsController extends Controller
      * @param  \App\Models\contactUs  $contactUs
      * @return \Illuminate\Http\Response
      */
-    public function destroy(contactUs $contactUs)
+    public function destroy($id)
     {
-        //
+        $contact_us = contactUs::find($id);
+        if (is_null($contact_us)) {
+            return response()->json("Record not found", 404);
+        }
+        $contact_us->delete();
+        return response()->json(null, 204);
+    }
+
+
+    public function validation($request)
+    {
+        return $this->apiValidation($request, [
+            'email' => 'required|email',
+            'name' => 'required|min:3|max:20',
+            'subject' => 'required|min:5|max:20',
+            'message' => 'required|min:10|max:100',
+        ]);
     }
 }

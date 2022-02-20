@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Course_Content extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'content', 'course_id'];
+
+
+    /**
+     * Get the course that owns the course_content.
+     */
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 }
