@@ -20,11 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/categores',[CategoryController::class, 'index']);
-Route::get('/categores/{id}',[CategoryController::class, 'show']);
-Route::delete('/categores/{id}',[CategoryController::class, 'delete']);
-Route::post('/categores',[CategoryController::class, 'store']);
-Route::put('/categores/{id}',[CategoryController::class, 'update']);
+Route::get('/categories',[CategoryController::class, 'index']);
+Route::get('/categories/{id}',[CategoryController::class, 'show']);
+Route::delete('/categories/{id}',[CategoryController::class, 'delete']);
+Route::post('/categories',[CategoryController::class, 'store']);
+Route::post('/categories/{id}',[CategoryController::class, 'update']);
 
 
 

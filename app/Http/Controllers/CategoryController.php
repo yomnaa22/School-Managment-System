@@ -39,18 +39,15 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $validation = $this->validation($request);
 
+        $validation = $this->validation($request);
         if($validation instanceof Response){
             return $validation;
         }
-
         $img=$request->file('img');             //bmsek el soura
-
         $ext=$img->getClientOriginalExtension();   //bgeb extention
         $image="cate -".uniqid().".$ext";            // conncat ext +name elgded
         $img->move(public_path("uploads/categores/"),$image);
-
         $Categorys = Category::create([
             'name'=>$request->name ,
             'img' =>$image,
@@ -65,38 +62,35 @@ class CategoryController extends Controller
 
     public function update($id , Request $request){
 
-        // $validation = $this->validation($request);
-        // if($validation instanceof Response){
-        //     return $validation;
-        // }
+        $validation = $this->validation($request);
+        if($validation instanceof Response){
+            return $validation;
+        }
 
         $Category = Category::find($id);
-
         if (!$Category) {
             return $this->notFoundResponse();
         }
-        //return $this->apiResponse($Category);
-        // $name=$Category->img;
-        // if ($request->hasFile('img'))
-        // {
-        //     if($name !== null)
-        //     {
-        //         unlink(public_path('uploads/categores/'.$name));
-        //     }
-        //     //move
-        // $img=$request->file('img');             //bmsek el soura
-        // $ext=$img->getClientOriginalExtension();   //bgeb extention
-        // $name="cate -".uniqid().".$ext";            // conncat ext +name elgded
-        // $img->move(public_path("uploads/categores"),$name);   //elmkan , $name elgded
+        $name=$Category->img;
+        if ($request->hasFile('img'))
+        {
+            if($name !== null)
+            {
+                unlink(public_path('uploads/categores/'.$name));
+            }
+            //move
+        $img=$request->file('img');             //bmsek el soura
+        $ext=$img->getClientOriginalExtension();   //bgeb extention
+        $name="cate -".uniqid().".$ext";            // conncat ext +name elgded
+        $img->move(public_path("uploads/categores"),$name);   //elmkan , $name elgded
 
-        // }
+        }
 
 
-        $Category->update(
-            // 'name'=>$request->name ,
-            // 'img' =>$name,
-            $request->all()
-        );
+        $Category->update([
+            'name'=>$request->name ,
+            'img' =>$name,
+        ]);
 
         if ($Category) {
             return $this->apiResponse($Category);
@@ -110,12 +104,5 @@ class CategoryController extends Controller
             'img' => 'required|image|mimes:jpeg,png',
         ]);
     }
-
-    // public function returnSuccessPost($Category){
-    //     return $this->apiResponse(new Category($Category));
-    // }
-
-
-
 
 }
