@@ -2,84 +2,98 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\ApiResponseTrait;
 use App\Models\Exam;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ExamController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    use ApiResponseTrait;
     public function index()
     {
-        //
+        $exams = Exam::get();
+        return $this->apiResponse($exams);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
+        $validation = $this->validation($request);
+        if($validation instanceof Response){
+            return $validation;
+        }
+
+        $exams = Exam::create([
+            'name'=>$request->name ,
+            'course_id'=>$request->course_id ,
+            'questions_id'=>$request->questions_id ,
+            'max_score'=>$request->max_score
+        ]);
+        if ($exams) {
+            return $this->createdResponse($exams);
+        }
+
+        $this->unKnowError();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Exam  $exam
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Exam $exam)
+    public function show($id)
     {
-        //
+        $exam = Exam::find($id);
+        if ($exam) {
+            return $this->apiResponse($exam);
+        }
+        return $this->notFoundResponse();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Exam  $exam
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Exam $exam)
+
+    public function update(Request $request,$id)
     {
         //
+        $validation = $this->validation($request);
+        if($validation instanceof Response){
+            return $validation;
+        }
+
+        $exam = Exam::find($id);
+        if (!$exam) {
+            return $this->notFoundResponse();
+        }
+
+        $exam->update([
+            'name'=>$request->name ,
+            'course_id'=>$request->course_id ,
+            'questions_id'=>$request->questions_id ,
+            'max_score'=>$request->max_score
+        ]);
+
+        if ($exam) {
+            return $this->createdResponse($exam);
+        }
+
+        $this->unKnowError();
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Exam  $exam
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Exam $exam)
+    public function destroy($id)
     {
-        //
+        $exam = Exam::find($id);
+        if ($exam) {
+            $exam->delete();
+            return $this->deleteResponse();
+        }
+        return $this->notFoundResponse();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Exam  $exam
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Exam $exam)
-    {
-        //
+
+    public function validation($request){
+        return $this->apiValidation($request , [
+            'name' => 'required|min:3|max:30',
+            'course_id' => 'required',
+            'questions_id' => 'required',
+            'max_score' => 'required',
+        ]);
     }
+
+
 }

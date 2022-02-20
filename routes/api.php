@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TrainerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,3 +43,18 @@ Route::get('/trainers/{id}',[TrainerController::class, 'show']);
 Route::delete('/trainers/{id}',[TrainerController::class, 'destroy']);
 Route::post('/trainers',[TrainerController::class, 'store']);
 Route::post('/trainers/{id}',[TrainerController::class, 'update']);
+
+
+Route::get('/students',[StudentController::class, 'index']);
+Route::get('/students/{id}',[StudentController::class, 'show']);
+Route::delete('/students/{id}',[StudentController::class, 'destroy']);
+Route::post('/students',[StudentController::class, 'store']);
+Route::post('/students/{id}',[StudentController::class, 'update']);
+
+
+
+Route::get('/exams',[ExamController::class, 'index']);
+Route::get('/exams/{id}',[ExamController::class, 'show']);
+Route::delete('/exams/{id}',[ExamController::class, 'destroy']);
+Route::post('/exams',[ExamController::class, 'store']);
+Route::post('/exams/{id}',[ExamController::class, 'update']);

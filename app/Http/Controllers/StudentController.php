@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Traits\ApiResponseTrait;
-use App\Models\Trainer;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
-class TrainerController extends Controller
+class StudentController extends Controller
 {
     use ApiResponseTrait;
     public function index()
     {
         //
-        $trainers = Trainer::get();
-        return $this->apiResponse($trainers);
+        $students = Student::get();
+        return $this->apiResponse($students);
     }
 
     public function store(Request $request)
@@ -28,11 +28,11 @@ class TrainerController extends Controller
 
         $img=$request->file('img');             //bmsek el soura
         $ext=$img->getClientOriginalExtension();   //bgeb extention
-        $image="train -".uniqid().".$ext";            // conncat ext +name elgded
-        $img->move(public_path("uploads/trainer/"),$image);
+        $image="stu -".uniqid().".$ext";            // conncat ext +name elgded
+        $img->move(public_path("uploads/students/"),$image);
 
 
-        $trainers = Trainer::create([
+        $students = Student::create([
             'fname'=>$request->fname ,
             'lname'=>$request->lname ,
             'gender'=>$request->gender ,
@@ -40,12 +40,9 @@ class TrainerController extends Controller
             'img'=>$image,
             'email'=>$request->email ,
             'pass'=>Hash::make($request->pass),
-            'facebook'=>$request->facebook ,
-            'twitter'=>$request->twitter ,
-            'linkedin'=> $request->linkedin ,
         ]);
-        if ($trainers) {
-            return $this->createdResponse($trainers);
+        if ($students) {
+            return $this->createdResponse($students);
         }
 
         $this->unKnowError();
@@ -53,9 +50,9 @@ class TrainerController extends Controller
 
     public function show($id)
     {
-        $trainer = Trainer::find($id);
-        if ($trainer) {
-            return $this->apiResponse($trainer);
+        $student = Student::find($id);
+        if ($student) {
+            return $this->apiResponse($student);
         }
         return $this->notFoundResponse();
     }
@@ -69,37 +66,33 @@ class TrainerController extends Controller
                 'img' => 'required|image|mimes:jpeg,png',
                 'email' => 'required|email',
                 'pass' => 'required|min:6|',
-                'facebook' => 'required',
-                'twitter' => 'required',
-                'linkedin' => 'required',
             ]);
-        //$validation = $this->validation($request);
         if($validation instanceof Response){
             return $validation;
         }
 
-        $trainer = Trainer::find($id);
-        if (!$trainer) {
+        $student = Student::find($id);
+        if (!$student) {
             return $this->notFoundResponse();
         }
 
 
-        $name=$trainer->img;
+        $name=$student->img;
         if ($request->hasFile('img'))
         {
             if($name !== null)
             {
-                unlink(public_path('uploads/trainer/'.$name));
+                unlink(public_path('uploads/students/'.$name));
             }
             //move
         $img=$request->file('img');             //bmsek el soura
         $ext=$img->getClientOriginalExtension();   //bgeb extention
-        $name="train -".uniqid().".$ext";            // conncat ext +name elgded
-        $img->move(public_path("uploads/trainer"),$name);   //elmkan , $name elgded
+        $name="stu -".uniqid().".$ext";            // conncat ext +name elgded
+        $img->move(public_path("uploads/students"),$name);   //elmkan , $name elgded
 
         }
 
-        $trainer->update([
+        $student->update([
             'fname'=>$request->fname ,
             'lname'=>$request->lname ,
             'gender'=>$request->gender ,
@@ -107,13 +100,10 @@ class TrainerController extends Controller
             'img'=>$name,
             'email'=>$request->email ,
             'pass'=>Hash::make($request->pass),
-            'facebook'=>$request->facebook ,
-            'twitter'=>$request->twitter ,
-            'linkedin'=> $request->linkedin ,
         ]);
 
-        if ($trainer) {
-            return $this->createdResponse($trainer);
+        if ($student) {
+            return $this->createdResponse($student);
         }
 
         $this->unKnowError();
@@ -122,9 +112,9 @@ class TrainerController extends Controller
 
     public function destroy($id)
     {
-        $trainer = Trainer::find($id);
-        if ($trainer) {
-            $trainer->delete();
+        $student = Student::find($id);
+        if ($student) {
+            $student->delete();
             return $this->deleteResponse();
         }
         return $this->notFoundResponse();
@@ -136,13 +126,10 @@ class TrainerController extends Controller
             'fname' => 'required|min:3|max:10',
             'lname' => 'required|min:3|max:10',
             'gender' => 'required|',
-            'phone' => 'required|unique:trainers',
+            'phone' => 'required|unique:students',
             'img' => 'required|image|mimes:jpeg,png',
-            'email' => 'required|email|unique:trainers',
+            'email' => 'required|email|unique:students',
             'pass' => 'required|min:6|',
-            'facebook' => 'required',
-            'twitter' => 'required',
-            'linkedin' => 'required',
         ]);
     }
 
