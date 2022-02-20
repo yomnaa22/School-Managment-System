@@ -4,7 +4,7 @@ namespace App\Http\Traits;
 
 use Illuminate\Support\Facades\Validator;
 
-trait  ApiResponseTrait{
+trait ApiResponseTrait{
 
      public $paginateNumber = 10;
 

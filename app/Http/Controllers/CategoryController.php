@@ -8,15 +8,16 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 
+
 class CategoryController extends Controller
 {
     use ApiResponseTrait;
+
     public function index()
     {
         $Categorys = Category::get();
         return $this->apiResponse($Categorys);
     }
-
     public function show($id)
     {
         $Category = Category::find($id);
@@ -44,6 +45,7 @@ class CategoryController extends Controller
         if($validation instanceof Response){
             return $validation;
         }
+
         $img=$request->file('img');             //bmsek el soura
         $ext=$img->getClientOriginalExtension();   //bgeb extention
         $image="cate -".uniqid().".$ext";            // conncat ext +name elgded
@@ -90,6 +92,7 @@ class CategoryController extends Controller
         $Category->update([
             'name'=>$request->name ,
             'img' =>$name,
+            // $request->all()
         ]);
 
         if ($Category) {
@@ -104,5 +107,8 @@ class CategoryController extends Controller
             'img' => 'required|image|mimes:jpeg,png',
         ]);
     }
+
+
+
 
 }

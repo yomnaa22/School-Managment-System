@@ -2,84 +2,107 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\ApiResponseTrait;
 use App\Models\question;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
 
 class QuestionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    use ApiResponseTrait;
     public function index()
     {
         //
+        $questions = question::get();
+        return $this->apiResponse($questions);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
+        $validation = $this->validation($request);
+        if($validation instanceof Response){
+            return $validation;
+        }
+
+        $questions = question::create([
+            'header'=>$request->header ,
+            'choice_1'=>$request->choice_1 ,
+            'choice_2'=>$request->choice_2 ,
+            'choice_3'=>$request->choice_3 ,
+            'choice_4'=>$request->choice_4 ,
+            'answer'=>$request->answer ,
+            'score'=>$request->score
+        ]);
+        if ($questions) {
+            return $this->createdResponse($questions);
+        }
+
+        $this->unKnowError();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\question  $question
-     * @return \Illuminate\Http\Response
-     */
-    public function show(question $question)
+    public function show($id)
+    {
+        $question = question::find($id);
+        if ($question) {
+            return $this->apiResponse($question);
+        }
+        return $this->notFoundResponse();
+    }
+    public function update(Request $request,$id)
     {
         //
+        $validation = $this->validation($request);
+        if($validation instanceof Response){
+            return $validation;
+        }
+
+        $question = question::find($id);
+        if (!$question) {
+            return $this->notFoundResponse();
+        }
+
+        $question->update([
+            'header'=>$request->header ,
+            'choice_1'=>$request->choice_1 ,
+            'choice_2'=>$request->choice_2 ,
+            'choice_3'=>$request->choice_3 ,
+            'choice_4'=>$request->choice_4 ,
+            'answer'=>$request->answer ,
+            'score'=>$request->score
+        ]);
+
+        if ($question) {
+            return $this->createdResponse($question);
+        }
+
+        $this->unKnowError();
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\question  $question
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(question $question)
+    public function destroy($id)
     {
-        //
+        $question = question::find($id);
+        if ($question) {
+            $question->delete();
+            return $this->deleteResponse();
+        }
+        return $this->notFoundResponse();
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\question  $question
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, question $question)
-    {
-        //
+
+    public function validation($request){
+        return $this->apiValidation($request , [
+            'header' => 'required|min:3|max:30',
+            'choice_1' => 'required|min:3|max:30',
+            'choice_2' => 'required|min:3|max:30',
+            'choice_3' => 'required|min:3|max:30',
+            'choice_4' => 'required|min:3|max:30',
+            'answer' => 'required|min:3|max:30',
+            'score' => 'required|numeric',
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\question  $question
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(question $question)
-    {
-        //
-    }
+
 }
