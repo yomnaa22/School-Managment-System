@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\ApiResponseTrait;
 use App\Models\Course_Content;
 use Illuminate\Http\Request;
+use \Illuminate\Http\Response;
 
 class CourseContentController extends Controller
 {
+    use ApiResponseTrait;
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +17,8 @@ class CourseContentController extends Controller
      */
     public function index()
     {
-        //
+        $course_content = Course_Content::get();
+        return response()->json($course_content, 200);
     }
 
     /**
@@ -35,7 +39,23 @@ class CourseContentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validation = $this->validation($request);
+        if ($validation instanceof Response) {
+            return $validation;
+        }
+        if (is_null($validation)) {
+            $course_content = Course_Content::create([
+                'name' => $request->name,
+                'content' => $request->content,
+                'course_id' => $request->course_id
+            ]);
+            if ($course_content) {
+                // return $this->createdResponse($contact_us);
+                return response()->json($course_content, 200);
+            }
+        }
+        // $this->unKnowError();
+        return response()->json("Cannot send this message", 400);
     }
 
     /**
@@ -44,9 +64,15 @@ class CourseContentController extends Controller
      * @param  \App\Models\Course_Content  $course_Content
      * @return \Illuminate\Http\Response
      */
-    public function show(Course_Content $course_Content)
+    public function show($id)
     {
-        //
+        $course_content = Course_Content::find($id);
+        if ($course_content) {
+            // return $this->apiResponse($course);
+            return response()->json($course_content, 200);
+        }
+        // return $this->notFoundResponse();
+        return response()->json("Not Found", 404);
     }
 
     /**
@@ -67,9 +93,22 @@ class CourseContentController extends Controller
      * @param  \App\Models\Course_Content  $course_Content
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Course_Content $course_Content)
+    public function update(Request $request, $id)
     {
-        //
+        $course_content = Course_Content::find($id);
+        if ($course_content) {
+            if ($request->isMethod('put')) {
+                $validation = $this->validation($request);
+                if ($validation instanceof Response) {
+                    return $validation;
+                }
+            }
+
+
+            $course_content->update($request->all());
+            return response()->json($course_content, 200);
+        }
+        return response()->json("Not found", 404);
     }
 
     /**
@@ -78,8 +117,23 @@ class CourseContentController extends Controller
      * @param  \App\Models\Course_Content  $course_Content
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Course_Content $course_Content)
+    public function destroy($id)
     {
-        //
+        $course_content = Course_Content::find($id);
+        if (is_null($course_content)) {
+            return response()->json("Record not found", 404);
+        }
+        $course_content->delete();
+        return response()->json(null, 204);
+    }
+
+
+    public function validation($request)
+    {
+        return $this->apiValidation($request, [
+            'name' => 'required|min:3|max:20',
+            'course_id' => 'required|exists:App\Models\Course,id',
+            'content' => 'required|min:3'
+        ]);
     }
 }
