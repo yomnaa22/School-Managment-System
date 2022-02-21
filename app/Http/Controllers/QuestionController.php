@@ -25,6 +25,7 @@ class QuestionController extends Controller
         if($validation instanceof Response){
             return $validation;
         }
+        //get all exam
 
         $questions = question::create([
             'header'=>$request->header ,

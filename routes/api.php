@@ -62,7 +62,8 @@ Route::get('/exams/{id}',[ExamController::class, 'show']);
 Route::delete('/exams/{id}',[ExamController::class, 'destroy']);
 Route::post('/exams',[ExamController::class, 'store']);
 Route::post('/exams/{id}',[ExamController::class, 'update']);
-Route::get('/exams/show/{q_id}',[ExamController::class, 'getallExam']);
+//get all questions by exam_id
+Route::get('/exams/show/{e_id}',[ExamController::class, 'getallExam']);
 
 
 

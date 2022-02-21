@@ -18,7 +18,7 @@ class ExamController extends Controller
         return $this->apiResponse($exams);
     }
 
-    public function getallExam($q_id)
+    public function getallExam($e_id)
     {
         //$exam = Exam::find($e_id);
         // $question = question::find($q_id);
@@ -47,16 +47,13 @@ class ExamController extends Controller
         //     ->leftJoin('exams', 'exams.e_id', '=', 'questions.q_id')
         //     ->get();
 
-        $exam =DB::table('exams')
-        ->select('*')
-        ->join('questions', 'exams.id', '=', 'questions.id')
-        ->where('exams.id', $q_id)
-        ->get();
-
-
-    //    $exam=Exam::find($q_id)->questions;
-
-            // $this->apiResponse($exam);
+        // $exam =DB::table('exams')
+        // ->select('*')
+        // ->join('questions', 'exams.id', '=', 'questions.id')
+        // ->where('exams.id', $q_id)
+        // ->get();
+        $exam=Exam::with('questions')->find($e_id);
+        // $exam = Exam::find($q_id)->questions;
 
         if ($exam) {
 
@@ -78,7 +75,7 @@ class ExamController extends Controller
         $exams = Exam::create([
             'name'=>$request->name ,
             'course_id'=>$request->course_id ,
-            'questions_id'=>$request->questions_id ,
+            // 'questions_id'=>$request->questions_id ,
             'max_score'=>$request->max_score
         ]);
         if ($exams) {
@@ -114,7 +111,7 @@ class ExamController extends Controller
         $exam->update([
             'name'=>$request->name ,
             'course_id'=>$request->course_id ,
-            'questions_id'=>$request->questions_id ,
+            // 'questions_id'=>$request->questions_id ,
             'max_score'=>$request->max_score
         ]);
 
@@ -141,7 +138,7 @@ class ExamController extends Controller
         return $this->apiValidation($request , [
             'name' => 'required|min:3|max:30',
             'course_id' => 'required|exists:App\Models\Course,id',
-            'questions_id' => 'required|exists:App\Models\question,id',
+            // 'questions_id' => 'required|exists:App\Models\question,id',
             'max_score' => 'required',
         ]);
     }
