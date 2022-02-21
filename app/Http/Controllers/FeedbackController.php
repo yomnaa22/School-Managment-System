@@ -18,8 +18,12 @@ class FeedbackController extends Controller
     public function index()
     {
         //
-        $feedback = feedback::get();
-        return response()->json($feedback, 200);
+        $feedbacks = feedback::with(['course','student'])->get();
+        // foreach($feedbacks as $feedback){
+        //     $feedback->course;
+        //     $feedback->student;
+        // }
+        return response()->json($feedbacks, 200);
     }
 
     /**
@@ -69,8 +73,10 @@ class FeedbackController extends Controller
      */
     public function show($id)
     {
-        $feedback = feedback::find($id);
+        $feedback = feedback::with(['course','student'])->find($id);
         if ($feedback) {
+            // $feedback->course;
+            // $feedback->student;
             // return $this->apiResponse($course);
             return response()->json($feedback, 200);
         }
