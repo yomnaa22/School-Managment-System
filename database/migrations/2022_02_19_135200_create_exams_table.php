@@ -23,7 +23,7 @@ class CreateExamsTable extends Migration
 
             // $table->unsignedBigInteger('course_id');
             // $table->foreign('course_id')->references('id')->on('courses')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('questions_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            //$table->foreignId('questions_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
 
             // $table->unsignedBigInteger('questions_id');
             // $table->foreign('questions_id')->references('id')->on('questions')->onUpdate('cascade')->onDelete('cascade');
