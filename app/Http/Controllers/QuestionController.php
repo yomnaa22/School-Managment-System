@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Traits\ApiResponseTrait;
+use App\Models\Exam;
 use App\Models\question;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -27,6 +28,7 @@ class QuestionController extends Controller
         }
         //get all exam
 
+        $roles=$request->exam_id;
         $questions = question::create([
             'header'=>$request->header ,
             'choice_1'=>$request->choice_1 ,
@@ -36,6 +38,11 @@ class QuestionController extends Controller
             'answer'=>$request->answer ,
             'score'=>$request->score
         ]);
+
+        $questions->exam()->attach($
+
+    );
+
         if ($questions) {
             return $this->createdResponse($questions);
         }
@@ -58,12 +65,11 @@ class QuestionController extends Controller
         if($validation instanceof Response){
             return $validation;
         }
-
         $question = question::find($id);
         if (!$question) {
             return $this->notFoundResponse();
         }
-
+        $roles=$request->exam_id;
         $question->update([
             'header'=>$request->header ,
             'choice_1'=>$request->choice_1 ,
@@ -73,6 +79,8 @@ class QuestionController extends Controller
             'answer'=>$request->answer ,
             'score'=>$request->score
         ]);
+
+        $question->exam()->attach($roles);
 
         if ($question) {
             return $this->createdResponse($question);
@@ -102,6 +110,7 @@ class QuestionController extends Controller
             'choice_4' => 'required|min:3|max:30',
             'answer' => 'required|min:3|max:30',
             'score' => 'required|numeric',
+            'exam_id' =>'numeric|exists:App\Models\Exam,id'
         ]);
     }
 

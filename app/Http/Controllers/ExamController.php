@@ -78,6 +78,8 @@ class ExamController extends Controller
             // 'questions_id'=>$request->questions_id ,
             'max_score'=>$request->max_score
         ]);
+
+
         if ($exams) {
             return $this->createdResponse($exams);
         }
