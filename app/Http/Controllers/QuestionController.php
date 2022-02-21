@@ -39,9 +39,7 @@ class QuestionController extends Controller
             'score'=>$request->score
         ]);
 
-        $questions->exam()->attach($
-
-    );
+        $questions->exam()->attach($roles);
 
         if ($questions) {
             return $this->createdResponse($questions);
