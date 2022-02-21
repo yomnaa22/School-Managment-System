@@ -62,6 +62,10 @@ Route::get('/exams/{id}',[ExamController::class, 'show']);
 Route::delete('/exams/{id}',[ExamController::class, 'destroy']);
 Route::post('/exams',[ExamController::class, 'store']);
 Route::post('/exams/{id}',[ExamController::class, 'update']);
+Route::get('/exams/show/{q_id}',[ExamController::class, 'getallExam']);
+
+
+
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/{id}', [CourseController::class, 'show']);
 Route::delete('/courses/{id}', [CourseController::class, 'destroy']);

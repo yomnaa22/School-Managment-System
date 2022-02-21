@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Exam;
+use App\Models\question;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class ExamController extends Controller
 {
@@ -14,6 +16,55 @@ class ExamController extends Controller
     {
         $exams = Exam::get();
         return $this->apiResponse($exams);
+    }
+
+    public function getallExam($q_id)
+    {
+        //$exam = Exam::find($e_id);
+        // $question = question::find($q_id);
+        // $exam=DB::table('exams')->where('id' , $e_id)->where('questions_id' , $q_id);
+
+        // $exam = DB::table('exams')
+        // ->select('*')
+        // ->join('exams', "questions.$q_id", '=', "exams.$e_id")
+        // ->get();
+
+        // $exam= DB::table('exams')
+        // ->select('*')
+        // ->join('questions', 'exams.id', 'questions.id')
+        // ->where('e_id','=', $e_id)
+        // ->where('questions_id','=',$q_id)
+        // ->get();
+
+        // $exam['question']=question::findOrFail($q_id);
+        // $exam['Exam']=Exam::where('id',$q_id)->get();
+
+        //$exam=Exam::with('question')->get();
+
+        // $exam['question']=question::where('id',$q_id)->get();
+
+        // $exam = DB::table('exams')
+        //     ->leftJoin('exams', 'exams.e_id', '=', 'questions.q_id')
+        //     ->get();
+
+        $exam =DB::table('exams')
+        ->select('*')
+        ->join('questions', 'exams.id', '=', 'questions.id')
+        ->where('exams.id', $q_id)
+        ->get();
+
+
+    //    $exam=Exam::find($q_id)->questions;
+
+            // $this->apiResponse($exam);
+
+        if ($exam) {
+
+            return $this->apiResponse($exam);
+        }
+        return $this->notFoundResponse();
+
+
     }
 
     public function store(Request $request)

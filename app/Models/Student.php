@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\feedback;
+use App\Models\Course;
 
 class Student extends Model
 {
@@ -20,4 +21,14 @@ class Student extends Model
     {
         return $this->hasMany(feedback::class);
     }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class);
+    }
+
+
+
+
+
 }
