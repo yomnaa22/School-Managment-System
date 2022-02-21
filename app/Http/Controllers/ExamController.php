@@ -89,8 +89,8 @@ class ExamController extends Controller
     public function validation($request){
         return $this->apiValidation($request , [
             'name' => 'required|min:3|max:30',
-            'course_id' => 'required',
-            'questions_id' => 'required',
+            'course_id' => 'required|exists:App\Models\Course,id',
+            'questions_id' => 'required|exists:App\Models\question,id',
             'max_score' => 'required',
         ]);
     }
