@@ -20,8 +20,8 @@ class feedbackSeeder extends Seeder
         DB::table('feedback')->insert([
             'name' => 'css',
             'desc' => 'this is final exam for css',
-            'student_id' => 1,
-            'course_id' => 1,
+            'student_id' => 4,
+            'course_id' => 2,
            
         ]);
     }
