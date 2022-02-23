@@ -18,7 +18,8 @@ class CourseController extends Controller
     public function index()
     {
         //
-        $Courses = Course::get();
+        $Courses=Course::with('category','trainer')->get();
+        // $Courses = Course::get();
         return response()->json($Courses, 200);
     }
 
@@ -40,7 +41,7 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $validation = $this->validation($request);
         if ($validation instanceof Response) {
             return $validation;
@@ -79,7 +80,8 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        $course = Course::find($id);
+        $course=Course::with('category','trainer')->find($id);
+        // $course = Course::find($id);
         if ($course) {
             // return $this->apiResponse($course);
             return response()->json($course, 200);
