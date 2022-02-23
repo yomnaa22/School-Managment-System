@@ -18,8 +18,6 @@ class CourseContentController extends Controller
     public function index()
     {
         $courses_contents = Course_Content::with('course')->get();
-        // foreach($courses_contents as $course_content)
-        //     $course_content->course;
         return response()->json($courses_contents, 200);
     }
 
