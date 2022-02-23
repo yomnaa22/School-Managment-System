@@ -17,7 +17,8 @@ class CourseContentController extends Controller
      */
     public function index()
     {
-        $course_content = Course_Content::get();
+        $course_content=Course_Content::with('course')->get();
+        // $course_content = Course_Content::get();
         return response()->json($course_content, 200);
     }
 
@@ -66,7 +67,8 @@ class CourseContentController extends Controller
      */
     public function show($id)
     {
-        $course_content = Course_Content::find($id);
+        $course_content=Course_Content::with('course')->find($id);
+        // $course_content = Course_Content::find($id);
         if ($course_content) {
             // return $this->apiResponse($course);
             return response()->json($course_content, 200);
