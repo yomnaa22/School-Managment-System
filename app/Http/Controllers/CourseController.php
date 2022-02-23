@@ -17,12 +17,9 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $Courses = Course::with(['category','trainer'])->get();
-        // foreach ($Courses as $course) {
-        //     $course->category->name;
-        //     $course->category->img;
-        //     $course->trainer;
-        // }
+        //
+        $Courses=Course::with('category','trainer')->get();
+        // $Courses = Course::get();
         return response()->json($Courses, 200);
     }
 

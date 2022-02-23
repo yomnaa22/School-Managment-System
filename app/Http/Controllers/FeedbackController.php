@@ -10,27 +10,13 @@ use Illuminate\Http\Response;
 class FeedbackController extends Controller
 {
     use ApiResponseTrait;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
-        $feedbacks = feedback::with(['course','student'])->get();
-        // foreach($feedbacks as $feedback){
-        //     $feedback->course;
-        //     $feedback->student;
-        // }
-        return response()->json($feedbacks, 200);
+        $feedback=feedback::with('course','student')->get();
+        // $feedback = feedback::get();
+        return response()->json($feedback, 200);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
