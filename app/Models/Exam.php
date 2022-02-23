@@ -11,7 +11,7 @@ class Exam extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'course_id','questions_id','max_score'];
+    protected $fillable = ['name', 'course_id','max_score'];
 
 
     public function questions()
