@@ -47,14 +47,14 @@ class CourseController extends Controller
             return $validation;
         }
         if (is_null($validation)) {
-            $img = $request->file('img');
-            $ext = $img->getClientOriginalExtension();
-            $image = "course -" . uniqid() . ".$ext";
-            $img->move(public_path("uploads/courses/"), $image);
+            // $img = $request->file('img');
+            // $ext = $img->getClientOriginalExtension();
+            // $image = "course -" . uniqid() . ".$ext";
+            // $img->move(public_path("uploads/courses/"), $image);
 
             $course = Course::create([
                 'name' => $request->name,
-                'img' => $image,
+                // 'img' => $image,
                 'category_id' => $request->category_id,
                 'trainer_id' => $request->trainer_id,
                 'price' => $request->price,
@@ -116,7 +116,7 @@ class CourseController extends Controller
         $course = Course::find($id);
         if ($course) {
 
-            if ($request->isMethod('put')) {
+            if ($request->isMethod('post')) {
                 $validation = $this->validation($request);
                 if ($validation instanceof Response) {
                     return $validation;
@@ -126,23 +126,23 @@ class CourseController extends Controller
             // if (!$course) {
             //     return $this->notFoundResponse();
             // }
-            $name = $course->img;
-            if ($request->hasFile('img')) {
-                if ($name !== null) {
-                    unlink(public_path('uploads/courses/' . $name));
-                }
-                //move
-                $img = $request->file('img');             //bmsek el soura
-                $ext = $img->getClientOriginalExtension();   //bgeb extention
-                $name = "course -" . uniqid() . ".$ext";            // conncat ext +name elgded
-                $img->move(public_path("uploads/courses"), $name);   //elmkan , $name elgded
+            // $name = $course->img;
+            // if ($request->hasFile('img')) {
+            //     if ($name !== null) {
+            //         unlink(public_path('uploads/courses/' . $name));
+            //     }
+            //     //move
+            //     $img = $request->file('img');             //bmsek el soura
+            //     $ext = $img->getClientOriginalExtension();   //bgeb extention
+            //     $name = "course -" . uniqid() . ".$ext";            // conncat ext +name elgded
+            //     $img->move(public_path("uploads/courses"), $name);   //elmkan , $name elgded
 
-            }
+            // }
 
 
             $course->update([
                 'name' => $request->name,
-                'img' => $name,
+                // 'img' => $name,
                 'category_id' => $request->category_id,
                 'trainer_id' => $request->trainer_id,
                 'price' => $request->price,
@@ -188,7 +188,7 @@ class CourseController extends Controller
     {
         return $this->apiValidation($request, [
             'name' => 'required|min:3|max:20',
-            'img' => 'required|image|mimes:jpeg,png',
+            // 'img' => 'required|image|mimes:jpeg,png',
             'price' => 'required',
             'category_id' => 'required|exists:App\Models\Category,id',
             'trainer_id' => 'required|exists:App\Models\Trainer,id',

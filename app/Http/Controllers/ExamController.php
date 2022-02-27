@@ -52,7 +52,7 @@ class ExamController extends Controller
         // ->join('questions', 'exams.id', '=', 'questions.id')
         // ->where('exams.id', $q_id)
         // ->get();
-        $exam=Exam::with('questions')->find($e_id);
+        $exam=Exam::with('course')->find($e_id);
         // $exam = Exam::find($q_id)->questions;
 
         if ($exam) {
@@ -89,7 +89,7 @@ class ExamController extends Controller
 
     public function show($id)
     {
-        $exam = Exam::find($id);
+        $exam = Exam::with('course')->find($id);
         if ($exam) {
             return $this->apiResponse($exam);
         }

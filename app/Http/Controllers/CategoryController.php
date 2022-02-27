@@ -46,13 +46,13 @@ class CategoryController extends Controller
             return $validation;
         }
 
-        $img=$request->file('img');             //bmsek el soura
-        $ext=$img->getClientOriginalExtension();   //bgeb extention
-        $image="cate -".uniqid().".$ext";            // conncat ext +name elgded
-        $img->move(public_path("uploads/categores/"),$image);
+        // $img=$request->file('img');             //bmsek el soura
+        // $ext=$img->getClientOriginalExtension();   //bgeb extention
+        // $image="cate -".uniqid().".$ext";            // conncat ext +name elgded
+        // $img->move(public_path("uploads/categores/"),$image);
         $Categorys = Category::create([
             'name'=>$request->name ,
-            'img' =>$image,
+            // 'img' =>$image,
         ]);
         if ($Categorys) {
             return $this->createdResponse($Categorys);
@@ -73,25 +73,25 @@ class CategoryController extends Controller
         if (!$Category) {
             return $this->notFoundResponse();
         }
-        $name=$Category->img;
-        if ($request->hasFile('img'))
-        {
-            if($name !== null)
-            {
-                unlink(public_path('uploads/categores/'.$name));
-            }
-            //move
-        $img=$request->file('img');             //bmsek el soura
-        $ext=$img->getClientOriginalExtension();   //bgeb extention
-        $name="cate -".uniqid().".$ext";            // conncat ext +name elgded
-        $img->move(public_path("uploads/categores"),$name);   //elmkan , $name elgded
+        // $name=$Category->img;
+        // if ($request->hasFile('img'))
+        // {
+        //     if($name !== null)
+        //     {
+        //         unlink(public_path('uploads/categores/'.$name));
+        //     }
+        //     //move
+        // $img=$request->file('img');             //bmsek el soura
+        // $ext=$img->getClientOriginalExtension();   //bgeb extention
+        // $name="cate -".uniqid().".$ext";            // conncat ext +name elgded
+        // $img->move(public_path("uploads/categores"),$name);   //elmkan , $name elgded
 
-        }
+        // }
 
 
         $Category->update([
             'name'=>$request->name ,
-            'img' =>$name,
+            // 'img' =>$name,
             // $request->all()
         ]);
 
@@ -104,7 +104,7 @@ class CategoryController extends Controller
     public function validation($request){
         return $this->apiValidation($request , [
             'name' => 'required|min:3|max:191',
-            'img' => 'required|image|mimes:jpeg,png',
+            // 'img' => 'required|image|mimes:jpeg,png',
         ]);
     }
 
