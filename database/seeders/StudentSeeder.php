@@ -15,19 +15,19 @@ class StudentSeeder extends Seeder
      * @return void
      */
     public function run()
-   
+
 
     {
         DB::table('students')->insert([
             'fname' => 'yomna',
             'lname' => 'hamed',
             'gender' => 'female',
-            'phone' => 1251564684,
+            'phone' => 125154,
             'img' => 'yomna.jpg',
-            'email' => 'yomna@gmail.com',
-            'pass' => Hash::make('Yomnaaaa22'),
-    
-           
+            'email' => 'ahmed@gmail.com',
+            'password' => Hash::make('12345678'),
+
+
         ]);
         //
     }

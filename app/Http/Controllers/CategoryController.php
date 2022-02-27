@@ -13,6 +13,8 @@ class CategoryController extends Controller
 {
     use ApiResponseTrait;
 
+
+
     public function index()
     {
         $Categorys = Category::with('courses')->get();

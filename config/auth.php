@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'api',
         'passwords' => 'users',
     ],
 
@@ -40,6 +40,24 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+            'hash'=>false ,
+        ],
+
+        'students' => [
+            'driver' => 'jwt',
+            'provider' => 'students',
+        ],
+        'triners' => [
+            'driver' => 'jwt',
+            'provider' => 'triners',
+        ],
+
+
+
     ],
 
     /*
@@ -69,6 +87,17 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Student::class,
+        ],
+
+        'triners' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Trainer::class,
+        ],
+
     ],
 
     /*
