@@ -41,12 +41,12 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
 
-        $validation = $this->validation($request);
-        if($validation instanceof Response){
-            return $validation;
-        }
+        // $validation = $this->validation($request);
+        // if($validation instanceof Response){
+        //     return $validation;
+        // }
 
-        $img=$request->file('img');             //bmsek el soura
+        $img=$request->file('image');             //bmsek el soura
         $ext=$img->getClientOriginalExtension();   //bgeb extention
         $image="cate -".uniqid().".$ext";            // conncat ext +name elgded
         $img->move(public_path("uploads/categores/"),$image);

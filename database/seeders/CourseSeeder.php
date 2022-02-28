@@ -15,7 +15,7 @@ class CourseSeeder extends Seeder
     {
        
         DB::table('courses')->insert([
-            'name' => 'css',
+            'name' => 'css3',
             'img' => 'courseimg1.jpeg',
             'price' => 200,
             'duration' => 5,

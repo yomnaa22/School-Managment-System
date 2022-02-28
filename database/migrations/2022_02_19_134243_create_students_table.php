@@ -20,7 +20,7 @@ class CreateStudentsTable extends Migration
             $table->string('lname');
             $table->enum('gender',['male','female']);
             $table->string('phone')->unique();
-            $table->string('img');
+            $table->string('img')->default('dnkj.jpg');
             $table->string('email');
             $table->string('pass');
 

@@ -42,12 +42,8 @@ class CourseController extends Controller
     public function store(Request $request)
     {
 
-        $validation = $this->validation($request);
-        if ($validation instanceof Response) {
-            return $validation;
-        }
-        if (is_null($validation)) {
-        $img = $request->file('img');
+      
+        $img = $request->file('image');
         $ext = $img->getClientOriginalExtension();
         $image = "course -" . uniqid() . ".$ext";
         $img->move(public_path("uploads/courses/"), $image);
@@ -67,7 +63,7 @@ class CourseController extends Controller
             // return $this->createdResponse($course);
             return response()->json($course, 200);
         }
-    }
+    
         // $this->unKnowError();
         return response()->json("Cannot add this course", 400);
     }

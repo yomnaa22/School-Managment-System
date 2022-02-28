@@ -18,12 +18,12 @@ class TrainerSeeder extends Seeder
  
 
         DB::table('trainers')->insert([
-            'fname' => 'ahmed',
-            'lname' => 'hamed',
+            'fname' => 'ahmedm',
+            'lname' => 'hamedm',
             'gender' => 'male',
-            'phone' => 1355654684,
+            'phone' => 1355658984,
             'img' => 'ahmed.jpg',
-            'email' => 'ahmedd@gmail.com',
+            'email' => 'ahmeedd@gmail.com',
             'pass' => Hash::make('Ahmnaaaa22'),
             'facebook' => 'facebook.com/ahmed1',
             'twitter' => 'twitter.com/ahmed1',
