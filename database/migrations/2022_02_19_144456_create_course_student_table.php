@@ -13,7 +13,7 @@ class CreateCoursesStudentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('courses_students', function (Blueprint $table) {
+        Schema::create('course_student', function (Blueprint $table) {
             $table->id();
 
             // $table->unsignedBigInteger('course_id');
@@ -26,7 +26,7 @@ class CreateCoursesStudentsTable extends Migration
             $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade')->primary();
 
             $table->boolean('statuts')->default(0);
-            
+
             $table->timestamps();
         });
     }
@@ -38,6 +38,6 @@ class CreateCoursesStudentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('courses_students');
+        Schema::dropIfExists('course_student');
     }
 }

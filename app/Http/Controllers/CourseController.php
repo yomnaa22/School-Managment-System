@@ -85,11 +85,7 @@ class CourseController extends Controller
     {
         $course = Course::with(['category','trainer'])->find($id);
         if ($course) {
-            // $course->category;
-            // $course->category->name;
-            // $course->category->img;
-            // $course->trainer;
-            // return $this->apiResponse($course);
+
             return response()->json($course, 200);
         }
         // return $this->notFoundResponse();
@@ -203,35 +199,29 @@ class CourseController extends Controller
         $data = $request->validate([
             'course_id' => 'required|exists:courses,id'
         ]);
-        // dd($data);
-
-       $enrolle= DB::table('courses_students')->insert([
+       $enrolle= DB::table('course_student')->insert([
             'student_id' => $id,
             'course_id' => $data['course_id']
         ]);
 
         if ($enrolle) {
-            // return $this->createdResponse($course);
             return response()->json($enrolle, 200);
         }
 
-    // $this->unKnowError();
     return response()->json("Cannot add this course", 400);
 }
 
 
-    //  public function showCourses($id)
-    //  {
-    //     $data['courses'] = Student::find($id)->courses;
-    //     $data['student_id'] = $id;
-    //     // $course=DB::select("select * from course__contents where course_id = $e_id");
-    //     if ($data) {
+     public function showCourses($id)
+     {
+        $data= Course::with(['students'])->find($id);
+        if ($data) {
 
-    //         return response()->json($data, 200);
-    //     }
-    //     return response()->json("Not Found", 404);
+            return response()->json($data, 200);
+        }
+        return response()->json("Not Found", 404);
 
-    //  }
+     }
 
 
     public function validation($request)
