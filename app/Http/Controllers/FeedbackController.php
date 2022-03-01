@@ -59,9 +59,10 @@ class FeedbackController extends Controller
      */
     public function show($id)
     {
-        $feedback=feedback::with('course','student')->find($id);
-        // $feedback = feedback::find($id);
+        $feedback = feedback::with(['course','student'])->find($id);
         if ($feedback) {
+            // $feedback->course;
+            // $feedback->student;
             // return $this->apiResponse($course);
             return response()->json($feedback, 200);
         }

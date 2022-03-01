@@ -13,15 +13,17 @@ class CategoryController extends Controller
 {
     use ApiResponseTrait;
 
+
+
     public function index()
     {
-        $Categorys = Category::get();
+        $Categorys = Category::with('courses')->get();
         return $this->apiResponse($Categorys);
     }
 
     public function show($id)
     {
-        $Category = Category::find($id);
+        $Category = Category::with('courses')->find($id);
         if ($Category) {
             return $this->apiResponse($Category);
         }
@@ -74,10 +76,10 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
 
-        // $validation = $this->validation($request);
-        // if($validation instanceof Response){
-        //     return $validation;
-        // }
+        $validation = $this->validation($request);
+        if($validation instanceof Response){
+            return $validation;
+        }
         $name=$request->name;
         $img=$request->file('image');             //bmsek el soura
         $ext=$img->getClientOriginalExtension();   //bgeb extention
@@ -103,49 +105,50 @@ class CategoryController extends Controller
             }
 
 
-    public function update($id , Request $request){
 
-        $validation = $this->validation($request);
-        if($validation instanceof Response){
-            return $validation;
-        }
+        public function update($id , Request $request){
 
-        $Category = Category::find($id);
-        if (!$Category) {
-            return $this->notFoundResponse();
-        }
-        $name=$Category->img;
-        if ($request->hasFile('img'))
-        {
-            if($name !== null)
-            {
-                unlink(public_path('uploads/categores/'.$name));
+            $validation = $this->validation($request);
+            if($validation instanceof Response){
+                return $validation;
             }
-            //move
-        $img=$request->file('img');             //bmsek el soura
-        $ext=$img->getClientOriginalExtension();   //bgeb extention
-        $name="cate -".uniqid().".$ext";            // conncat ext +name elgded
-        $img->move(public_path("uploads/categores"),$name);   //elmkan , $name elgded
-
+    
+            $Category = Category::find($id);
+            if (!$Category) {
+                return $this->notFoundResponse();
+            }
+            $name=$Category->img;
+            if ($request->hasFile('img'))
+            {
+                if($name !== null)
+                {
+                    unlink(public_path('uploads/categores/'.$name));
+                }
+                //move
+            $img=$request->file('img');             //bmsek el soura
+            $ext=$img->getClientOriginalExtension();   //bgeb extention
+            $name="cate -".uniqid().".$ext";            // conncat ext +name elgded
+            $img->move(public_path("uploads/categores"),$name);   //elmkan , $name elgded
+    
+            }
+ 
+            $Category->update([
+                'name'=>$request->name ,
+                'img' =>$name,
+                // $request->all()
+            ]);
+    
+            if ($Category) {
+                return $this->apiResponse($Category);
+            }
+            $this->unKnowError();
         }
-
-
-        $Category->update([
-            'name'=>$request->name ,
-            'img' =>$name,
-            // $request->all()
-        ]);
-
-        if ($Category) {
-            return $this->apiResponse($Category);
-        }
-        $this->unKnowError();
-    }
+    
 
     public function validation($request){
         return $this->apiValidation($request , [
-            // 'name' => 'required|min:3|max:191',
-            // 'img' => 'required|image|mimes:jpeg,png',
+            'name' => 'required|min:3|max:10',
+            'img' => 'required|image|mimes:jpg,jpeg,png',
         ]);
     }
 

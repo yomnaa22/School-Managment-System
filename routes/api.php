@@ -9,6 +9,7 @@ use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\CourseContentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,39 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group([
+
+    'middleware' => 'api',
+
+], function ($router) {
+
+    Route::post('login', 'App\Http\Controllers\AuthController@login');
+    Route::post('logout', 'App\Http\Controllers\AuthController@logout');
+    Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
+    Route::post('me', 'App\Http\Controllers\AuthController@me');
+
+});
+
+//login student
+Route::post('/students/register',[StudentController::class,'register']);
+Route::post('login/student', [StudentController::class, 'login']);
+Route::middleware('checkStudent:students')->group(function () {
+
+    Route::post('/student/me', [StudentController::class, 'me']);
+    Route::post('/student/logout', [StudentController::class, 'logout']);
+    Route::post('/student/hello', [StudentController::class, 'sayHello']);
+});
+//login trainer
+Route::post('/trainer/register', [TrainerController::class, 'register']);
+Route::post('login/trainer', [TrainerController::class, 'login']);
+Route::middleware('checkTrainer:triners')->group(function () {
+    Route::post('/trainer/me', [TrainerController::class, 'me']);
+    Route::post('trainer/logout', [TrainerController::class, 'logout']);
+    Route::post('/trainer/hello', [TrainerController::class, 'sayHello']);
+});
+
+
 
 
 Route::get('/categories', [CategoryController::class, 'index']);

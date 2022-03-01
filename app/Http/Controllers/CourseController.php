@@ -47,27 +47,27 @@ class CourseController extends Controller
             return $validation;
         }
         if (is_null($validation)) {
-        $img = $request->file('img');
-        $ext = $img->getClientOriginalExtension();
-        $image = "course -" . uniqid() . ".$ext";
-        $img->move(public_path("uploads/courses/"), $image);
+            $img = $request->file('img');
+            $ext = $img->getClientOriginalExtension();
+            $image = "course -" . uniqid() . ".$ext";
+            $img->move(public_path("uploads/courses/"), $image);
 
-        $course = Course::create([
-            'name' => $request->name,
-            'img' => $image,
-            'category_id' => $request->category_id,
-            'trainer_id' => $request->trainer_id,
-            'price' => $request->price,
-            'duration' => $request->duration,
-            'preq' => $request->preq,
-            'desc' => $request->desc,
-        ]);
+            $course = Course::create([
+                'name' => $request->name,
+                'img' => $image,
+                'category_id' => $request->category_id,
+                'trainer_id' => $request->trainer_id,
+                'price' => $request->price,
+                'duration' => $request->duration,
+                'preq' => $request->preq,
+                'desc' => $request->desc,
+            ]);
 
-        if ($course) {
-            // return $this->createdResponse($course);
-            return response()->json($course, 200);
+            if ($course) {
+                // return $this->createdResponse($course);
+                return response()->json($course, 200);
+            }
         }
-    }
         // $this->unKnowError();
         return response()->json("Cannot add this course", 400);
     }
@@ -80,9 +80,12 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        $course=Course::with('category','trainer')->find($id);
-        // $course = Course::find($id);
+        $course = Course::with(['category','trainer'])->find($id);
         if ($course) {
+            // $course->category;
+            // $course->category->name;
+            // $course->category->img;
+            // $course->trainer;
             // return $this->apiResponse($course);
             return response()->json($course, 200);
         }
@@ -170,8 +173,15 @@ class CourseController extends Controller
         if (is_null($course)) {
             return response()->json("Record not found", 404);
         }
+        
         $course->delete();
+        $img_name = $course->img;
+        // if ($course->hasFile('img')) {
+        if ($img_name !== null) {
+            unlink(public_path('uploads/courses/' . $img_name));
+        }
         return response()->json(null, 204);
+        // }
     }
 
     public function validation($request)
