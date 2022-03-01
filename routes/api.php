@@ -44,6 +44,8 @@ Route::group([
 
 //login student
 Route::post('/students/register',[StudentController::class,'register']);
+Route::post('/student/storeCourse/{id}',[CourseController::class,'Enrollment']);
+
 Route::post('login/student', [StudentController::class, 'login']);
 Route::middleware('checkStudent:students')->group(function () {
 
@@ -126,6 +128,7 @@ Route::patch('/Contact_us/{id}', [ContactUsController::class, 'update']);
 Route::get('/Course_content/show/{c_id}', [CourseController::class, 'showvideo']);
 //show courses
 //Route::get('/student/showCourses/{id}', [CourseController::class, 'showCourses']);
+//enrolle
 
 
 

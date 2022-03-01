@@ -198,6 +198,28 @@ class CourseController extends Controller
 
     }
 
+    public function Enrollment($id,Request $request)
+    {
+        $data = $request->validate([
+            'course_id' => 'required|exists:courses,id'
+        ]);
+        // dd($data);
+
+       $enrolle= DB::table('courses_students')->insert([
+            'student_id' => $id,
+            'course_id' => $data['course_id']
+        ]);
+
+        if ($enrolle) {
+            // return $this->createdResponse($course);
+            return response()->json($enrolle, 200);
+        }
+
+    // $this->unKnowError();
+    return response()->json("Cannot add this course", 400);
+}
+
+
     //  public function showCourses($id)
     //  {
     //     $data['courses'] = Student::find($id)->courses;

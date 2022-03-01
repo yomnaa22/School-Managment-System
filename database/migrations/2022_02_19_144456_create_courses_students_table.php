@@ -25,6 +25,8 @@ class CreateCoursesStudentsTable extends Migration
 
             $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade')->primary();
 
+            $table->boolean('statuts')->default(0);
+            
             $table->timestamps();
         });
     }
