@@ -10,6 +10,7 @@ use App\Http\Controllers\CourseContentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,7 @@ Route::group([
 
 //login student
 Route::post('/students/register',[StudentController::class,'register']);
+
 Route::post('login/student', [StudentController::class, 'login']);
 Route::middleware('checkStudent:students')->group(function () {
 
@@ -54,11 +56,15 @@ Route::middleware('checkStudent:students')->group(function () {
 Route::post('/trainers/register', [TrainerController::class, 'register']);
 Route::post('/trainers/login', [TrainerController::class, 'login']);
 Route::middleware('checkTrainer:triners')->group(function () {
-    Route::post('/trainer/me', [TrainerController::class, 'me']);
+
+    Route::post('/trainers/me', [TrainerController::class, 'me']);
     Route::post('trainer/logout', [TrainerController::class, 'logout']);
     Route::post('/trainer/hello', [TrainerController::class, 'sayHello']);
+
 });
 
+
+Route::post('/charge', [payment::class, 'charge']);
 
 
 
@@ -116,6 +122,16 @@ Route::post('/Contact_us', [ContactUsController::class, 'store']);
 Route::put('/Contact_us/{id}', [ContactUsController::class, 'update']);
 Route::patch('/Contact_us/{id}', [ContactUsController::class, 'update']);
 
+
+//show Course content by Course id
+Route::get('/Course_content/show/{c_id}', [CourseController::class, 'showvideo']);
+//show courses by student id
+Route::get('/student/showCourses/{id}', [CourseController::class, 'showCourses']);
+//enrolle
+Route::post('/student/storeCourse/{id}',[CourseController::class,'Enrollment']);
+
+//show student by Course id
+Route::get('/student/showStudent/{id}', [CourseController::class, 'showStudent']);
 
 
 Route::get('/Course_content', [CourseContentController::class, 'index']);
