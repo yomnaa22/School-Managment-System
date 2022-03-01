@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Course;
+use App\Models\Course_Content;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
@@ -82,11 +85,7 @@ class CourseController extends Controller
     {
         $course = Course::with(['category','trainer'])->find($id);
         if ($course) {
-            // $course->category;
-            // $course->category->name;
-            // $course->category->img;
-            // $course->trainer;
-            // return $this->apiResponse($course);
+
             return response()->json($course, 200);
         }
         // return $this->notFoundResponse();
@@ -173,7 +172,7 @@ class CourseController extends Controller
         if (is_null($course)) {
             return response()->json("Record not found", 404);
         }
-        
+
         $course->delete();
         $img_name = $course->img;
         // if ($course->hasFile('img')) {
@@ -183,6 +182,47 @@ class CourseController extends Controller
         return response()->json(null, 204);
         // }
     }
+    public function showvideo($e_id){
+
+
+        $course=DB::select("select * from course__contents where course_id = $e_id");
+        if ($course) {
+
+            return response()->json($course, 200);
+        }
+        return response()->json("Not Found", 404);
+
+    }
+
+    public function Enrollment($id,Request $request)
+    {
+        $data = $request->validate([
+            'course_id' => 'required|exists:courses,id'
+        ]);
+       $enrolle= DB::table('course_student')->insert([
+            'student_id' => $id,
+            'course_id' => $data['course_id']
+        ]);
+
+        if ($enrolle) {
+            return response()->json($enrolle, 200);
+        }
+
+    return response()->json("Cannot add this course", 400);
+}
+
+
+     public function showCourses($id)
+     {
+        $data= Course::with(['students'])->find($id);
+        if ($data) {
+
+            return response()->json($data, 200);
+        }
+        return response()->json("Not Found", 404);
+
+     }
+
 
     public function validation($request)
     {
