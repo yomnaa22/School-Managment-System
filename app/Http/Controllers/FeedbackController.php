@@ -127,8 +127,8 @@ class FeedbackController extends Controller
     {
         return $this->apiValidation($request, [
             'name' => 'required|min:3',
-            'course_id' => 'required|exists:App\Models\Course,id',
-            'student_id' => 'required|exists:App\Models\Student,id',
+            'course_id' => 'exists:App\Models\Course,id',
+            'student_id' => 'exists:App\Models\Student,id',
             'desc' => 'required|min:6|max:40'
         ]);
     }

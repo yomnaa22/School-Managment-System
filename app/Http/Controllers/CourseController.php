@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Course;
+use App\Models\Course_Content;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
@@ -173,7 +176,7 @@ class CourseController extends Controller
         if (is_null($course)) {
             return response()->json("Record not found", 404);
         }
-        
+
         $course->delete();
         $img_name = $course->img;
         // if ($course->hasFile('img')) {
@@ -183,6 +186,31 @@ class CourseController extends Controller
         return response()->json(null, 204);
         // }
     }
+    public function showvideo($e_id){
+
+
+        $course=DB::select("select * from course__contents where course_id = $e_id");
+        if ($course) {
+
+            return response()->json($course, 200);
+        }
+        return response()->json("Not Found", 404);
+
+    }
+
+    //  public function showCourses($id)
+    //  {
+    //     $data['courses'] = Student::find($id)->courses;
+    //     $data['student_id'] = $id;
+    //     // $course=DB::select("select * from course__contents where course_id = $e_id");
+    //     if ($data) {
+
+    //         return response()->json($data, 200);
+    //     }
+    //     return response()->json("Not Found", 404);
+
+    //  }
+
 
     public function validation($request)
     {

@@ -10,6 +10,7 @@ use App\Http\Controllers\CourseContentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -54,11 +55,15 @@ Route::middleware('checkStudent:students')->group(function () {
 Route::post('/trainer/register', [TrainerController::class, 'register']);
 Route::post('login/trainer', [TrainerController::class, 'login']);
 Route::middleware('checkTrainer:triners')->group(function () {
+
     Route::post('/trainer/me', [TrainerController::class, 'me']);
     Route::post('trainer/logout', [TrainerController::class, 'logout']);
     Route::post('/trainer/hello', [TrainerController::class, 'sayHello']);
+
 });
 
+
+Route::post('/charge', [payment::class, 'charge']);
 
 
 
@@ -115,6 +120,13 @@ Route::delete('/Contact_us/{id}', [ContactUsController::class, 'destroy']);
 Route::post('/Contact_us', [ContactUsController::class, 'store']);
 Route::put('/Contact_us/{id}', [ContactUsController::class, 'update']);
 Route::patch('/Contact_us/{id}', [ContactUsController::class, 'update']);
+
+
+//show Course content by Course id
+Route::get('/Course_content/show/{c_id}', [CourseController::class, 'showvideo']);
+//show courses
+//Route::get('/student/showCourses/{id}', [CourseController::class, 'showCourses']);
+
 
 
 
