@@ -125,12 +125,13 @@ Route::patch('/Contact_us/{id}', [ContactUsController::class, 'update']);
 
 //show Course content by Course id
 Route::get('/Course_content/show/{c_id}', [CourseController::class, 'showvideo']);
-//show courses
+//show courses by student id
 Route::get('/student/showCourses/{id}', [CourseController::class, 'showCourses']);
 //enrolle
 Route::post('/student/storeCourse/{id}',[CourseController::class,'Enrollment']);
 
-
+//show student by Course id
+Route::get('/student/showStudent/{id}', [CourseController::class, 'showStudent']);
 
 
 Route::get('/Course_content', [CourseContentController::class, 'index']);
