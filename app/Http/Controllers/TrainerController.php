@@ -6,6 +6,7 @@ use App\Http\Traits\ApiResponseTrait;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class TrainerController extends Controller
@@ -208,6 +209,8 @@ class TrainerController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'id'=>Auth::guard('triners')->user()->id,
+            'role'=>'istriner',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->guard('triners')->factory()->getTTL() * 60

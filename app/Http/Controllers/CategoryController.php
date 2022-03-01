@@ -57,10 +57,10 @@ class CategoryController extends Controller
             'img' =>$image,
         ]);
         if ($Categorys) {
-            return $this->createdResponse($Categorys);
+            return response()->json($Categorys, 200);
         }
 
-        $this->unKnowError();
+            return response()->json("Cannot send this message", 400);
 
     }
 

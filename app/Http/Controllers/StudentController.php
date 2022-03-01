@@ -201,6 +201,8 @@ class StudentController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'id'=>Auth::guard('students')->user()->id,
+            'role'=>'isStudent',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->guard('students')->factory()->getTTL() * 60
@@ -224,7 +226,7 @@ class StudentController extends Controller
 
 
 
-    
+
 
 
 
