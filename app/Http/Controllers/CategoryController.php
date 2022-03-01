@@ -13,19 +13,28 @@ class CategoryController extends Controller
 {
     use ApiResponseTrait;
 
+
+
     public function index()
     {
-        $Categorys = Category::get();
+        $Categorys = Category::with('courses')->get();
         return $this->apiResponse($Categorys);
     }
     public function show($id)
     {
-        $Category = Category::find($id);
+        $Category = Category::with('courses')->find($id);
         if ($Category) {
             return $this->apiResponse($Category);
         }
         return $this->notFoundResponse();
     }
+
+   
+
+
+
+
+
 
     public function delete($id)
     {

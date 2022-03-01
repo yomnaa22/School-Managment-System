@@ -15,7 +15,7 @@ class TrainerSeeder extends Seeder
      */
     public function run()
     {
- 
+
 
         DB::table('trainers')->insert([
             'fname' => 'ahmedm',
@@ -23,14 +23,14 @@ class TrainerSeeder extends Seeder
             'gender' => 'male',
             'phone' => 1355658984,
             'img' => 'ahmed.jpg',
-            'email' => 'ahmeedd@gmail.com',
-            'pass' => Hash::make('Ahmnaaaa22'),
+            'email' => 'ahmedd@gmail.com',
+            'password' => Hash::make('Ahmnaaaa22'),
             'facebook' => 'facebook.com/ahmed1',
             'twitter' => 'twitter.com/ahmed1',
             'linkedin' => 'linkedin.com/ahmed1',
 
-    
-           
+
+
         ]);
         //
     }

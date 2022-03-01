@@ -20,15 +20,12 @@ class CreateTrainersTable extends Migration
             $table->string('lname');
             $table->enum('gender',['male','female']);
             $table->string('phone')->unique();
-            $table->string('img');
+            $table->string('img')->default('student.jpg');
             $table->string('email');
-            $table->string('pass');
-            $table->string('facebook');
-            $table->string('twitter');
-            $table->string('linkedin');
-
-
-
+            $table->string('password');
+            $table->string('facebook')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('linkedin')->nullable();
 
 
             $table->timestamps();
