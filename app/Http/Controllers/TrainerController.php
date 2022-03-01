@@ -7,6 +7,7 @@ use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class TrainerController extends Controller
 {
@@ -52,12 +53,12 @@ class TrainerController extends Controller
     }
 
     public function register(Request $request)
-    {
-        //
+    {   
         $validation = $this->validation($request);
         if($validation instanceof Response){
             return $validation;
         }
+
         $trainers = Trainer::create([
             'fname'=>$request->fname ,
             'lname'=>$request->lname ,
@@ -159,16 +160,17 @@ class TrainerController extends Controller
         return $this->apiValidation($request , [
             'fname' => 'required|min:3|max:10',
             'lname' => 'required|min:3|max:10',
-            'gender' => 'required|',
+            'gender' => 'required',
             'phone' => 'required|unique:trainers',
             'email' => 'required|email|unique:trainers',
-            'password' => 'required|min:6|',
+            'password' => 'required|min:6'
 
         ]);
     }
 
     public function login(Request $request)
     {
+        // Log::alert($request);
         $validator = $this->apiValidation($request , [
             'email' => 'required|exists:trainers,email' ,
             'password' => 'required|string' ,
@@ -179,6 +181,7 @@ class TrainerController extends Controller
         }
 
         $credentials = request(['email', 'password']);
+        // dd($credentials);
         if (!$token = auth()->guard('triners')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
