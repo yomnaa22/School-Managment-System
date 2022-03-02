@@ -20,7 +20,7 @@ class CreateTrainersTable extends Migration
             $table->string('lname');
             $table->enum('gender',['male','female']);
             $table->string('phone')->unique();
-            $table->string('img')->default('student.jpg');
+            $table->string('img')->nullable();
             $table->string('email');
             $table->string('password');
             $table->string('facebook')->nullable();

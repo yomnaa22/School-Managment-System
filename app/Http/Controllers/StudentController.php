@@ -90,11 +90,11 @@ class StudentController extends Controller
         $validation=$this->apiValidation($request , [
                 'fname' => 'required|min:3|max:10',
                 'lname' => 'required|min:3|max:10',
-                'gender' => 'required|',
+                // 'gender' => 'required|',
                 'phone' => 'required|min:10',
                 'img' => 'image|mimes:jpeg,png',
-                'email' => 'required|email',
-                'password' => 'required|min:6|',
+                // 'email' => 'required|email',
+                // 'password' => 'required|min:6|',
             ]);
         if($validation instanceof Response){
             return $validation;
@@ -124,11 +124,11 @@ class StudentController extends Controller
         $student->update([
             'fname'=>$request->fname ,
             'lname'=>$request->lname ,
-            'gender'=>$request->gender ,
+            // 'gender'=>$request->gender ,
             'phone'=>$request->phone ,
             'img'=>$name,
-            'email'=>$request->email ,
-            'password'=>Hash::make($request->password),
+            // 'email'=>$request->email ,
+            // 'password'=>Hash::make($request->password),
         ]);
 
         if ($student) {
@@ -201,6 +201,8 @@ class StudentController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'id'=>Auth::guard('students')->user()->id,
+            'role'=>'isStudent',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->guard('students')->factory()->getTTL() * 60
@@ -224,7 +226,7 @@ class StudentController extends Controller
 
 
 
-    
+
 
 
 

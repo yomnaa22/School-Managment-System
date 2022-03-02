@@ -43,7 +43,7 @@ Route::group([
 });
 
 //login student
-Route::post('/students/register',[StudentController::class,'register']);
+Route::post('/students',[StudentController::class,'register']);
 
 Route::post('login/student', [StudentController::class, 'login']);
 Route::middleware('checkStudent:students')->group(function () {
@@ -92,7 +92,7 @@ Route::post('/trainers/{id}',[TrainerController::class, 'update']);
 Route::get('/students',[StudentController::class, 'index']);
 Route::get('/students/{id}',[StudentController::class, 'show']);
 Route::delete('/students/{id}',[StudentController::class, 'destroy']);
-Route::post('/students',[StudentController::class, 'store']);
+//Route::post('/students',[StudentController::class, 'store']);
 Route::post('/students/{id}',[StudentController::class, 'update']);
 
 

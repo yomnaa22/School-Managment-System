@@ -95,7 +95,6 @@ class CategoryController extends Controller
 
         // $this->unKnowError();
         if ($Categorys) {
-            // return $this->createdResponse($contact_us);
             return response()->json($Categorys, 200);
         }
     
