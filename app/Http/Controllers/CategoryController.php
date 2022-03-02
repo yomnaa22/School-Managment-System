@@ -81,7 +81,7 @@ class CategoryController extends Controller
             return $validation;
         }
         $name=$request->name;
-        $img=$request->file('image');             //bmsek el soura
+        $img=$request->file('img');             //bmsek el soura
         $ext=$img->getClientOriginalExtension();   //bgeb extention
         $image="cate -".uniqid().".$ext";            // conncat ext +name elgded
         $img->move(public_path("uploads/categores/"),$image);
