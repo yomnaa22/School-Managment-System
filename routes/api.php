@@ -12,6 +12,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\payment;
 use Illuminate\Http\Request;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,11 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+// Route::post('payment-intent',[PaymentController::class,'CreatePayIntent']);
+// Route::post('store-intent', [PaymentController::class,'storeStripePayment']);
+Route::post('payment-intent', [PaymentController::class,'CreatePayIntent']);
+Route::post('store-intent', [PaymentController::class,'storeStripePayment']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -64,7 +70,6 @@ Route::middleware('checkTrainer:triners')->group(function () {
 });
 
 
-Route::post('/charge', [payment::class, 'charge']);
 
 
 
@@ -129,7 +134,6 @@ Route::get('/Course_content/show/{c_id}', [CourseController::class, 'showvideo']
 Route::get('/student/showCourses/{id}', [CourseController::class, 'showCourses']);
 //enrolle
 Route::post('/student/storeCourse/{id}',[CourseController::class,'Enrollment']);
-
 //show student by Course id
 Route::get('/student/showStudent/{id}', [CourseController::class, 'showStudent']);
 
