@@ -17,7 +17,7 @@ class CourseController extends Controller
     public function index()
     {
         //
-        $Courses=Course::with('category','trainer')->get();
+        $Courses = Course::with('category', 'trainer')->get();
         // $Courses = Course::get();
         return response()->json($Courses, 200);
     }
@@ -56,7 +56,7 @@ class CourseController extends Controller
 
     public function show($id)
     {
-        $course = Course::with(['category','trainer'])->find($id);
+        $course = Course::with(['category', 'trainer'])->find($id);
         if ($course) {
 
             return response()->json($course, 200);
@@ -105,7 +105,6 @@ class CourseController extends Controller
                 'desc' => $request->desc,
             ]);
             return response()->json($course, 200);
-
         }
         // $this->unKnowError();
         return response()->json("Record not found", 404);
@@ -127,57 +126,52 @@ class CourseController extends Controller
         return response()->json(null, 204);
         // }
     }
-    public function showvideo($e_id){
+    public function showvideo($e_id)
+    {
 
 
-        $course=DB::select("select * from course__contents where course_id = $e_id");
+        $course = DB::select("select * from course__contents where course_id = $e_id");
         if ($course) {
 
             return response()->json($course, 200);
         }
         return response()->json("Not Found", 404);
-
     }
 
-    public function Enrollment($id,Request $request)
+    public function Enrollment(Request $request)
     {
-        $data = $request->validate([
-            'course_id' => 'required|exists:courses,id'
-        ]);
-       $enrolle= DB::table('course_student')->insert([
-            'student_id' => $id,
-            'course_id' => $data['course_id']
+        $enrolle = DB::table('course_student')->insert([
+            'student_id' => $request->student_id,
+            'course_id' => $request->course_id
         ]);
 
         if ($enrolle) {
             return response()->json($enrolle, 200);
         }
 
-    return response()->json("Cannot add this course", 400);
-}
+        return response()->json("Cannot add this course", 400);
+    }
 
 
-     public function showCourses($id)
-     {
-        $data= Student::with(['Courses'])->find($id);
+    public function showCourses($id)
+    {
+        $data = Student::with(['Courses'])->find($id);
         if ($data) {
 
             return response()->json($data, 200);
         }
         return response()->json("Not Found", 404);
+    }
 
-     }
-
-     public function showStudent($id)
-     {
-        $data= Course::with(['students'])->find($id);
+    public function showStudent($id)
+    {
+        $data = Course::with(['students'])->find($id);
         if ($data) {
 
             return response()->json($data, 200);
         }
         return response()->json("Not Found", 404);
-
-     }
+    }
 
 
 
