@@ -53,11 +53,11 @@ Route::middleware('checkStudent:students')->group(function () {
     Route::post('/student/hello', [StudentController::class, 'sayHello']);
 });
 //login trainer
-Route::post('/trainer/register', [TrainerController::class, 'register']);
-Route::post('login/trainer', [TrainerController::class, 'login']);
+Route::post('/trainers/register', [TrainerController::class, 'register']);
+Route::post('/trainers/login', [TrainerController::class, 'login']);
 Route::middleware('checkTrainer:triners')->group(function () {
 
-    Route::post('/trainer/me', [TrainerController::class, 'me']);
+    Route::post('/trainers/me', [TrainerController::class, 'me']);
     Route::post('trainer/logout', [TrainerController::class, 'logout']);
     Route::post('/trainer/hello', [TrainerController::class, 'sayHello']);
 

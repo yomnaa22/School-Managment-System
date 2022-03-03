@@ -89,7 +89,7 @@ public function searchCourse(Request $request){
         $course = Course::find($id);
         if ($course) {
 
-            if ($request->isMethod('put')) {
+            if ($request->isMethod('post')) {
                 $validation = $this->validation($request);
                 if ($validation instanceof Response) {
                     return $validation;
@@ -107,12 +107,12 @@ public function searchCourse(Request $request){
                 $name = "course -" . uniqid() . ".$ext";            // conncat ext +name elgded
                 $img->move(public_path("uploads/courses"), $name);   //elmkan , $name elgded
 
-            }
+            // }
 
 
             $course->update([
                 'name' => $request->name,
-                'img' => $name,
+                // 'img' => $name,
                 'category_id' => $request->category_id,
                 'trainer_id' => $request->trainer_id,
                 'price' => $request->price,
@@ -126,7 +126,7 @@ public function searchCourse(Request $request){
         // $this->unKnowError();
         return response()->json("Record not found", 404);
     }
-
+    }
     public function destroy($id)
     {
         $course = Course::find($id);
@@ -199,7 +199,7 @@ public function searchCourse(Request $request){
     {
         return $this->apiValidation($request, [
             'name' => 'required|min:3|max:20',
-            'img' => 'required|image|mimes:jpeg,png',
+            // 'img' => 'required|image|mimes:jpeg,png',
             'price' => 'required',
             'category_id' => 'required|exists:App\Models\Category,id',
             'trainer_id' => 'required|exists:App\Models\Trainer,id',

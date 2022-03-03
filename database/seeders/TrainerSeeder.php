@@ -18,19 +18,16 @@ class TrainerSeeder extends Seeder
 
 
         DB::table('trainers')->insert([
-            'fname' => 'ahmedm',
-            'lname' => 'hamedm',
-            'gender' => 'male',
-            'phone' => 1355658984,
-            'img' => 'ahmed.jpg',
-            'email' => 'ahmedd@gmail.com',
-            'password' => Hash::make('Ahmnaaaa22'),
-            'facebook' => 'facebook.com/ahmed1',
-            'twitter' => 'twitter.com/ahmed1',
-            'linkedin' => 'linkedin.com/ahmed1',
-
-
-
+            'fname' => 'maria',
+            'lname' => 'emil',
+            'gender' => 'female',
+            'phone' => 1355654685,
+            'img' => 'maria.jpg',
+            'email' => 'maria@gmail.com',
+            'password' => Hash::make('12345678'),
+            'facebook' => 'facebook.com/maria',
+            'twitter' => 'twitter.com/maria',
+            'linkedin' => 'linkedin.com/maria',
         ]);
         //
     }
