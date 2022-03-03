@@ -66,13 +66,21 @@ Route::middleware('checkTrainer:triners')->group(function () {
 
 Route::post('/charge', [payment::class, 'charge']);
 
-
+//get categories count
+Route::get('/categories/count',[CategoryController::class,'getCount']);
+//get courses count
+Route::get('/courses/count',[CourseController::class,'getCount']);
+//get students count
+Route::get('/students/count',[StudentController::class,'getCount']);
+//get trainers count
+Route::get('/trainers/count',[TrainerController::class,'getCount']);
 
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{id}', [CategoryController::class, 'show']);
 Route::delete('/categories/{id}', [CategoryController::class, 'delete']);
 Route::post('/categories', [CategoryController::class, 'store']);
 Route::post('/categories/{id}', [CategoryController::class, 'update']);
+
 
 
 Route::get('/questions',[QuestionController::class, 'index']);
@@ -132,6 +140,8 @@ Route::post('/student/storeCourse/{id}',[CourseController::class,'Enrollment']);
 
 //show student by Course id
 Route::get('/student/showStudent/{id}', [CourseController::class, 'showStudent']);
+// return student count in given course id
+Route::get('/student/studentCount/{id}', [CourseController::class, 'studentCount']);
 
 
 Route::get('/Course_content', [CourseContentController::class, 'index']);

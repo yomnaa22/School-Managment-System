@@ -9,6 +9,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CourseController extends Controller
 {
@@ -17,7 +18,7 @@ class CourseController extends Controller
     public function index()
     {
         //
-        $Courses=Course::with('category','trainer')->get();
+        $Courses = Course::with('category', 'trainer')->get();
         // $Courses = Course::get();
         return response()->json($Courses, 200);
     }
@@ -56,16 +57,13 @@ class CourseController extends Controller
 
     public function show($id)
     {
-        $course = Course::with(['category','trainer'])->find($id);
+        $course = Course::with(['category', 'trainer'])->find($id);
         if ($course) {
 
             return response()->json($course, 200);
         }
         return response()->json("Not Found", 404);
     }
-
-
-
 
 
     public function update(Request $request, $id)
@@ -91,25 +89,24 @@ class CourseController extends Controller
                 $name = "course -" . uniqid() . ".$ext";            // conncat ext +name elgded
                 $img->move(public_path("uploads/courses"), $name);   //elmkan , $name elgded
 
-            // }
+                // }
 
 
-            $course->update([
-                'name' => $request->name,
-                // 'img' => $name,
-                'category_id' => $request->category_id,
-                'trainer_id' => $request->trainer_id,
-                'price' => $request->price,
-                'duration' => $request->duration,
-                'preq' => $request->preq,
-                'desc' => $request->desc,
-            ]);
-            return response()->json($course, 200);
-
+                $course->update([
+                    'name' => $request->name,
+                    // 'img' => $name,
+                    'category_id' => $request->category_id,
+                    'trainer_id' => $request->trainer_id,
+                    'price' => $request->price,
+                    'duration' => $request->duration,
+                    'preq' => $request->preq,
+                    'desc' => $request->desc,
+                ]);
+                return response()->json($course, 200);
+            }
+            // $this->unKnowError();
+            return response()->json("Record not found", 404);
         }
-        // $this->unKnowError();
-        return response()->json("Record not found", 404);
-    }
     }
     public function destroy($id)
     {
@@ -127,24 +124,24 @@ class CourseController extends Controller
         return response()->json(null, 204);
         // }
     }
-    public function showvideo($e_id){
+    public function showvideo($e_id)
+    {
 
 
-        $course=DB::select("select * from course__contents where course_id = $e_id");
+        $course = DB::select("select * from course__contents where course_id = $e_id");
         if ($course) {
 
             return response()->json($course, 200);
         }
         return response()->json("Not Found", 404);
-
     }
 
-    public function Enrollment($id,Request $request)
+    public function Enrollment($id, Request $request)
     {
         $data = $request->validate([
             'course_id' => 'required|exists:courses,id'
         ]);
-       $enrolle= DB::table('course_student')->insert([
+        $enrolle = DB::table('course_student')->insert([
             'student_id' => $id,
             'course_id' => $data['course_id']
         ]);
@@ -153,38 +150,60 @@ class CourseController extends Controller
             return response()->json($enrolle, 200);
         }
 
-    return response()->json("Cannot add this course", 400);
-}
+        return response()->json("Cannot add this course", 400);
+    }
 
 
-     public function showCourses($id)
-     {
-        $data= Student::with(['Courses'])->find($id);
+    public function showCourses($id)
+    {
+        $data = Student::with(['Courses'])->find($id);
         if ($data) {
 
             return response()->json($data, 200);
         }
         return response()->json("Not Found", 404);
+    }
 
-     }
-
-     public function showStudent($id)
-     {
-        $data= Course::with(['students'])->find($id);
+    public function showStudent($id)
+    {
+        $data = Course::with(['students'])->find($id);
         if ($data) {
 
             return response()->json($data, 200);
         }
         return response()->json("Not Found", 404);
+    }
 
-     }
+    public function studentCount($id)
+    {
 
+        $data = DB::table('course_student')->select('student_id')->where('course_id', '=', $id)->count('student_id');
+
+        if ($data == 0)
+            return response()->json($data, 200);
+        if ($data) {
+            return response()->json($data, 200);
+        }
+        return response()->json("Not Found", 404);
+    }
+
+
+    public function getCount()
+    {
+        $data = DB::table('courses')->select('id')->count('id');
+        if ($data == 0)
+            return response()->json($data, 200);
+        if ($data) {
+            return response()->json($data, 200);
+        }
+        return response()->json("Not Found", 404);
+    }
 
 
     public function validation($request)
     {
         return $this->apiValidation($request, [
-            'name' => 'required|min:3|max:20',
+            'name' => 'required|min:3|max:30',
             // 'img' => 'required|image|mimes:jpeg,png',
             'price' => 'required',
             'category_id' => 'required|exists:App\Models\Category,id',
