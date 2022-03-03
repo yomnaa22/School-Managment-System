@@ -22,9 +22,9 @@ class StudentSeeder extends Seeder
             'fname' => 'sara',
             'lname' => 'mohamed',
             'gender' => 'female',
-            'phone' => 125154,
-            'img' => 'yomna.jpg',
-            'email' => 'ahmed@gmail.com',
+            'phone' => 1251543,
+            'img' => 'sara.jpg',
+            'email' => 'sara@gmail.com',
             'password' => Hash::make('12345678'),
 
         ]);

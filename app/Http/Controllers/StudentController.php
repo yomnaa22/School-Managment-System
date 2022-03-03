@@ -203,7 +203,10 @@ class StudentController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->guard('students')->factory()->getTTL() * 60
+            'expires_in' => auth()->guard('students')->factory()->getTTL() * 60,
+            'id'=>Auth::guard('students')->user()->id,
+            'role'=>'isStudent',
+
         ]);
     }
 

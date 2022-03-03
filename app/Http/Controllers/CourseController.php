@@ -194,22 +194,36 @@ class CourseController extends Controller
 
     }
 
-    public function Enrollment($id,Request $request)
+//     public function Enrollment($id,Request $request)
+//     {
+//         $data = $request->validate([
+//             'course_id' => 'required|exists:courses,id'
+//         ]);
+//        $enrolle= DB::table('course_student')->insert([
+//             'student_id' => $id,
+//             'course_id' => $data['course_id']
+//         ]);
+
+//         if ($enrolle) {
+//             return response()->json($enrolle, 200);
+//         }
+
+//     return response()->json("Cannot add this course", 400);
+// }
+
+public function Enrollment(Request $request)
     {
-        $data = $request->validate([
-            'course_id' => 'required|exists:courses,id'
-        ]);
-       $enrolle= DB::table('course_student')->insert([
-            'student_id' => $id,
-            'course_id' => $data['course_id']
+        $enrolle = DB::table('course_student')->insert([
+            'student_id' => $request->student_id,
+            'course_id' => $request->course_id
         ]);
 
         if ($enrolle) {
             return response()->json($enrolle, 200);
         }
 
-    return response()->json("Cannot add this course", 400);
-}
+        return response()->json("Cannot add this course", 400);
+    }
 
 
      public function showCourses($id)

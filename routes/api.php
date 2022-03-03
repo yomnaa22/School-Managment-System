@@ -135,8 +135,8 @@ Route::get('/Course_content/show/{c_id}', [CourseController::class, 'showvideo']
 //show courses
 Route::get('/student/showCourses/{id}', [CourseController::class, 'showCourses']);
 //enrolle
-Route::post('/student/storeCourse/{id}',[CourseController::class,'Enrollment']);
-
+// Route::post('/student/storeCourse/{id}',[CourseController::class,'Enrollment']);
+Route::post('/student/storeCourse',[CourseController::class,'Enrollment']);
 
 
 
