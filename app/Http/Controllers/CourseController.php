@@ -13,11 +13,23 @@ use Illuminate\Support\Facades\DB;
 class CourseController extends Controller
 {
     use ApiResponseTrait;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
+public function searchCourse(Request $request){
+    $query= Course::query();
+    $data = $request->input('search_course');
+    if($data)
+    {
+        $query->whereRaw("name LIKE '%" .$data. "%'");
+    }
+     //$query->get();
+     return response()-> json($query->get());
+
+  
+}
+
+
+
     public function index()
     {
         //
@@ -26,22 +38,6 @@ class CourseController extends Controller
         return response()->json($Courses, 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
 
@@ -67,21 +63,13 @@ class CourseController extends Controller
             ]);
 
             if ($course) {
-                // return $this->createdResponse($course);
                 return response()->json($course, 200);
             }
         
-
-        // $this->unKnowError();
         return response()->json("Cannot add this course", 400);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Course  $course
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         $course = Course::with(['category','trainer'])->find($id);
@@ -89,28 +77,13 @@ class CourseController extends Controller
 
             return response()->json($course, 200);
         }
-        // return $this->notFoundResponse();
         return response()->json("Not Found", 404);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Course  $course
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Course $course)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Course  $course
-     * @return \Illuminate\Http\Response
-     */
+
+
+
     public function update(Request $request, $id)
     {
         $course = Course::find($id);
@@ -123,9 +96,6 @@ class CourseController extends Controller
                 }
             }
 
-            // if (!$course) {
-            //     return $this->notFoundResponse();
-            // }
             $name = $course->img;
             if ($request->hasFile('img')) {
                 if ($name !== null) {
@@ -151,22 +121,12 @@ class CourseController extends Controller
                 'desc' => $request->desc,
             ]);
             return response()->json($course, 200);
-            // if ($course) {
-            //     return $this->apiResponse($course);
 
-            // }
         }
         // $this->unKnowError();
         return response()->json("Record not found", 404);
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Course  $course
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $course = Course::find($id);
@@ -195,14 +155,12 @@ class CourseController extends Controller
 
     }
 
-    public function Enrollment($id,Request $request)
-    {
-        $data = $request->validate([
-            'course_id' => 'required|exists:courses,id'
-        ]);
+    public function Enrollment(Request $request)
+    { // log::alert($request);
+        
        $enrolle= DB::table('course_student')->insert([
-            'student_id' => $id,
-            'course_id' => $data['course_id']
+            'student_id' => $request->student_id,
+            'course_id' => $request->course_id
         ]);
 
         if ($enrolle) {
@@ -215,6 +173,17 @@ class CourseController extends Controller
 
      public function showCourses($id)
      {
+        $data= Student::with(['Courses'])->find($id);
+        if ($data) {
+
+            return response()->json($data, 200);
+        }
+        return response()->json("Not Found", 404);
+
+     }
+
+     public function showStudent($id)
+     {
         $data= Course::with(['students'])->find($id);
         if ($data) {
 
@@ -223,6 +192,7 @@ class CourseController extends Controller
         return response()->json("Not Found", 404);
 
      }
+
 
 
     public function validation($request)

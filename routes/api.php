@@ -43,7 +43,7 @@ Route::group([
 });
 
 //login student
-Route::post('/students/register',[StudentController::class,'register']);
+Route::post('/students',[StudentController::class,'register']);
 
 Route::post('login/student', [StudentController::class, 'login']);
 Route::middleware('checkStudent:students')->group(function () {
@@ -92,7 +92,7 @@ Route::post('/trainers/{id}',[TrainerController::class, 'update']);
 Route::get('/students',[StudentController::class, 'index']);
 Route::get('/students/{id}',[StudentController::class, 'show']);
 Route::delete('/students/{id}',[StudentController::class, 'destroy']);
-Route::post('/students',[StudentController::class, 'store']);
+//Route::post('/students',[StudentController::class, 'store']);
 Route::post('/students/{id}',[StudentController::class, 'update']);
 
 
@@ -113,6 +113,7 @@ Route::delete('/courses/{id}', [CourseController::class, 'destroy']);
 Route::post('/courses', [CourseController::class, 'store']);
 Route::post('/courses/{id}', [CourseController::class, 'update']);
 Route::patch('/courses/{id}', [CourseController::class, 'update']);
+Route::get('/course/search_course', [CourseController::class, 'searchCourse']);
 
 
 Route::get('/Contact_us', [ContactUsController::class, 'index']);
@@ -125,12 +126,13 @@ Route::patch('/Contact_us/{id}', [ContactUsController::class, 'update']);
 
 //show Course content by Course id
 Route::get('/Course_content/show/{c_id}', [CourseController::class, 'showvideo']);
-//show courses
+//show courses by student id
 Route::get('/student/showCourses/{id}', [CourseController::class, 'showCourses']);
 //enrolle
-Route::post('/student/storeCourse/{id}',[CourseController::class,'Enrollment']);
-
-
+//Route::post('/student/storeCourse/{student_id}',[CourseController::class,'Enrollment']);
+Route::post('/student/storeCourse',[CourseController::class,'Enrollment']);
+//show student by Course id
+Route::get('/student/showStudent/{id}', [CourseController::class, 'showStudent']);
 
 
 Route::get('/Course_content', [CourseContentController::class, 'index']);
@@ -147,3 +149,5 @@ Route::get('/feedbacks/{id}', [FeedbackController::class, 'show']);
 Route::post('/feedbacks', [FeedbackController::class, 'store']);
 Route::put('/feedbacks/{id}', [FeedbackController::class, 'update']);
 Route::patch('/feedbacks/{id}', [FeedbackController::class, 'update']);
+
+
