@@ -136,14 +136,11 @@ class CourseController extends Controller
         return response()->json("Not Found", 404);
     }
 
-    public function Enrollment($id, Request $request)
+    public function Enrollment(Request $request)
     {
-        $data = $request->validate([
-            'course_id' => 'required|exists:courses,id'
-        ]);
         $enrolle = DB::table('course_student')->insert([
-            'student_id' => $id,
-            'course_id' => $data['course_id']
+            'student_id' => $request->student_id,
+            'course_id' => $request->course_id
         ]);
 
         if ($enrolle) {
