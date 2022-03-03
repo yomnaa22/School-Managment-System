@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCoursesStudentsTable extends Migration
+class CreateCourseStudentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class CreateCoursesStudentsTable extends Migration
     public function up()
     {
         Schema::create('course_student', function (Blueprint $table) {
-            $table->id();
+            // $table->id();
 
             // $table->unsignedBigInteger('course_id');
             // $table->foreign('course_id')->references('id')->on('courses')->onUpdate('cascade')->onDelete('cascade');
@@ -25,7 +25,7 @@ class CreateCoursesStudentsTable extends Migration
 
             $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade')->primary();
 
-            $table->boolean('statuts')->default(0);
+            // $table->boolean('statuts')->default(0);
 
             $table->timestamps();
         });

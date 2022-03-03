@@ -46,6 +46,9 @@ Route::group([
     Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
     Route::post('me', 'App\Http\Controllers\AuthController@me');
 
+
+
+
 });
 
 //login student
@@ -57,6 +60,9 @@ Route::middleware('checkStudent:students')->group(function () {
     Route::post('/student/me', [StudentController::class, 'me']);
     Route::post('/student/logout', [StudentController::class, 'logout']);
     Route::post('/student/hello', [StudentController::class, 'sayHello']);
+
+
+
 });
 //login trainer
 Route::post('/trainer/register', [TrainerController::class, 'register']);
@@ -75,13 +81,15 @@ Route::middleware('checkTrainer:triners')->group(function () {
 
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{id}', [CategoryController::class, 'show']);
-Route::delete('/categories/{id}', [CategoryController::class, 'delete']);
-Route::post('/categories', [CategoryController::class, 'store']);
-Route::post('/categories/{id}', [CategoryController::class, 'update']);
 
+Route::delete('/categories/{id}', [CategoryController::class, 'delete']);
+Route::post('/categories/{id}',[CategoryController::class, 'update']);
+
+Route::post('/categories', [CategoryController::class, 'store'])->middleware(['isAdmin']);
 
 Route::get('/questions',[QuestionController::class, 'index']);
 Route::get('/questions/{id}',[QuestionController::class, 'show']);
+
 Route::delete('/questions/{id}',[QuestionController::class, 'destroy']);
 Route::post('/questions',[QuestionController::class, 'store']);
 Route::post('/questions/{id}',[QuestionController::class, 'update']);
@@ -89,6 +97,7 @@ Route::post('/questions/{id}',[QuestionController::class, 'update']);
 
 Route::get('/trainers',[TrainerController::class, 'index']);
 Route::get('/trainers/{id}',[TrainerController::class, 'show']);
+
 Route::delete('/trainers/{id}',[TrainerController::class, 'destroy']);
 Route::post('/trainers',[TrainerController::class, 'store']);
 Route::post('/trainers/{id}',[TrainerController::class, 'update']);
@@ -96,6 +105,7 @@ Route::post('/trainers/{id}',[TrainerController::class, 'update']);
 
 Route::get('/students',[StudentController::class, 'index']);
 Route::get('/students/{id}',[StudentController::class, 'show']);
+
 Route::delete('/students/{id}',[StudentController::class, 'destroy']);
 //Route::post('/students',[StudentController::class, 'store']);
 Route::post('/students/{id}',[StudentController::class, 'update']);
@@ -107,6 +117,7 @@ Route::get('/exams/{id}',[ExamController::class, 'show']);
 Route::delete('/exams/{id}',[ExamController::class, 'destroy']);
 Route::post('/exams',[ExamController::class, 'store']);
 Route::post('/exams/{id}',[ExamController::class, 'update']);
+
 //get all questions by exam_id
 Route::get('/exams/questions/{e_id}',[ExamController::class, 'getallExam']);
 
@@ -133,7 +144,7 @@ Route::get('/Course_content/show/{c_id}', [CourseController::class, 'showvideo']
 //show courses by student id
 Route::get('/student/showCourses/{id}', [CourseController::class, 'showCourses']);
 //enrolle
-Route::post('/student/storeCourse',[CourseController::class,'Enrollment']); 
+Route::post('/student/storeCourse',[CourseController::class,'Enrollment']);
 //show student by Course id
 Route::get('/student/showStudent/{id}', [CourseController::class, 'showStudent']);
 
