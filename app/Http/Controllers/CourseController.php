@@ -167,8 +167,8 @@ public function searchCourse(Request $request){
             return response()->json($enrolle, 200);
         }
 
-    return response()->json("Cannot add this course", 400);
-}
+        return response()->json("Cannot add this course", 400);
+    }
 
 
      public function showCourses($id)

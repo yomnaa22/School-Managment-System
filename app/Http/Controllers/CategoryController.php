@@ -102,6 +102,7 @@ class CategoryController extends Controller
 
         // $this->unKnowError();
         if ($Categorys) {
+            // return $this->createdResponse($contact_us);
             return response()->json($Categorys, 200);
         }
     
@@ -149,15 +150,6 @@ class CategoryController extends Controller
             }
             $this->unKnowError();
         }
-
-        // public function getCourses($id)
-        // {
-        //     $Category = Category::with('courses')->find($id);
-        //     if ($Category) {
-        //         return $this->apiResponse($Category);
-        //     }
-        //     return $this->notFoundResponse();
-        // }
     
 
     public function validation($request){
