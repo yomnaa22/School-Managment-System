@@ -50,7 +50,7 @@ Route::group([
 });
 
 //login student
-Route::post('/students/register',[StudentController::class,'register']);
+Route::post('/students',[StudentController::class,'register']);
 
 Route::post('login/student', [StudentController::class, 'login']);
 Route::middleware('checkStudent:students')->group(function () {
@@ -60,11 +60,11 @@ Route::middleware('checkStudent:students')->group(function () {
     Route::post('/student/hello', [StudentController::class, 'sayHello']);
 });
 //login trainer
-Route::post('/trainer/register', [TrainerController::class, 'register']);
-Route::post('login/trainer', [TrainerController::class, 'login']);
+Route::post('/trainers/register', [TrainerController::class, 'register']);
+Route::post('/trainers/login', [TrainerController::class, 'login']);
 Route::middleware('checkTrainer:triners')->group(function () {
 
-    Route::post('/trainer/me', [TrainerController::class, 'me']);
+    Route::post('/trainers/me', [TrainerController::class, 'me']);
     Route::post('trainer/logout', [TrainerController::class, 'logout']);
     Route::post('/trainer/hello', [TrainerController::class, 'sayHello']);
 
@@ -99,7 +99,7 @@ Route::post('/trainers/{id}',[TrainerController::class, 'update']);
 Route::get('/students',[StudentController::class, 'index']);
 Route::get('/students/{id}',[StudentController::class, 'show']);
 Route::delete('/students/{id}',[StudentController::class, 'destroy']);
-Route::post('/students',[StudentController::class, 'store']);
+//Route::post('/students',[StudentController::class, 'store']);
 Route::post('/students/{id}',[StudentController::class, 'update']);
 
 
@@ -132,12 +132,14 @@ Route::patch('/Contact_us/{id}', [ContactUsController::class, 'update']);
 
 //show Course content by Course id
 Route::get('/Course_content/show/{c_id}', [CourseController::class, 'showvideo']);
-//show courses
+//show courses by student id
 Route::get('/student/showCourses/{id}', [CourseController::class, 'showCourses']);
 //enrolle
 // Route::post('/student/storeCourse/{id}',[CourseController::class,'Enrollment']);
 Route::post('/student/storeCourse',[CourseController::class,'Enrollment']);
 
+//show student by Course id
+Route::get('/student/showStudent/{id}', [CourseController::class, 'showStudent']);
 
 
 Route::get('/Course_content', [CourseContentController::class, 'index']);

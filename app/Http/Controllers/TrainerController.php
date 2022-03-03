@@ -6,7 +6,9 @@ use App\Http\Traits\ApiResponseTrait;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class TrainerController extends Controller
 {
@@ -52,12 +54,12 @@ class TrainerController extends Controller
     }
 
     public function register(Request $request)
-    {
-        //
+    {   
         $validation = $this->validation($request);
         if($validation instanceof Response){
             return $validation;
         }
+
         $trainers = Trainer::create([
             'fname'=>$request->fname ,
             'lname'=>$request->lname ,
@@ -88,14 +90,11 @@ class TrainerController extends Controller
         $validation=$this->apiValidation($request , [
                 'fname' => 'required|min:3|max:10',
                 'lname' => 'required|min:3|max:10',
-                'gender' => 'required|',
                 'phone' => 'required|min:10',
-                'img' => 'required|image|mimes:jpeg,png',
-                'email' => 'required|email',
-                'password' => 'required|min:6|',
-                'facebook' => 'required',
-                'twitter' => 'required',
-                'linkedin' => 'required',
+                'img' => 'image|mimes:jpeg,png',
+                // 'facebook' => 'required',
+                // 'twitter' => 'required',
+                // 'linkedin' => 'required',
             ]);
         //$validation = $this->validation($request);
         if($validation instanceof Response){
@@ -109,6 +108,7 @@ class TrainerController extends Controller
 
 
         $name=$trainer->img;
+        Log::alert($name !== null);
         if ($request->hasFile('img'))
         {
             if($name !== null)
@@ -119,18 +119,18 @@ class TrainerController extends Controller
         $img=$request->file('img');             //bmsek el soura
         $ext=$img->getClientOriginalExtension();   //bgeb extention
         $name="train -".uniqid().".$ext";            // conncat ext +name elgded
-        $img->move(public_path("uploads/trainer"),$name);   //elmkan , $name elgded
+        $img->move(public_path("uploads/trainer/"),$name);   //elmkan , $name elgded
 
         }
-
+       
         $trainer->update([
             'fname'=>$request->fname ,
             'lname'=>$request->lname ,
-            'gender'=>$request->gender ,
+            // 'gender'=>$trainer->gender ,
             'phone'=>$request->phone ,
             'img'=>$name,
-            'email'=>$request->email ,
-            'password'=>Hash::make($request->password),
+            // 'email'=>$trainer->email ,
+            // 'password'=>Hash::make($trainer->password),
             'facebook'=>$request->facebook ,
             'twitter'=>$request->twitter ,
             'linkedin'=> $request->linkedin ,
@@ -159,16 +159,17 @@ class TrainerController extends Controller
         return $this->apiValidation($request , [
             'fname' => 'required|min:3|max:10',
             'lname' => 'required|min:3|max:10',
-            'gender' => 'required|',
+            'gender' => 'required',
             'phone' => 'required|unique:trainers',
             'email' => 'required|email|unique:trainers',
-            'password' => 'required|min:6|',
+            'password' => 'required|min:6'
 
         ]);
     }
 
     public function login(Request $request)
     {
+        // Log::alert($request);
         $validator = $this->apiValidation($request , [
             'email' => 'required|exists:trainers,email' ,
             'password' => 'required|string' ,
@@ -179,6 +180,7 @@ class TrainerController extends Controller
         }
 
         $credentials = request(['email', 'password']);
+        // dd($credentials);
         if (!$token = auth()->guard('triners')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
@@ -208,6 +210,8 @@ class TrainerController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'id'=>Auth::guard('triners')->user()->id,
+            'role'=>'isTrainer',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->guard('triners')->factory()->getTTL() * 60
