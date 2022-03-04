@@ -1,6 +1,8 @@
 <?php
 
 namespace Database\Seeders;
+
+use App\Models\Trainer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -18,20 +20,18 @@ class TrainerSeeder extends Seeder
 
 
         DB::table('trainers')->insert([
-            'fname' => 'ahmed',
-            'lname' => 'hamed',
-            'gender' => 'male',
-            'phone' => 1355654684,
-            'img' => 'ahmed.jpg',
-            'email' => 'ahmedd@gmail.com',
-            'password' => Hash::make('Ahmnaaaa22'),
-            'facebook' => 'facebook.com/ahmed1',
-            'twitter' => 'twitter.com/ahmed1',
-            'linkedin' => 'linkedin.com/ahmed1',
-
-
-
+            'fname' => 'maria',
+            'lname' => 'emil',
+            'gender' => 'female',
+            'phone' => 1355654685,
+            'email' => 'maria@gmail.com',
+            'password' => Hash::make('12345678'),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
-        //
+        
+        Trainer::factory()
+                ->count(10)
+                ->create();
     }
 }

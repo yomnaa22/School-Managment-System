@@ -16,16 +16,12 @@ class CourseSeeder extends Seeder
        
         DB::table('courses')->insert([
             'name' => 'css',
-            'img' => 'courseimg1.jpeg',
             'price' => 200,
             'duration' => 5,
             'desc'=>'css course',
-            'preq' =>'prequist',
+            'preq' =>'prerequisites',
             'trainer_id' => 1,
             'category_id' => 1,
-            
-           
-
         ]);
         
     }

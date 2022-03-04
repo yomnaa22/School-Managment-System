@@ -1,5 +1,7 @@
 <?php
 namespace Database\Seeders;
+
+use App\Models\Student;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -22,13 +24,17 @@ class StudentSeeder extends Seeder
             'fname' => 'yomna',
             'lname' => 'hamed',
             'gender' => 'female',
-            'phone' => 125154,
-            'img' => 'yomna.jpg',
-            'email' => 'ahmed@gmail.com',
+            'phone' => 125154356,
+            'email' => 'yomna@gmail.com',
             'password' => Hash::make('12345678'),
-
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
 
         ]);
+
+        Student::factory()
+                ->count(10)
+                ->create();
         //
     }
 }

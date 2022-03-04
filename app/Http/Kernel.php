@@ -54,6 +54,8 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
+        'studentAdmin' => \App\Http\Middleware\studentIstrainr::class,
+        'isAdminIstrainr' => \App\Http\Middleware\isAdminIstrainr::class,
         'checkTrainer' => \App\Http\Middleware\checkTrainer::class,
         'checkStudent' => \App\Http\Middleware\checkStudent::class,
         'isAdmin' => \App\Http\Middleware\isAdmin::class,

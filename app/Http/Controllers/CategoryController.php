@@ -6,8 +6,8 @@ use App\Http\Traits\ApiResponseTrait;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -20,6 +20,7 @@ class CategoryController extends Controller
         $Categorys = Category::with('courses')->get();
         return $this->apiResponse($Categorys);
     }
+
     public function show($id)
     {
         $Category = Category::with('courses')->find($id);
@@ -40,34 +41,74 @@ class CategoryController extends Controller
     }
 
 
+    // public function store(Request $request)
+    // {
+
+    //     $validation = $this->validation($request);
+    //     if($validation instanceof Response){
+    //         return $validation;
+    //     }
+
+    //     $img=$request->file('img');             //bmsek el soura
+    //     $ext=$img->getClientOriginalExtension();   //bgeb extention
+    //     $image="cate -".uniqid().".$ext";            // conncat ext +name elgded
+    //     $img->move(public_path("uploads/categores/"),$image);
+    //     $Categorys = Category::create([
+    //         'name'=>$request->name ,
+    //         'img' =>$image,
+    //     ]);
+    //     // if ($Categorys) {
+    //     //     return $this->createdResponse($Categorys);
+    //     // }
+
+    //     // $this->unKnowError();
+    //     if ($Categorys) {
+    //         // return $this->createdResponse($contact_us);
+    //         return response()->json($Categorys, 200);
+    //     }
+
+    // // $this->unKnowError();
+    //         return response()->json("Cannot send this message", 400);
+
+    //         }
+
+
     public function store(Request $request)
     {
 
         $validation = $this->validation($request);
-        if($validation instanceof Response){
+        if ($validation instanceof Response) {
             return $validation;
         }
-
-        $img=$request->file('img');             //bmsek el soura
-        $ext=$img->getClientOriginalExtension();   //bgeb extention
-        $image="cate -".uniqid().".$ext";            // conncat ext +name elgded
-        $img->move(public_path("uploads/categores/"),$image);
+        $name = $request->name;
+        $img = $request->file('img');             //bmsek el soura
+        $ext = $img->getClientOriginalExtension();   //bgeb extention
+        $image = "cate -" . uniqid() . ".$ext";            // conncat ext +name elgded
+        $img->move(public_path("uploads/categores/"), $image);
         $Categorys = Category::create([
-            'name'=>$request->name ,
-            'img' =>$image,
+            'name' => $name,
+            'img' => $image
         ]);
+        // if ($Categorys) {
+        //     return $this->createdResponse($Categorys);
+        // }
+
+        // $this->unKnowError();
         if ($Categorys) {
             return response()->json($Categorys, 200);
         }
 
-            return response()->json("Cannot send this message", 400);
-
+        // $this->unKnowError();
+        return response()->json("Cannot send this message", 400);
     }
 
-    public function update($id , Request $request){
+
+
+    public function update($id, Request $request)
+    {
 
         $validation = $this->validation($request);
-        if($validation instanceof Response){
+        if ($validation instanceof Response) {
             return $validation;
         }
 
@@ -75,25 +116,22 @@ class CategoryController extends Controller
         if (!$Category) {
             return $this->notFoundResponse();
         }
-        $name=$Category->img;
-        if ($request->hasFile('img'))
-        {
-            if($name !== null)
-            {
-                unlink(public_path('uploads/categores/'.$name));
+        $name = $Category->img;
+        if ($request->hasFile('img')) {
+            if ($name !== null) {
+                unlink(public_path('uploads/categores/' . $name));
             }
             //move
-        $img=$request->file('img');             //bmsek el soura
-        $ext=$img->getClientOriginalExtension();   //bgeb extention
-        $name="cate -".uniqid().".$ext";            // conncat ext +name elgded
-        $img->move(public_path("uploads/categores"),$name);   //elmkan , $name elgded
+            $img = $request->file('img');             //bmsek el soura
+            $ext = $img->getClientOriginalExtension();   //bgeb extention
+            $name = "cate -" . uniqid() . ".$ext";            // conncat ext +name elgded
+            $img->move(public_path("uploads/categores"), $name);   //elmkan , $name elgded
 
         }
 
-
         $Category->update([
-            'name'=>$request->name ,
-            'img' =>$name,
+            'name' => $request->name,
+            'img' => $name,
             // $request->all()
         ]);
 
@@ -103,14 +141,32 @@ class CategoryController extends Controller
         $this->unKnowError();
     }
 
-    public function validation($request){
-        return $this->apiValidation($request , [
-            'name' => 'required|min:3|max:191',
-            'img' => 'required|image|mimes:jpeg,png',
-        ]);
+    public function getCount()
+    {
+        $data = DB::table('categories')->select('id')->count('id');
+        if ($data == 0)
+            return response()->json($data, 200);
+        if ($data) {
+            return response()->json($data, 200);
+        }
+        return response()->json("Not Found", 404);
     }
 
+    // public function getCourses($id)
+    // {
+    //     $Category = Category::with('courses')->find($id);
+    //     if ($Category) {
+    //         return $this->apiResponse($Category);
+    //     }
+    //     return $this->notFoundResponse();
+    // }
 
 
-
+    public function validation($request)
+    {
+        return $this->apiValidation($request, [
+            'name' => 'required|min:3|max:10',
+            'img' => 'required|image|mimes:jpg,jpeg,png',
+        ]);
+    }
 }

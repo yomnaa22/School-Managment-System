@@ -9,6 +9,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CourseController extends Controller
 {
@@ -65,15 +66,12 @@ class CourseController extends Controller
     }
 
 
-
-
-
     public function update(Request $request, $id)
     {
         $course = Course::find($id);
         if ($course) {
 
-            if ($request->isMethod('put')) {
+            if ($request->isMethod('post')) {
                 $validation = $this->validation($request);
                 if ($validation instanceof Response) {
                     return $validation;
@@ -91,25 +89,25 @@ class CourseController extends Controller
                 $name = "course -" . uniqid() . ".$ext";            // conncat ext +name elgded
                 $img->move(public_path("uploads/courses"), $name);   //elmkan , $name elgded
 
+                // }
+
+
+                $course->update([
+                    'name' => $request->name,
+                    // 'img' => $name,
+                    'category_id' => $request->category_id,
+                    'trainer_id' => $request->trainer_id,
+                    'price' => $request->price,
+                    'duration' => $request->duration,
+                    'preq' => $request->preq,
+                    'desc' => $request->desc,
+                ]);
+                return response()->json($course, 200);
             }
-
-
-            $course->update([
-                'name' => $request->name,
-                'img' => $name,
-                'category_id' => $request->category_id,
-                'trainer_id' => $request->trainer_id,
-                'price' => $request->price,
-                'duration' => $request->duration,
-                'preq' => $request->preq,
-                'desc' => $request->desc,
-            ]);
-            return response()->json($course, 200);
+            // $this->unKnowError();
+            return response()->json("Record not found", 404);
         }
-        // $this->unKnowError();
-        return response()->json("Record not found", 404);
     }
-
     public function destroy($id)
     {
         $course = Course::find($id);
@@ -173,13 +171,37 @@ class CourseController extends Controller
         return response()->json("Not Found", 404);
     }
 
+    public function studentCount($id)
+    {
+
+        $data = DB::table('course_student')->select('student_id')->where('course_id', '=', $id)->count('student_id');
+
+        if ($data == 0)
+            return response()->json($data, 200);
+        if ($data) {
+            return response()->json($data, 200);
+        }
+        return response()->json("Not Found", 404);
+    }
+
+
+    public function getCount()
+    {
+        $data = DB::table('courses')->select('id')->count('id');
+        if ($data == 0)
+            return response()->json($data, 200);
+        if ($data) {
+            return response()->json($data, 200);
+        }
+        return response()->json("Not Found", 404);
+    }
 
 
     public function validation($request)
     {
         return $this->apiValidation($request, [
-            'name' => 'required|min:3|max:20',
-            'img' => 'required|image|mimes:jpeg,png',
+            'name' => 'required|min:3|max:30',
+            // 'img' => 'required|image|mimes:jpeg,png',
             'price' => 'required',
             'category_id' => 'required|exists:App\Models\Category,id',
             'trainer_id' => 'required|exists:App\Models\Trainer,id',
