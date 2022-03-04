@@ -18,6 +18,7 @@ class TestEnrollmentController extends Controller
             'url'=>url('/'),
             'thankyou' => 'you have 1 days to enroll'
         ];
+        
 
        // $student->notify(new TestEnrollment($enrollmentData));
        Notification::send($student,new TestEnrollment($enrollmentData));

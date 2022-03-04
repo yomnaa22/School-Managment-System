@@ -27,7 +27,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-    'stripekey' => env('STRIPE_KEY'),
+    'stripekey' => env('STRIPE_SECRET'),
 
     /*
     |--------------------------------------------------------------------------
@@ -57,6 +57,8 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
 
+
+    'stripekey'=>env('STRIPE_SECRET'),
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

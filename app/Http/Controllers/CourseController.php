@@ -9,6 +9,9 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use App\Mail\welcomemail;
+use Illuminate\Support\Facades\Mail;
+
 
 class CourseController extends Controller
 {
@@ -33,7 +36,7 @@ public function searchCourse(Request $request){
     public function index()
     {
         //
-        $Courses=Course::with('category','trainer')->get();
+        $Courses = Course::with('category', 'trainer')->get();
         // $Courses = Course::get();
         return response()->json($Courses, 200);
     }
@@ -72,7 +75,7 @@ public function searchCourse(Request $request){
 
     public function show($id)
     {
-        $course = Course::with(['category','trainer'])->find($id);
+        $course = Course::with(['category', 'trainer'])->find($id);
         if ($course) {
 
             return response()->json($course, 200);
@@ -121,7 +124,6 @@ public function searchCourse(Request $request){
                 'desc' => $request->desc,
             ]);
             return response()->json($course, 200);
-
         }
         // $this->unKnowError();
         return response()->json("Record not found", 404);
@@ -143,55 +145,69 @@ public function searchCourse(Request $request){
         return response()->json(null, 204);
         // }
     }
-    public function showvideo($e_id){
+    public function showvideo($e_id)
+    {
 
 
-        $course=DB::select("select * from course__contents where course_id = $e_id");
+        $course = DB::select("select * from course__contents where course_id = $e_id");
         if ($course) {
 
             return response()->json($course, 200);
         }
         return response()->json("Not Found", 404);
-
     }
 
+
+
+
     public function Enrollment(Request $request)
-    { // log::alert($request);
-        
-       $enrolle= DB::table('course_student')->insert([
+    {
+      $enrolle = DB::table('course_student')->insert([
             'student_id' => $request->student_id,
             'course_id' => $request->course_id
         ]);
-
         if ($enrolle) {
-            return response()->json($enrolle, 200);
+ // $course= DB::select("select name from courses where id = $request->course_id");
+      $details=[
+        'title' => 'Congratulations',
+        'body' => "You have enrolled successfully to ",
+          ];
+    
+      $email= DB::select("select email from students where id = $request->student_id");
+
+      Mail::to($email)->send(new welcomemail($details));
+
+      return response()->json($enrolle, 200);
+
         }
 
-        return response()->json("Cannot add this course", 400);
+     return response()->json("Cannot add this course", 400);
     }
 
 
-     public function showCourses($id)
-     {
-        $data= Student::with(['Courses'])->find($id);
+
+
+
+
+    public function showCourses($id)
+    {
+        $data = Student::with(['Courses'])->find($id);
         if ($data) {
 
             return response()->json($data, 200);
         }
         return response()->json("Not Found", 404);
+    }
 
-     }
-
-     public function showStudent($id)
-     {
-        $data= Course::with(['students'])->find($id);
+    public function showStudent($id)
+    {
+        $data = Course::with(['students'])->find($id);
         if ($data) {
 
             return response()->json($data, 200);
         }
         return response()->json("Not Found", 404);
-
-     }
+    }
 
 
 
