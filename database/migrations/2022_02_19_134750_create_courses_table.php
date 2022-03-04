@@ -17,7 +17,7 @@ class CreateCoursesTable extends Migration
             $table->id();
 
             $table->string('name');
-            $table->string('img');
+            $table->string('img')->nullable();
             $table->integer('price');
             $table->integer('duration');
             $table->string('preq');

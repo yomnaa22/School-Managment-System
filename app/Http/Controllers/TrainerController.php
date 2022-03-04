@@ -7,6 +7,7 @@ use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -108,7 +109,7 @@ class TrainerController extends Controller
 
 
         $name=$trainer->img;
-        Log::alert($name !== null);
+        // Log::alert($name !== null);
         if ($request->hasFile('img'))
         {
             if($name !== null)
@@ -154,6 +155,16 @@ class TrainerController extends Controller
         return $this->notFoundResponse();
     }
 
+    public function getCount()
+    {
+        $data = DB::table('trainers')->select('id')->count('id');
+        if ($data == 0)
+            return response()->json($data, 200);
+        if ($data) {
+            return response()->json($data, 200);
+        }
+        return response()->json("Not Found", 404);
+    }
 
     public function validation($request){
         return $this->apiValidation($request , [
