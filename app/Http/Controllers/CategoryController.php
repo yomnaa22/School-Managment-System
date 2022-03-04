@@ -30,12 +30,6 @@ class CategoryController extends Controller
         return $this->notFoundResponse();
     }
 
-   
-
-
-
-
-
 
     public function delete($id)
     {
@@ -115,10 +109,18 @@ class CategoryController extends Controller
     public function update($id, Request $request)
     {
 
-        $validation = $this->validation($request);
+        $validation = $this->apiValidation($request, [
+            'name' => 'required|min:3|max:30',
+            'img' => 'image|mimes:jpg,jpeg,png',
+        ]);
         if ($validation instanceof Response) {
             return $validation;
         }
+
+        // $validation = $this->validation($request);
+        // if ($validation instanceof Response) {
+        //     return $validation;
+        // }
 
         $Category = Category::find($id);
         if (!$Category) {

@@ -19,18 +19,16 @@ class CourseController extends Controller
     use ApiResponseTrait;
 
 
-public function searchCourse(Request $request){
-    $query= Course::query();
-    $data = $request->input('search_course');
-    if($data)
+    public function searchCourse(Request $request)
     {
-        $query->whereRaw("name LIKE '%" .$data. "%'");
+        $query = Course::query();
+        $data = $request->input('search_course');
+        if ($data) {
+            $query->whereRaw("name LIKE '%" . $data . "%'");
+        }
+        //$query->get();
+        return response()->json($query->get());
     }
-     //$query->get();
-     return response()-> json($query->get());
-
-  
-}
 
 
 
@@ -49,27 +47,27 @@ public function searchCourse(Request $request){
         // if ($validation instanceof Response) {
         //     return $validation;
         // }
-     
-            $img = $request->file('img');
-            $ext = $img->getClientOriginalExtension();
-            $image = "course -" . uniqid() . ".$ext";
-            $img->move(public_path("uploads/courses/"), $image);
 
-            $course = Course::create([
-                'name' => $request->name,
-                'img' => $image,
-                'category_id' => $request->category_id,
-                'trainer_id' => $request->trainer_id,
-                'price' => $request->price,
-                'duration' => $request->duration,
-                'preq' => $request->preq,
-                'desc' => $request->desc,
-            ]);
+        $img = $request->file('img');
+        $ext = $img->getClientOriginalExtension();
+        $image = "course -" . uniqid() . ".$ext";
+        $img->move(public_path("uploads/courses/"), $image);
 
-            if ($course) {
-                return response()->json($course, 200);
-            }
-        
+        $course = Course::create([
+            'name' => $request->name,
+            'img' => $image,
+            'category_id' => $request->category_id,
+            'trainer_id' => $request->trainer_id,
+            'price' => $request->price,
+            'duration' => $request->duration,
+            'preq' => $request->preq,
+            'desc' => $request->desc,
+        ]);
+
+        if ($course) {
+            return response()->json($course, 200);
+        }
+
         return response()->json("Cannot add this course", 400);
     }
 
@@ -91,10 +89,25 @@ public function searchCourse(Request $request){
         if ($course) {
 
             if ($request->isMethod('post')) {
-                $validation = $this->validation($request);
+
+                $validation = $this->apiValidation($request, [
+                    'name' => 'required|min:3|max:30',
+                    'img' => 'image|mimes:jpeg,png',
+                    'price' => 'required',
+                    'category_id' => 'exists:categories,id',
+                    'trainer_id' => 'required|exists:App\Models\Trainer,id',
+                    'duration' => 'required',
+                    // 'preq' => '',
+                    'desc' => 'required|min:3',
+                ]);
                 if ($validation instanceof Response) {
                     return $validation;
                 }
+
+                // $validation = $this->validation($request);
+                // if ($validation instanceof Response) {
+                //     return $validation;
+                // }
             }
 
             $name = $course->img;
@@ -107,25 +120,29 @@ public function searchCourse(Request $request){
                 $ext = $img->getClientOriginalExtension();   //bgeb extention
                 $name = "course -" . uniqid() . ".$ext";            // conncat ext +name elgded
                 $img->move(public_path("uploads/courses"), $name);   //elmkan , $name elgded
-
-                // }
-
-
-                $course->update([
-                    'name' => $request->name,
-                    // 'img' => $name,
-                    'category_id' => $request->category_id,
-                    'trainer_id' => $request->trainer_id,
-                    'price' => $request->price,
-                    'duration' => $request->duration,
-                    'preq' => $request->preq,
-                    'desc' => $request->desc,
-                ]);
-                return response()->json($course, 200);
             }
-            // $this->unKnowError();
-            return response()->json("Record not found", 404);
+            // }
+            Log::alert($request->category_id);
+
+            if ($request->category_id == 0)
+                $category_id = $course->category_id;
+            else
+                $category_id = $request->category_id;
+
+            $course->update([
+                'name' => $request->name,
+                'img' => $name,
+                'category_id' => $category_id,
+                'trainer_id' => $request->trainer_id,
+                'price' => $request->price,
+                'duration' => $request->duration,
+                'preq' => $request->preq,
+                'desc' => $request->desc,
+            ]);
+            return response()->json($course, 200);
         }
+        // $this->unKnowError();
+        return response()->json("Record not found", 404);
     }
     public function destroy($id)
     {
@@ -160,26 +177,25 @@ public function searchCourse(Request $request){
 
     public function Enrollment(Request $request)
     {
-      $enrolle = DB::table('course_student')->insert([
+        $enrolle = DB::table('course_student')->insert([
             'student_id' => $request->student_id,
             'course_id' => $request->course_id
         ]);
         if ($enrolle) {
- // $course= DB::select("select name from courses where id = $request->course_id");
-      $details=[
-        'title' => 'Congratulations',
-        'body' => "You have enrolled successfully to ",
-          ];
-    
-      $email= DB::select("select email from students where id = $request->student_id");
+            // $course= DB::select("select name from courses where id = $request->course_id");
+            $details = [
+                'title' => 'Congratulations',
+                'body' => "You have enrolled successfully to ",
+            ];
 
-      Mail::to($email)->send(new welcomemail($details));
+            $email = DB::select("select email from students where id = $request->student_id");
 
-      return response()->json($enrolle, 200);
+            Mail::to($email)->send(new welcomemail($details));
 
+            return response()->json($enrolle, 200);
         }
 
-     return response()->json("Cannot add this course", 400);
+        return response()->json("Cannot add this course", 400);
     }
 
 

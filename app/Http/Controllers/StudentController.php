@@ -85,8 +85,8 @@ class StudentController extends Controller
     public function update(Request $request,$id)
     {
         $validation=$this->apiValidation($request , [
-                'fname' => 'required|min:3|max:10',
-                'lname' => 'required|min:3|max:10',
+                'fname' => 'required|min:3|max:20',
+                'lname' => 'required|min:3|max:20',
                 // 'gender' => 'required|',
                 'phone' => 'required|min:10',
                 'img' => 'image|mimes:jpeg,png',
@@ -160,8 +160,8 @@ class StudentController extends Controller
 
     public function validation($request){
         return $this->apiValidation($request , [
-            'fname' => 'required|min:3|max:10',
-            'lname' => 'required|min:3|max:10',
+            'fname' => 'required|min:3|max:20',
+            'lname' => 'required|min:3|max:20',
             'gender' => 'required|',
             'phone' => 'required|unique:students',
             'email' => 'required|email|unique:students',
