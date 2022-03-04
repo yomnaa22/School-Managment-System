@@ -165,7 +165,7 @@ class CategoryController extends Controller
     public function validation($request)
     {
         return $this->apiValidation($request, [
-            'name' => 'required|min:3|max:10',
+            'name' => 'required|min:3|max:30',
             'img' => 'required|image|mimes:jpg,jpeg,png',
         ]);
     }

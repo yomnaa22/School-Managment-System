@@ -16,10 +16,11 @@ class CreateCourseStudentTable extends Migration
         Schema::create('course_student', function (Blueprint $table) {
             // $table->id();
 
-            $table->foreignId('course_id')->constrained()->onUpdate('cascade')->onDelete('cascade')->primary();
+            $table->foreignId('course_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
 
-            $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade')->primary();
+            $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
 
+            $table->primary(['course_id','student_id']);
 
             $table->timestamps();
         });

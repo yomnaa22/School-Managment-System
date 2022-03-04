@@ -10,6 +10,7 @@ use App\Http\Controllers\CourseContentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\payment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\PaymentController;
@@ -162,3 +163,6 @@ Route::get('/feedbacks/{id}', [FeedbackController::class, 'show']);
 Route::post('/feedbacks', [FeedbackController::class, 'store']);
 Route::put('/feedbacks/{id}', [FeedbackController::class, 'update']);
 Route::patch('/feedbacks/{id}', [FeedbackController::class, 'update']);
+
+
+Route::get('/send-email',[MailController::class,'sendEmail']);
