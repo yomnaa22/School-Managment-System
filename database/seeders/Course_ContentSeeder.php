@@ -18,7 +18,7 @@ class Course_ContentSeeder extends Seeder
         DB::table('course__contents')->insert([
             'name' => 'css',
             'content' => 'this is course contnt',
-            'course_id' => 1
+            'course_id' => 2
            
 
         ]);

@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,6 +36,8 @@ Route::post('store-intent', [PaymentController::class,'storeStripePayment']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
 
 Route::group([
 
@@ -127,6 +130,7 @@ Route::delete('/courses/{id}', [CourseController::class, 'destroy']);
 Route::post('/courses', [CourseController::class, 'store']);
 Route::post('/courses/{id}', [CourseController::class, 'update']);
 Route::patch('/courses/{id}', [CourseController::class, 'update']);
+Route::get('/course/search_course', [CourseController::class, 'searchCourse']);
 
 
 Route::get('/Contact_us', [ContactUsController::class, 'index']);
@@ -165,4 +169,3 @@ Route::put('/feedbacks/{id}', [FeedbackController::class, 'update']);
 Route::patch('/feedbacks/{id}', [FeedbackController::class, 'update']);
 
 
-Route::get('/send-email',[MailController::class,'sendEmail']);

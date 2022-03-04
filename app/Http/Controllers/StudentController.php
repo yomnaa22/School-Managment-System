@@ -24,15 +24,12 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         //
-        $validation = $this->validation($request);
-        if($validation instanceof Response){
-            return $validation;
-        }
+       
 
-        $img=$request->file('img');             //bmsek el soura
-        $ext=$img->getClientOriginalExtension();   //bgeb extention
-        $image="stu -".uniqid().".$ext";            // conncat ext +name elgded
-        $img->move(public_path("uploads/students/"),$image);
+        // $img=$request->file('img');             //bmsek el soura
+        // $ext=$img->getClientOriginalExtension();   //bgeb extention
+        // $image="stu -".uniqid().".$ext";            // conncat ext +name elgded
+        // $img->move(public_path("uploads/students/"),$image);
 
 
         $students = Student::create([
@@ -40,7 +37,7 @@ class StudentController extends Controller
             'lname'=>$request->lname ,
             'gender'=>$request->gender ,
             'phone'=>$request->phone ,
-            'img'=>$image,
+            // 'img'=>$image,
             'email'=>$request->email ,
             'password'=>Hash::make($request->password),
         ]);
@@ -216,7 +213,10 @@ class StudentController extends Controller
             'role'=>'isStudent',
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->guard('students')->factory()->getTTL() * 60
+            'expires_in' => auth()->guard('students')->factory()->getTTL() * 60,
+            'id'=>Auth::guard('students')->user()->id,
+            'role'=>'isStudent',
+
         ]);
     }
 

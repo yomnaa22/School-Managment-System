@@ -30,6 +30,13 @@ class CategoryController extends Controller
         return $this->notFoundResponse();
     }
 
+   
+
+
+
+
+
+
     public function delete($id)
     {
         $Category = Category::find($id);
@@ -95,6 +102,7 @@ class CategoryController extends Controller
 
         // $this->unKnowError();
         if ($Categorys) {
+            // return $this->createdResponse($contact_us);
             return response()->json($Categorys, 200);
         }
 

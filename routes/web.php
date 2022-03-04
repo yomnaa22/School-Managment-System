@@ -1,6 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+
+use App\Mail\welcomemail;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\MailController;
+
+
+use App\Http\Controllers\TestEnrollmentController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +26,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Route::get('/email', function () {
+//     Mail::to('yuumnaa59@gmail.com')->send(new welcomemail());
+//     return new welcomemail();
+// });
+
+//Route::get('/send-email',[MailController::class,'sendEmail']);
+Route::get('/send-testenrollment',[TestEnrollmentController::class, 'sendTestNotification']);
+
+//Route::get('/courses/search_course', [CourseController::class, 'searchCourse']);

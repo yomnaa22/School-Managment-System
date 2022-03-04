@@ -21,15 +21,15 @@ class StudentSeeder extends Seeder
 
     {
         DB::table('students')->insert([
-            'fname' => 'yomna',
+            'fname' => 'mahmoud',
             'lname' => 'hamed',
             'gender' => 'female',
-            'phone' => 125154356,
-            'email' => 'yomna@gmail.com',
-            'password' => Hash::make('12345678'),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-
+            'phone' => 19977234654,
+         
+            'email' => 'mahmoudawd54@gmail.com',
+            'password' => Hash::make('123456789'),
+    
+           
         ]);
 
         Student::factory()

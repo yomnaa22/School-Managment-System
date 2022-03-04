@@ -14,7 +14,6 @@ class CreatePaymentsTable extends Migration
     public function up()
     {
         Schema::create('payments', function (Blueprint $table) {
-            
             $table->bigIncrements('id');
             $table->unsignedBigInteger('item_id');
             $table->string('intent_id', 100)->nullable();
@@ -25,7 +24,6 @@ class CreatePaymentsTable extends Migration
             $table->char('buyer_email', 100);
             $table->longText('item_description', 500);
             $table->boolean('payment_completed')->default(false);
-
             $table->timestamps();
         });
     }

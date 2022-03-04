@@ -9,11 +9,30 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use App\Mail\welcomemail;
+use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Support\Facades\Log;
 
 class CourseController extends Controller
 {
     use ApiResponseTrait;
+
+
+public function searchCourse(Request $request){
+    $query= Course::query();
+    $data = $request->input('search_course');
+    if($data)
+    {
+        $query->whereRaw("name LIKE '%" .$data. "%'");
+    }
+     //$query->get();
+     return response()-> json($query->get());
+
+  
+}
+
+
 
     public function index()
     {
@@ -27,10 +46,10 @@ class CourseController extends Controller
     {
 
         $validation = $this->validation($request);
-        if ($validation instanceof Response) {
-            return $validation;
-        }
-        if (is_null($validation)) {
+        // if ($validation instanceof Response) {
+        //     return $validation;
+        // }
+     
             $img = $request->file('img');
             $ext = $img->getClientOriginalExtension();
             $image = "course -" . uniqid() . ".$ext";
@@ -50,7 +69,7 @@ class CourseController extends Controller
             if ($course) {
                 return response()->json($course, 200);
             }
-        }
+        
         return response()->json("Cannot add this course", 400);
     }
 
@@ -136,19 +155,36 @@ class CourseController extends Controller
         return response()->json("Not Found", 404);
     }
 
+
+
+
     public function Enrollment(Request $request)
     {
-        $enrolle = DB::table('course_student')->insert([
+      $enrolle = DB::table('course_student')->insert([
             'student_id' => $request->student_id,
             'course_id' => $request->course_id
         ]);
-
         if ($enrolle) {
-            return response()->json($enrolle, 200);
+ // $course= DB::select("select name from courses where id = $request->course_id");
+      $details=[
+        'title' => 'Congratulations',
+        'body' => "You have enrolled successfully to ",
+          ];
+    
+      $email= DB::select("select email from students where id = $request->student_id");
+
+      Mail::to($email)->send(new welcomemail($details));
+
+      return response()->json($enrolle, 200);
+
         }
 
-        return response()->json("Cannot add this course", 400);
+     return response()->json("Cannot add this course", 400);
     }
+
+
+
+
 
 
     public function showCourses($id)

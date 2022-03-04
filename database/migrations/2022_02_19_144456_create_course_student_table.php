@@ -14,14 +14,13 @@ class CreateCourseStudentTable extends Migration
     public function up()
     {
         Schema::create('course_student', function (Blueprint $table) {
-            // $table->id();
+           
 
             $table->foreignId('course_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
 
             $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
 
             $table->primary(['course_id','student_id']);
-
             $table->timestamps();
         });
     }
