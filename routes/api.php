@@ -83,3 +83,5 @@ Route::get('/student/studentCount/{id}', [CourseController::class, 'studentCount
 Route::get('/feedbacks', [FeedbackController::class, 'index']);
 //Route::get('/feedbacks/{id}', [FeedbackController::class, 'show']);
 // Route::delete('/feedbacks/{id}',[FeedbackController::class, 'destroy']);
+Route::get('/student/courses/{id}',[StudentController::class,'getCoursesByStudentId']);
+Route::get('/trainer/courses/{id}',[TrainerController::class,'getCoursesByTrainerId']);
