@@ -51,6 +51,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
+
         auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
@@ -76,6 +77,7 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'name'=>Auth::guard('api')->user()->name,
             'id'=>Auth::guard('api')->user()->id,
             'role'=>'isAdmin',
             'access_token' => $token,

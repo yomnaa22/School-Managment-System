@@ -55,7 +55,7 @@ class TrainerController extends Controller
     }
 
     public function register(Request $request)
-    {   
+    {
         $validation = $this->validation($request);
         if($validation instanceof Response){
             return $validation;
@@ -123,7 +123,7 @@ class TrainerController extends Controller
         $img->move(public_path("uploads/trainer/"),$name);   //elmkan , $name elgded
 
         }
-       
+
         $trainer->update([
             'fname'=>$request->fname ,
             'lname'=>$request->lname ,
@@ -221,6 +221,7 @@ class TrainerController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'name'=>Auth::guard('triners')->user()->fname,
             'id'=>Auth::guard('triners')->user()->id,
             'role'=>'isTrainer',
             'access_token' => $token,
