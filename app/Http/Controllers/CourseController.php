@@ -179,7 +179,7 @@ class CourseController extends Controller
     {
         $enrolle = DB::table('course_student')->insert([
             'student_id' => $request->student_id,
-            'course_id' => $request->course_id
+            'course_id' => $request->course_id,
         ]);
         if ($enrolle) {
             // $course= DB::select("select name from courses where id = $request->course_id");
@@ -236,6 +236,20 @@ class CourseController extends Controller
         return response()->json("Not Found", 404);
     }
 
+    
+     public function course_student_enroll(Request $request){
+
+        $course_id=$request->course_id;
+        $student_id=$request->student_id;
+
+        $status=DB::select("select * from course_student where course_id = $course_id and student_id = $student_id");
+        if ($status) {
+            return response()->json($status, 200);
+        }
+        else{
+        return response()->json("Not Found", 404);
+        }
+     }
 
     public function getCount()
     {

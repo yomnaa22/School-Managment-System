@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\chatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,8 +29,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::post('payment-intent',[PaymentController::class,'CreatePayIntent']);
-// Route::post('store-intent', [PaymentController::class,'storeStripePayment']);
+Route::post('messages', [chatController::class, 'message']);
+
+
 Route::post('payment-intent', [PaymentController::class,'CreatePayIntent']);
 Route::post('store-intent', [PaymentController::class,'storeStripePayment']);
 
@@ -128,7 +130,14 @@ Route::get('/exams/questions/{e_id}',[ExamController::class, 'getallExam']);
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/{id}', [CourseController::class, 'show']);
 Route::delete('/courses/{id}', [CourseController::class, 'destroy']);
-Route::post('/courses', [CourseController::class, 'store']);
+// Route::post('/courses', [CourseController::class, 'store'])->middleware(['isAdmin' || 'checkTrainer']);
+Route::group(['middleware' => ['isAdmin' , 'checkTrainer']], function() {
+    // uses 'auth' middleware plus all middleware from $middlewareGroups['web']
+        Route::post('/courses', [CourseController::class, 'store']);
+
+});
+
+
 Route::post('/courses/{id}', [CourseController::class, 'update']);
 // Route::patch('/courses/{id}', [CourseController::class, 'update']);
 Route::get('/course/search_course', [CourseController::class, 'searchCourse']);
@@ -170,3 +179,4 @@ Route::put('/feedbacks/{id}', [FeedbackController::class, 'update']);
 Route::patch('/feedbacks/{id}', [FeedbackController::class, 'update']);
 
 
+Route::post('/studentcourseenroll', [CourseController::class, 'course_student_enroll']);
