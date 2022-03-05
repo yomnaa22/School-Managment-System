@@ -23,7 +23,8 @@ class CreateQuestionsTable extends Migration
             $table->string('choice_4');
             $table->string('answer');
             $table->integer('score');
-
+            $table->foreignId('exam_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            
             $table->timestamps();
         });
     }

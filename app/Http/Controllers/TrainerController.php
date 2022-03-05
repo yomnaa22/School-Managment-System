@@ -199,6 +199,12 @@ class TrainerController extends Controller
 
     }
 
+    public function getCoursesByTrainerId($id){
+        $courses = Trainer::with('courses')->find($id);
+        if ($courses)
+            return response()->json($courses, 200);
+        else return response()->json("No courses for this trainer");
+    }
 
     public function me()
     {
@@ -221,13 +227,14 @@ class TrainerController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            // 'name'=>(Auth::guard('triners')->user()->fname+" "+Auth::guard('triners')->user()->lname),
             'name'=>Auth::guard('triners')->user()->fname,
             'id'=>Auth::guard('triners')->user()->id,
             'role'=>'isTrainer',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->guard('triners')->factory()->getTTL() * 60
-        ]);
+        ],200);
     }
 
     public function sayHello(){
