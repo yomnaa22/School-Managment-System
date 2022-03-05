@@ -55,7 +55,7 @@ class TrainerController extends Controller
     }
 
     public function register(Request $request)
-    {   
+    {
         $validation = $this->validation($request);
         if($validation instanceof Response){
             return $validation;
@@ -89,8 +89,8 @@ class TrainerController extends Controller
     public function update(Request $request,$id)
     {
         $validation=$this->apiValidation($request , [
-                'fname' => 'required|min:3|max:10',
-                'lname' => 'required|min:3|max:10',
+                'fname' => 'required|min:3|max:20',
+                'lname' => 'required|min:3|max:20',
                 'phone' => 'required|min:10',
                 'img' => 'image|mimes:jpeg,png',
                 // 'facebook' => 'required',
@@ -123,7 +123,7 @@ class TrainerController extends Controller
         $img->move(public_path("uploads/trainer/"),$name);   //elmkan , $name elgded
 
         }
-       
+
         $trainer->update([
             'fname'=>$request->fname ,
             'lname'=>$request->lname ,
@@ -168,8 +168,8 @@ class TrainerController extends Controller
 
     public function validation($request){
         return $this->apiValidation($request , [
-            'fname' => 'required|min:3|max:10',
-            'lname' => 'required|min:3|max:10',
+            'fname' => 'required|min:3|max:20',
+            'lname' => 'required|min:3|max:20',
             'gender' => 'required',
             'phone' => 'required|unique:trainers',
             'email' => 'required|email|unique:trainers',
@@ -209,7 +209,7 @@ class TrainerController extends Controller
     public function logout()
     {
         auth()->guard('triners')->logout();
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json('Successfully logged out');
     }
 
 
@@ -221,6 +221,7 @@ class TrainerController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'name'=>Auth::guard('triners')->user()->fname,
             'id'=>Auth::guard('triners')->user()->id,
             'role'=>'isTrainer',
             'access_token' => $token,

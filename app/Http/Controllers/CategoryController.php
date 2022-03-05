@@ -30,12 +30,19 @@ class CategoryController extends Controller
         return $this->notFoundResponse();
     }
 
-   
-
-
-
-
-
+    public function showCategoryCourses($id)
+    {
+        $courses = DB::table('categories')
+            ->join('courses', 'categories.id', '=', 'courses.category_id')
+            ->where('categories.id', '=', $id)
+            ->join('trainers', 'trainers.id', '=', 'courses.trainer_id')
+            ->select('categories.name as c_name', 'courses.*', 'trainers.*', 'courses.img as c_img')
+            ->get();
+        if ($courses) {
+            return response()->json($courses, 200);
+        }
+        return response()->json("No courses found in this category", 404);
+    }
 
     public function delete($id)
     {
@@ -115,10 +122,18 @@ class CategoryController extends Controller
     public function update($id, Request $request)
     {
 
-        $validation = $this->validation($request);
+        $validation = $this->apiValidation($request, [
+            'name' => 'required|min:3|max:30',
+            'img' => 'image|mimes:jpg,jpeg,png',
+        ]);
         if ($validation instanceof Response) {
             return $validation;
         }
+
+        // $validation = $this->validation($request);
+        // if ($validation instanceof Response) {
+        //     return $validation;
+        // }
 
         $Category = Category::find($id);
         if (!$Category) {
@@ -173,7 +188,7 @@ class CategoryController extends Controller
     public function validation($request)
     {
         return $this->apiValidation($request, [
-            'name' => 'required|min:3|max:10',
+            'name' => 'required|min:3|max:30',
             'img' => 'required|image|mimes:jpg,jpeg,png',
         ]);
     }
