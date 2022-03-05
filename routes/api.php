@@ -36,6 +36,10 @@ Route::middleware('checkStudent:students')->group(function () {
 
 });
 
+
+Route::post('payment-intent', [PaymentController::class,'CreatePayIntent']);
+Route::post('store-intent', [PaymentController::class,'storeStripePayment']);
+
 //register trainer
 Route::post('/trainers/register', [TrainerController::class, 'register']);
 //login trainer

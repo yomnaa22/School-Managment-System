@@ -212,6 +212,7 @@ class StudentController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'name'=>Auth::guard('students')->user()->fname,
             'id'=>Auth::guard('students')->user()->id,
             'role'=>'isStudent',
             'access_token' => $token,

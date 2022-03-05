@@ -29,11 +29,11 @@ Route::get('/Course_content/show/{c_id}', [CourseController::class, 'showvideo']
 Route::get('/questions',[QuestionController::class, 'index']);
 Route::get('/questions/{id}',[QuestionController::class, 'show']);
 
-Route::post('payment-intent', [PaymentController::class,'CreatePayIntent']);
-Route::post('store-intent', [PaymentController::class,'storeStripePayment']);
+
 
 
 Route::get('/students',[StudentController::class, 'index']);
+
 Route::get('/students/{id}',[StudentController::class, 'show']);
 
 
