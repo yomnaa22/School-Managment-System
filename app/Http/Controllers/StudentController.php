@@ -197,7 +197,7 @@ class StudentController extends Controller
     public function logout()
     {
         auth()->guard('students')->logout();
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json('Successfully logged out');
     }
 
 

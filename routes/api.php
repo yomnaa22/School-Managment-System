@@ -68,8 +68,8 @@ Route::post('/trainers/login', [TrainerController::class, 'login']);
 Route::middleware('checkTrainer:triners')->group(function () {
 
     Route::post('/trainers/me', [TrainerController::class, 'me']);
-    Route::post('trainer/logout', [TrainerController::class, 'logout']);
-    Route::post('/trainer/hello', [TrainerController::class, 'sayHello']);
+    Route::post('/trainers/logout', [TrainerController::class, 'logout']);
+    Route::post('/trainers/hello', [TrainerController::class, 'sayHello']);
 
 });
 
@@ -86,6 +86,7 @@ Route::get('/trainers/count',[TrainerController::class,'getCount']);
 
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{id}', [CategoryController::class, 'show']);
+Route::get('/categories/courses/{id}', [CategoryController::class, 'showCategoryCourses']);
 Route::delete('/categories/{id}', [CategoryController::class, 'delete']);
 Route::post('/categories', [CategoryController::class, 'store']);
 Route::post('/categories/{id}', [CategoryController::class, 'update']);

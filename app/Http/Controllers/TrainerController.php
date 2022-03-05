@@ -209,7 +209,7 @@ class TrainerController extends Controller
     public function logout()
     {
         auth()->guard('triners')->logout();
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json('Successfully logged out');
     }
 
 
