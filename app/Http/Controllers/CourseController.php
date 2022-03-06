@@ -96,7 +96,7 @@ class CourseController extends Controller
 
             $course->update([
                 'name' => $request->name,
-                // 'img' => $name,
+                'img' => $name,
                 'category_id' => $request->category_id,
                 'trainer_id' => $request->trainer_id,
                 'price' => $request->price,
@@ -107,10 +107,13 @@ class CourseController extends Controller
             return response()->json($course, 200);
 
         }
-        // $this->unKnowError();
         return response()->json("Record not found", 404);
     }
     }
+
+
+
+
     public function destroy($id)
     {
         $course = Course::find($id);

@@ -122,7 +122,7 @@ Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/{id}', [CourseController::class, 'show']);
 Route::delete('/courses/{id}', [CourseController::class, 'destroy']);
 // Route::post('/courses', [CourseController::class, 'store'])->middleware(['isAdmin' || 'checkTrainer']);
-Route::group(['middleware' => ['isAdmin' , 'checkTrainer']], function() {
+Route::group(['middleware' => ['isAdmin']], function() {
     // uses 'auth' middleware plus all middleware from $middlewareGroups['web']
         Route::post('/courses', [CourseController::class, 'store']);
 
