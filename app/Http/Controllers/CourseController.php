@@ -44,9 +44,9 @@ class CourseController extends Controller
     {
 
         $validation = $this->validation($request);
-        // if ($validation instanceof Response) {
-        //     return $validation;
-        // }
+        if ($validation instanceof Response) {
+            return $validation;
+        }
 
         $img = $request->file('img');
         $ext = $img->getClientOriginalExtension();

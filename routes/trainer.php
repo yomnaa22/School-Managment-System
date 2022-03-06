@@ -27,6 +27,7 @@ Route::patch('/courses/{id}', [CourseController::class, 'update']);
 Route::post('/Course_content', [CourseContentController::class, 'store']);
 Route::put('/Course_content/{id}', [CourseContentController::class, 'update']);
 Route::patch('/Course_content/{id}', [CourseContentController::class, 'update']);
+Route::delete('/Course_content/{id}', [CourseContentController::class, 'destroy']);
 Route::post('/exams',[ExamController::class, 'store']);
 Route::delete('/exams/{id}',[ExamController::class, 'destroy']);
 Route::post('/exams/{id}',[ExamController::class, 'update']);

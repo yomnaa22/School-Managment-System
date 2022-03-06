@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
     Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
     Route::post('me', 'App\Http\Controllers\AuthController@me');
 
+    Route::get('/admins', [AuthController::class,'index']);
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::post('/categories/{id}',[CategoryController::class, 'update']);
     Route::delete('/categories/{id}', [CategoryController::class, 'delete']);
@@ -35,7 +36,7 @@ use Illuminate\Support\Facades\Route;
 
     Route::delete('/courses/{id}', [CourseController::class, 'destroy']);
 
-    Route::delete('/Course_content/{id}', [CourseContentController::class, 'destroy']);
+    
     // Route::put('/feedbacks/{id}', [FeedbackController::class, 'update']);
     // Route::patch('/feedbacks/{id}', [FeedbackController::class, 'update']);
 
