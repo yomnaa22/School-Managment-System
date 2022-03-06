@@ -15,7 +15,7 @@ class questionSeeder extends Seeder
     public function run()
 
     {
-    
+
 
     DB::table('questions')->insert([
         'header' => 'question1',
@@ -25,9 +25,10 @@ class questionSeeder extends Seeder
         'choice_4' => 'answer1',
         'answer' => 'answer1',
         'score' => 20,
-       
+        'exam_id'=>1,
 
-       
+
+
     ]);
         //
     }

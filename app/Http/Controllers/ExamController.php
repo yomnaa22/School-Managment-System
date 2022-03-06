@@ -20,39 +20,8 @@ class ExamController extends Controller
 
     public function getallExam($e_id)
     {
-        //$exam = Exam::find($e_id);
-        // $question = question::find($q_id);
-        // $exam=DB::table('exams')->where('id' , $e_id)->where('questions_id' , $q_id);
 
-        // $exam = DB::table('exams')
-        // ->select('*')
-        // ->join('exams', "questions.$q_id", '=', "exams.$e_id")
-        // ->get();
-
-        // $exam= DB::table('exams')
-        // ->select('*')
-        // ->join('questions', 'exams.id', 'questions.id')
-        // ->where('e_id','=', $e_id)
-        // ->where('questions_id','=',$q_id)
-        // ->get();
-
-        // $exam['question']=question::findOrFail($q_id);
-        // $exam['Exam']=Exam::where('id',$q_id)->get();
-
-        //$exam=Exam::with('question')->get();
-
-        // $exam['question']=question::where('id',$q_id)->get();
-
-        // $exam = DB::table('exams')
-        //     ->leftJoin('exams', 'exams.e_id', '=', 'questions.q_id')
-        //     ->get();
-
-        // $exam =DB::table('exams')
-        // ->select('*')
-        // ->join('questions', 'exams.id', '=', 'questions.id')
-        // ->where('exams.id', $q_id)
-        // ->get();
-        $exam=Exam::with('course')->find($e_id);
+        $exam=Exam::with('questions')->find($e_id);
         // $exam = Exam::find($q_id)->questions;
 
         if ($exam) {
@@ -61,6 +30,20 @@ class ExamController extends Controller
         }
         return $this->notFoundResponse();
 
+    }
+
+    public function Storedegree(Request $request)
+    {
+        $degree = DB::table('student_subject_exam')->insert([
+            'student_id' => $request->student_id,
+            'course_id' => $request->course_id,
+            'degree' =>$request->degree
+        ]);
+        if ($degree) {
+            return response()->json($degree, 200);
+        }
+
+        return response()->json("Cannot add this course", 400);
 
     }
 
