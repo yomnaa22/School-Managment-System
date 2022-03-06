@@ -46,6 +46,26 @@ class ExamController extends Controller
         return response()->json("Cannot add this course", 400);
 
     }
+    //showDegree
+
+    public function showDegree($s_id,$c_id)
+    {
+        
+        $degree = DB::table('student_subject_exam')
+        ->select('*')
+        ->where('student_id', $s_id)
+        ->where('course_id', $c_id)
+        ->get();
+
+        if ($degree) {
+            return response()->json($degree, 200);
+        }
+
+        return response()->json("Cannot add this course", 400);
+
+    }
+
+
 
     public function store(Request $request)
     {

@@ -17,11 +17,10 @@ class CreateStudentSubjectExamTable extends Migration
             // $table->id();
 
             $table->integer('degree');
-            $table->foreignId('course_id')->constrained()->onUpdate('cascade')->onDelete('cascade')->primary();
-            $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade')->primary();
-            
+            $table->foreignId('course_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             //$table->foreignId('exam_id')->constrained()->onUpdate('cascade')->onDelete('cascade')->primary();
-
+            $table->primary(['course_id','student_id']);
 
             $table->timestamps();
         });

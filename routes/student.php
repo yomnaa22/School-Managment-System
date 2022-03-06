@@ -55,3 +55,6 @@ Route::post('/feedbacks', [FeedbackController::class, 'store']);
 
 //add degree exam
 Route::post('/Storedegree',[ExamController::class,'Storedegree']);
+
+//show degree exam 
+Route::get('/showDegree/{s_id}/{c_id}', [ExamController::class, 'showDegree']);
