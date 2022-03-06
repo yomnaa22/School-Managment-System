@@ -18,6 +18,15 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login']]);
     }
 
+
+    public function index()
+    {
+        //
+        $admins = User::get();
+        return response()->json($admins,200);
+    }
+
+
     /**
      * Get a JWT via given credentials.
      *
