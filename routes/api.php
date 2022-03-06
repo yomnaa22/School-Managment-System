@@ -10,6 +10,7 @@ use App\Http\Controllers\CourseContentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\chatController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\payment;
 use Illuminate\Http\Request;
@@ -85,3 +86,6 @@ Route::get('/feedbacks', [FeedbackController::class, 'index']);
 // Route::delete('/feedbacks/{id}',[FeedbackController::class, 'destroy']);
 Route::get('/student/courses/{id}',[StudentController::class,'getCoursesByStudentId']);
 Route::get('/trainer/courses/{id}',[TrainerController::class,'getCoursesByTrainerId']);
+
+
+Route::post('messages', [chatController::class, 'message']);
