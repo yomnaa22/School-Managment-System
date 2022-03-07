@@ -16,7 +16,7 @@ class StudentFactory extends Factory
     {
         $gender = $this->faker->randomElement(['male', 'female']);
         return [
-            'fname' => $this->faker->name(),
+            'fname' => $this->faker->name($gender),
             'lname' => $this->faker->name(),
             'gender' => $gender,
             'phone' => $this->faker->phoneNumber(),

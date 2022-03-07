@@ -16,13 +16,11 @@ class contactUsSeeder extends Seeder
     public function run()
     {
         DB::table('contact_us')->insert([
-            'email' => 'web',
-            'name' => 'testimg.jpg',
+            'email' => 'anonymous@gmail.com',
+            'name' => 'anonymous user',
             'subject' =>'html',
-            'message' => 'new message',
+            'message' => 'Great website but Is there a way to get a certificate?',
             'created_at' => Carbon::now(),
-           
-
         ]);
     }
 }
