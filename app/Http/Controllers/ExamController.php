@@ -14,7 +14,7 @@ class ExamController extends Controller
     use ApiResponseTrait;
     public function index()
     {
-        $exams = Exam::get();
+        $exams = Exam::with('course')->get();
         return $this->apiResponse($exams);
     }
 
@@ -50,7 +50,7 @@ class ExamController extends Controller
 
     public function showDegree($s_id,$c_id)
     {
-        
+
         $degree = DB::table('student_subject_exam')
         ->select('*')
         ->where('student_id', $s_id)
@@ -92,7 +92,7 @@ class ExamController extends Controller
 
     public function show($id)
     {
-        $exam = Exam::with('course')->find($id);
+        $exam = Exam::find($id);
         if ($exam) {
             return $this->apiResponse($exam);
         }
