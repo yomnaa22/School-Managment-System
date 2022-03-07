@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
     Route::post('me', 'App\Http\Controllers\AuthController@me');
 
     Route::get('/admins', [AuthController::class,'index']);
+    Route::post('/admins/add-admin', [AuthController::class,'register']);
+
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::post('/categories/{id}',[CategoryController::class, 'update']);
     Route::delete('/categories/{id}', [CategoryController::class, 'delete']);

@@ -21,20 +21,19 @@ class StudentSeeder extends Seeder
 
     {
         DB::table('students')->insert([
-            'fname' => 'mahmoud',
+            'fname' => 'yomna',
             'lname' => 'hamed',
             'gender' => 'female',
-            'phone' => 19977234654,
-         
-            'email' => 'mahmoudawd54@gmail.com',
-            'password' => Hash::make('123456789'),
+            'phone' => 1234567892,        
+            'email' => 'yomna@gmail.com',
+            'password' => Hash::make('12345678'),
     
            
         ]);
 
         Student::factory()
-                ->count(10)
+                ->count(5)
                 ->create();
-        //
+       
     }
 }

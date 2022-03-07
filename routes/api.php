@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 //login Admin
 Route::post('login', 'App\Http\Controllers\AuthController@login');
 
+
 //register student
 Route::post('/students',[StudentController::class,'register']);
 //login student
@@ -71,6 +72,8 @@ Route::get('/trainers/count',[TrainerController::class,'getCount']);
 Route::get('/categories', [CategoryController::class, 'index']);
 //get categories by id
 Route::get('/categories/{id}', [CategoryController::class, 'show']);
+// get courses of specific category
+Route::get('/categories/courses/{id}', [CategoryController::class, 'showCategoryCourses']);
 //get trainers
 Route::get('/trainers',[TrainerController::class, 'index']);
 //get trainers by id
@@ -89,3 +92,8 @@ Route::get('/trainer/courses/{id}',[TrainerController::class,'getCoursesByTraine
 
 
 Route::post('messages', [chatController::class, 'message']);
+
+Route::post('/studentcourseenroll', [CourseController::class, 'course_student_enroll']);
+
+
+
