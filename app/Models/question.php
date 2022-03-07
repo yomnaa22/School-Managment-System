@@ -15,11 +15,9 @@ class question extends Model
 
     public function exam()
     {
-        return $this->belongsToMany(Exam::class);
+        return $this->belongsTo(Exam::class);
 
-        
     }
-
 
 
 }

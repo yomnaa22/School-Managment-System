@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Exam;
+use App\Models\Course;
+
 use App\Models\question;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -18,42 +20,20 @@ class ExamController extends Controller
         return $this->apiResponse($exams);
     }
 
-    public function getallExam($e_id)
+
+
+    public function getallExam($c_id)
     {
-        //$exam = Exam::find($e_id);
-        // $question = question::find($q_id);
-        // $exam=DB::table('exams')->where('id' , $e_id)->where('questions_id' , $q_id);
+       // $exam_id = Exam::with('course')->find($c_id);
 
-        // $exam = DB::table('exams')
-        // ->select('*')
-        // ->join('exams', "questions.$q_id", '=', "exams.$e_id")
-        // ->get();
+        $exam = DB::table('exams')
+        ->join('courses', 'courses.id', '=', 'exams.course_id')
+        ->join('questions','exams.id' , '=','questions.exam_id')
+        ->where('courses.id', '=', $c_id)
+        ->select( 'exams.*','questions.*',)
+       ->get();
+       
 
-        // $exam= DB::table('exams')
-        // ->select('*')
-        // ->join('questions', 'exams.id', 'questions.id')
-        // ->where('e_id','=', $e_id)
-        // ->where('questions_id','=',$q_id)
-        // ->get();
-
-        // $exam['question']=question::findOrFail($q_id);
-        // $exam['Exam']=Exam::where('id',$q_id)->get();
-
-        //$exam=Exam::with('question')->get();
-
-        // $exam['question']=question::where('id',$q_id)->get();
-
-        // $exam = DB::table('exams')
-        //     ->leftJoin('exams', 'exams.e_id', '=', 'questions.q_id')
-        //     ->get();
-
-        // $exam =DB::table('exams')
-        // ->select('*')
-        // ->join('questions', 'exams.id', '=', 'questions.id')
-        // ->where('exams.id', $q_id)
-        // ->get();
-        $exam=Exam::with('course')->find($e_id);
-        // $exam = Exam::find($q_id)->questions;
 
         if ($exam) {
 
@@ -61,9 +41,43 @@ class ExamController extends Controller
         }
         return $this->notFoundResponse();
 
+    }
+
+
+
+    public function Storedegree(Request $request)
+    {
+        $score = DB::table('student_subject_exam')->insert([
+            'student_id' => $request->student_id,
+            'exam_id' => $request->exam_id,
+            'degree' =>$request->degree
+        ]);
+        if ($score) {
+            return response()->json($score ,200);
+        }
+
+        return response()->json("Cannot add this course", 400);
 
     }
 
+    public function getResult($exam_id,$student_id)
+    {
+        $degree = DB::table('student_subject_exam')
+        ->where
+        ([
+            ['student_id', '=', $student_id],
+			
+            ['exam_id', '=', $exam_id],
+			
+    ]) ->get();
+    if ($degree) {
+    return response()->json($degree ,200);
+   }
+
+return response()->json("Cannot add this course", 400);
+
+
+    }
     public function store(Request $request)
     {
         //
