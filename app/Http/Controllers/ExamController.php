@@ -18,7 +18,7 @@ class ExamController extends Controller
         return $this->apiResponse($exams);
     }
 
-    public function getallExam($e_id)
+    public function getAllQestions($e_id)
     {
 
         $exam=Exam::with('questions')->find($e_id);

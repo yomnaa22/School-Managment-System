@@ -24,6 +24,7 @@ Route::post('messages', [chatController::class, 'message']);
 Route::post('login', 'App\Http\Controllers\AuthController@login');
 Route::post('register', 'App\Http\Controllers\AuthController@register');
 
+
 //register student
 Route::post('/students',[StudentController::class,'register']);
 //login student
@@ -74,6 +75,8 @@ Route::get('/trainers/count',[TrainerController::class,'getCount']);
 Route::get('/categories', [CategoryController::class, 'index']);
 //get categories by id
 Route::get('/categories/{id}', [CategoryController::class, 'show']);
+// get courses of specific category
+Route::get('/categories/courses/{id}', [CategoryController::class, 'showCategoryCourses']);
 //get trainers
 Route::get('/trainers',[TrainerController::class, 'index']);
 //get trainers by id

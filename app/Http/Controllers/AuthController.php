@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User ;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -28,6 +29,26 @@ class AuthController extends Controller
         return response()->json($admins,200);
     }
 
+    public function register(Request $request)
+    {
+        $request->validate([
+                'name' =>'required|string|max:100',
+                'email' => 'required|string',
+                'password' => 'required|min:6'
+            ]);
+
+
+        $admin = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        if ($admin) {
+            return response()->json($admin,200);
+        }
+
+        return response()->json("Cannot add admin",400);
+    }
 
     /**
      * Get a JWT via given credentials.
@@ -78,27 +99,7 @@ class AuthController extends Controller
         return $this->respondWithToken(auth()->refresh());
     }
 
-    public function register(Request $request)
-{
-// dd($request);
-$request->validate([
-'name' =>'required|string|max:100',
-'email' => 'required|string',
-'password' => 'required|min:6'
-]);
-
-
-$admin = User::create([
-'name' => $request->name,
-'email' => $request->email,
-'password' => Hash::make($request->password),
-]);
-if ($admin) {
-return response()->json($admin,200);
-}
-
-return response()->json("Cannot add admin",400);
-}
+  
 
 
 

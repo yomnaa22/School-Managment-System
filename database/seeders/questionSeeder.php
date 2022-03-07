@@ -19,17 +19,14 @@ class questionSeeder extends Seeder
 
     DB::table('questions')->insert([
         'header' => 'question1',
-        'choice_1' => 'answer1',
-        'choice_2' => 'answer1',
-        'choice_3' => 'answer1',
-        'choice_4' => 'answer1',
-        'answer' => 'answer1',
-        'score' => 20,
-        'exam_id'=>1,
-
-
-
+        'choice_1' => 'choice_1',
+        'choice_2' => 'choice_2',
+        'choice_3' => 'choice_3',
+        'choice_4' => 'choice_4',
+        'answer' => 'answer',
+        'score' => 10,
+        'exam_id' => 1,
     ]);
-        //
+
     }
 }
