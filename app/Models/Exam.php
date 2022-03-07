@@ -13,15 +13,14 @@ class Exam extends Model
 
     protected $fillable = ['name', 'course_id','max_score'];
 
-
     public function questions()
     {
         return $this->hasMany(question::class);
     }
    
-    public function courses()
+    public function course()
     {
-        return $this->hasMany(Course::class);
+        return $this->belongsTo(Course::class);
     }
 
 
