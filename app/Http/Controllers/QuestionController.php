@@ -28,7 +28,7 @@ class QuestionController extends Controller
         }
         //get all exam
 
-        $roles=$request->exam_id;
+       // $roles=$request->exam_id;
         $questions = question::create([
             'header'=>$request->header ,
             'choice_1'=>$request->choice_1 ,
@@ -36,10 +36,11 @@ class QuestionController extends Controller
             'choice_3'=>$request->choice_3 ,
             'choice_4'=>$request->choice_4 ,
             'answer'=>$request->answer ,
-            'score'=>$request->score
+            'score'=>$request->score,
+            'exam_id'=> $request->exam_id
         ]);
 
-        $questions->exam()->attach($roles);
+      //  $questions->exam()->attach($roles);
 
         if ($questions) {
             return $this->createdResponse($questions);

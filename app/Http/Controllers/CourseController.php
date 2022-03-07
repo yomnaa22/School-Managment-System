@@ -9,15 +9,33 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use App\Mail\welcomemail;
+use Illuminate\Support\Facades\Mail;
+
+use Illuminate\Support\Facades\Log;
 
 class CourseController extends Controller
 {
     use ApiResponseTrait;
 
+
+    public function searchCourse(Request $request)
+    {
+        $query = Course::query();
+        $data = $request->input('search_course');
+        if ($data) {
+            $query->whereRaw("name LIKE '%" . $data . "%'");
+        }
+        //$query->get();
+        return response()->json($query->get());
+    }
+
+
+
     public function index()
     {
         //
-        $Courses=Course::with('category','trainer')->get();
+        $Courses = Course::with('category', 'trainer')->get();
         // $Courses = Course::get();
         return response()->json($Courses, 200);
     }
@@ -29,34 +47,34 @@ class CourseController extends Controller
         if ($validation instanceof Response) {
             return $validation;
         }
-        if (is_null($validation)) {
-            $img = $request->file('img');
-            $ext = $img->getClientOriginalExtension();
-            $image = "course -" . uniqid() . ".$ext";
-            $img->move(public_path("uploads/courses/"), $image);
 
-            $course = Course::create([
-                'name' => $request->name,
-                'img' => $image,
-                'category_id' => $request->category_id,
-                'trainer_id' => $request->trainer_id,
-                'price' => $request->price,
-                'duration' => $request->duration,
-                'preq' => $request->preq,
-                'desc' => $request->desc,
-            ]);
+        $img = $request->file('img');
+        $ext = $img->getClientOriginalExtension();
+        $image = "course -" . uniqid() . ".$ext";
+        $img->move(public_path("uploads/courses/"), $image);
 
-            if ($course) {
-                return response()->json($course, 200);
-            }
+        $course = Course::create([
+            'name' => $request->name,
+            'img' => $image,
+            'category_id' => $request->category_id,
+            'trainer_id' => $request->trainer_id,
+            'price' => $request->price,
+            'duration' => $request->duration,
+            'preq' => $request->preq,
+            'desc' => $request->desc,
+        ]);
+
+        if ($course) {
+            return response()->json($course, 200);
         }
+
         return response()->json("Cannot add this course", 400);
     }
 
 
     public function show($id)
     {
-        $course = Course::with(['category','trainer'])->find($id);
+        $course = Course::with(['category', 'trainer'])->find($id);
         if ($course) {
 
             return response()->json($course, 200);
@@ -65,19 +83,31 @@ class CourseController extends Controller
     }
 
 
-
-
-
     public function update(Request $request, $id)
     {
         $course = Course::find($id);
         if ($course) {
 
             if ($request->isMethod('post')) {
-                $validation = $this->validation($request);
+
+                $validation = $this->apiValidation($request, [
+                    'name' => 'required|min:3|max:30',
+                    'img' => 'image|mimes:jpeg,png',
+                    'price' => 'required',
+                    'category_id' => 'exists:categories,id',
+                    'trainer_id' => 'required|exists:App\Models\Trainer,id',
+                    'duration' => 'required',
+                    // 'preq' => '',
+                    'desc' => 'required|min:3',
+                ]);
                 if ($validation instanceof Response) {
                     return $validation;
                 }
+
+                // $validation = $this->validation($request);
+                // if ($validation instanceof Response) {
+                //     return $validation;
+                // }
             }
 
             $name = $course->img;
@@ -90,14 +120,19 @@ class CourseController extends Controller
                 $ext = $img->getClientOriginalExtension();   //bgeb extention
                 $name = "course -" . uniqid() . ".$ext";            // conncat ext +name elgded
                 $img->move(public_path("uploads/courses"), $name);   //elmkan , $name elgded
-
+            }
             // }
+            Log::alert($request->category_id);
 
+            if ($request->category_id == 0)
+                $category_id = $course->category_id;
+            else
+                $category_id = $request->category_id;
 
             $course->update([
                 'name' => $request->name,
                 'img' => $name,
-                'category_id' => $request->category_id,
+                'category_id' => $category_id,
                 'trainer_id' => $request->trainer_id,
                 'price' => $request->price,
                 'duration' => $request->duration,
@@ -105,11 +140,10 @@ class CourseController extends Controller
                 'desc' => $request->desc,
             ]);
             return response()->json($course, 200);
-
         }
         return response()->json("Record not found", 404);
     }
-    }
+    
 
 
 
@@ -130,43 +164,38 @@ class CourseController extends Controller
         return response()->json(null, 204);
         // }
     }
-    public function showvideo($e_id){
+    public function showvideo($e_id)
+    {
 
 
-        $course=DB::select("select * from course__contents where course_id = $e_id");
+        $course = DB::select("select * from course__contents where course_id = $e_id");
         if ($course) {
 
             return response()->json($course, 200);
         }
         return response()->json("Not Found", 404);
-
     }
 
-//     public function Enrollment($id,Request $request)
-//     {
-//         $data = $request->validate([
-//             'course_id' => 'required|exists:courses,id'
-//         ]);
-//        $enrolle= DB::table('course_student')->insert([
-//             'student_id' => $id,
-//             'course_id' => $data['course_id']
-//         ]);
 
-//         if ($enrolle) {
-//             return response()->json($enrolle, 200);
-//         }
 
-//     return response()->json("Cannot add this course", 400);
-// }
 
-public function Enrollment(Request $request)
+    public function Enrollment(Request $request)
     {
         $enrolle = DB::table('course_student')->insert([
             'student_id' => $request->student_id,
             'course_id' => $request->course_id,
         ]);
-
         if ($enrolle) {
+            // $course= DB::select("select name from courses where id = $request->course_id");
+            $details = [
+                'title' => 'Congratulations',
+                'body' => "You have enrolled successfully to ",
+            ];
+
+            $email = DB::select("select email from students where id = $request->student_id");
+
+            Mail::to($email)->send(new welcomemail($details));
+
             return response()->json($enrolle, 200);
         }
 
@@ -174,27 +203,44 @@ public function Enrollment(Request $request)
     }
 
 
-     public function showCourses($id)
-     {
-        $data= Student::with(['Courses'])->find($id);
+
+
+
+
+    public function showCourses($id)
+    {
+        $data = Student::with(['Courses'])->find($id);
         if ($data) {
 
             return response()->json($data, 200);
         }
         return response()->json("Not Found", 404);
+    }
 
-     }
-
-     public function showStudent($id)
-     {
-        $data= Course::with(['students'])->find($id);
+    public function showStudent($id)
+    {
+        $data = Course::with(['students'])->find($id);
         if ($data) {
 
             return response()->json($data, 200);
         }
         return response()->json("Not Found", 404);
+    }
 
-     }
+    public function studentCount($id)
+    {
+
+        $data = DB::table('course_student')->select('student_id')->where('course_id', '=', $id)->count('student_id');
+
+        if ($data == 0)
+            return response()->json($data, 200);
+        if ($data) {
+            return response()->json($data, 200);
+        }
+        return response()->json("Not Found", 404);
+    }
+
+    
      public function course_student_enroll(Request $request){
 
         $course_id=$request->course_id;
@@ -209,12 +255,22 @@ public function Enrollment(Request $request)
         }
      }
 
+    public function getCount()
+    {
+        $data = DB::table('courses')->select('id')->count('id');
+        if ($data == 0)
+            return response()->json($data, 200);
+        if ($data) {
+            return response()->json($data, 200);
+        }
+        return response()->json("Not Found", 404);
+    }
 
 
     public function validation($request)
     {
         return $this->apiValidation($request, [
-            'name' => 'required|min:3|max:20',
+            'name' => 'required|min:3|max:30',
             // 'img' => 'required|image|mimes:jpeg,png',
             'price' => 'required',
             'category_id' => 'required|exists:App\Models\Category,id',

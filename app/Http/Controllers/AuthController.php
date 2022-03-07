@@ -18,6 +18,15 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login']]);
     }
 
+
+    public function index()
+    {
+        //
+        $admins = User::get();
+        return response()->json($admins,200);
+    }
+
+
     /**
      * Get a JWT via given credentials.
      *
@@ -51,6 +60,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
+
         auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
@@ -76,6 +86,7 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'name'=>Auth::guard('api')->user()->name,
             'id'=>Auth::guard('api')->user()->id,
             'role'=>'isAdmin',
             'access_token' => $token,

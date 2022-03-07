@@ -19,7 +19,7 @@ class ExamSeeder extends Seeder
 
         DB::table('exams')->insert([
             'name' => 'css',
-            'course_id' => 1,
+            'course_id' => 2,
             'max_score' => 3,
             
            

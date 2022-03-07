@@ -15,11 +15,29 @@ class CategorySeeder extends Seeder
     public function run()
     {
         DB::table('categories')->insert([
-            'name' => 'web',
-            'img' => 'testimg.jpg',
+            'name' => 'Computer Science',
             'created_at' => Carbon::now(),
-           
-
+            'updated_at' => Carbon::now(),
+        ]);
+        DB::table('categories')->insert([
+            'name' => 'Arts and Humanities',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+        DB::table('categories')->insert([
+            'name' => 'Business',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+        DB::table('categories')->insert([
+            'name' => 'Health',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+        DB::table('categories')->insert([
+            'name' => 'Information Technology',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
         
     }
