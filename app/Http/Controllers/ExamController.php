@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Exam;
+use App\Models\Course;
+
 use App\Models\question;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,41 +34,62 @@ class ExamController extends Controller
 
     }
 
+    public function getallExam($c_id)
+    {
+       // $exam_id = Exam::with('course')->find($c_id);
+
+        $exam = DB::table('exams')
+        ->join('courses', 'courses.id', '=', 'exams.course_id')
+        ->join('questions','exams.id' , '=','questions.exam_id')
+        ->where('courses.id', '=', $c_id)
+        ->select( 'exams.*','questions.*',)
+       ->get();
+
+
+
+        if ($exam) {
+
+            return $this->apiResponse($exam);
+        }
+        return $this->notFoundResponse();
+
+    }
+
+
+
     public function Storedegree(Request $request)
     {
-        $degree = DB::table('student_subject_exam')->insert([
+        $score = DB::table('student_subject_exam')->insert([
             'student_id' => $request->student_id,
-            'course_id' => $request->course_id,
+            'exam_id' => $request->exam_id,
             'degree' =>$request->degree
         ]);
-        if ($degree) {
-            return response()->json($degree, 200);
+        if ($score) {
+            return response()->json($score ,200);
         }
 
         return response()->json("Cannot add this course", 400);
 
     }
-    //showDegree
 
-    public function showDegree($s_id,$c_id)
+    public function getResult($exam_id,$student_id)
     {
-
         $degree = DB::table('student_subject_exam')
-        ->select('*')
-        ->where('student_id', $s_id)
-        ->where('course_id', $c_id)
-        ->get();
+        ->where
+        ([
+            ['student_id', '=', $student_id],
 
-        if ($degree) {
-            return response()->json($degree, 200);
-        }
+            ['exam_id', '=', $exam_id],
 
-        return response()->json("Cannot add this course", 400);
+    ]) ->get();
+    if ($degree) {
+    return response()->json($degree ,200);
+   }
+
+return response()->json("Cannot add this course", 400);
+
 
     }
-
-
-
     public function store(Request $request)
     {
         //

@@ -13,7 +13,6 @@ class Exam extends Model
 
     protected $fillable = ['name', 'course_id','max_score'];
 
-
     public function questions()
     {
         return $this->hasMany(question::class);
