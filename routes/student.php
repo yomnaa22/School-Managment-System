@@ -30,6 +30,8 @@ Route::get('/questions',[QuestionController::class, 'index']);
 
 Route::get('/questions/{id}',[QuestionController::class, 'show']);
 
+Route::post('/Contact_us', [ContactUsController::class, 'store']);
+
 
 
 
