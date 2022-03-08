@@ -31,7 +31,7 @@ class ExamController extends Controller
         ->join('questions','exams.id' , '=','questions.exam_id')
         ->where('courses.id', '=', $c_id)
         ->select( 'exams.*','questions.*',)
-       ->get();
+        ->get();
        
        if ($exam) {
             return $this->apiResponse($exam);
@@ -72,6 +72,23 @@ class ExamController extends Controller
 
     }
 
+    public function showDegree($s_id,$c_id)
+    {
+
+        $degree = DB::table('student_subject_exam')
+        ->select('*')
+        ->where('student_id', $s_id)
+        ->where('course_id', $c_id)
+        ->get();
+
+        if ($degree) {
+            return response()->json($degree, 200);
+        }
+
+        return response()->json("Cannot add this course", 400);
+
+    }
+
     public function getResult($exam_id,$student_id)
     {
         $degree = DB::table('student_subject_exam')
@@ -81,15 +98,16 @@ class ExamController extends Controller
 			
             ['exam_id', '=', $exam_id],
 			
-    ]) ->get();
-    if ($degree) {
-    return response()->json($degree ,200);
-   }
+        ])->get()->first();
 
-return response()->json("Cannot add this course", 400);
+        if ($degree) {
+            return response()->json($degree ,200);
+        }
 
+        return response()->json("Cannot add this course", 400);
 
     }
+
     public function store(Request $request)
     {
         //
