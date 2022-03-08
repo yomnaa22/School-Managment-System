@@ -18,12 +18,10 @@ class CreateCourseContentsTable extends Migration
 
             $table->string('name');
             $table->string('content');
-            
+
             $table->foreignId('course_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
 
-            // $table->unsignedBigInteger('course_id');
-            // $table->foreign('course_id')->references('id')->on('courses')->onUpdate('cascade')->onDelete('cascade');
-
+    
             $table->timestamps();
         });
     }

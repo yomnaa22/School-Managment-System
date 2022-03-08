@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('messages', [chatController::class, 'message']);
 //login Admin
 Route::post('login', 'App\Http\Controllers\AuthController@login');
+Route::post('register', 'App\Http\Controllers\AuthController@register');
 
 
 //register student

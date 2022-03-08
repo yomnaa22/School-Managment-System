@@ -38,9 +38,10 @@ use Illuminate\Support\Facades\Route;
 
     Route::delete('/courses/{id}', [CourseController::class, 'destroy']);
 
-    
-    // Route::put('/feedbacks/{id}', [FeedbackController::class, 'update']);
-    // Route::patch('/feedbacks/{id}', [FeedbackController::class, 'update']);
+
+
+    Route::delete('/feedbacks/{id}', [FeedbackController::class, 'destroy']);
+
 
 
 

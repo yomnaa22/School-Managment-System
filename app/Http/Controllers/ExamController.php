@@ -16,7 +16,7 @@ class ExamController extends Controller
     use ApiResponseTrait;
     public function index()
     {
-        $exams = Exam::get();
+        $exams = Exam::with('course')->get();
         return $this->apiResponse($exams);
     }
 
@@ -33,7 +33,19 @@ class ExamController extends Controller
         ->select( 'exams.*','questions.*',)
        ->get();
        
+       if ($exam) {
+            return $this->apiResponse($exam);
+        }
+        
+        return $this->notFoundResponse();
 
+    }
+
+    public function getAllQestions($e_id)
+    {
+
+        $exam=Exam::with('questions')->find($e_id);
+        // $exam = Exam::find($q_id)->questions;
 
         if ($exam) {
 
@@ -103,7 +115,7 @@ return response()->json("Cannot add this course", 400);
 
     public function show($id)
     {
-        $exam = Exam::with('course')->find($id);
+        $exam = Exam::find($id);
         if ($exam) {
             return $this->apiResponse($exam);
         }
