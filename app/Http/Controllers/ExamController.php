@@ -20,7 +20,18 @@ class ExamController extends Controller
         return $this->apiResponse($exams);
     }
 
+    public function getallExamOfCourse($c_id)
+    {
+        $exams = Course::with('exams')->find($c_id);
+       
+       
+       if ($exams) {
+            return $this->apiResponse($exams);
+        }
+        
+        return $this->notFoundResponse();
 
+    }
 
     public function getallExam($c_id)
     {
