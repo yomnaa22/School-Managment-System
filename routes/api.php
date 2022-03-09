@@ -84,7 +84,7 @@ Route::get('/trainers/{id}',[TrainerController::class, 'show']);
 
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/{id}', [CourseController::class, 'show']);
-// Route::post('/Contact_us', [ContactUsController::class, 'store']);
+Route::post('/Contact_us', [ContactUsController::class, 'store']);
 // return student count in given course id
 Route::get('/student/studentCount/{id}', [CourseController::class, 'studentCount']);
 Route::get('/feedbacks', [FeedbackController::class, 'index']);

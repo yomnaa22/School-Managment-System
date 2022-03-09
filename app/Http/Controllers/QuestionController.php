@@ -104,12 +104,12 @@ class QuestionController extends Controller
 
     public function validation($request){
         return $this->apiValidation($request , [
-            'header' => 'required|min:3|max:30',
-            'choice_1' => 'required|min:3|max:30',
-            'choice_2' => 'required|min:3|max:30',
-            'choice_3' => 'required|min:3|max:30',
-            'choice_4' => 'required|min:3|max:30',
-            'answer' => 'required|min:3|max:30',
+            'header' => 'required|min:3|max:255',
+            'choice_1' => 'required|min:1|max:255',
+            'choice_2' => 'required|min:1|max:255',
+            'choice_3' => 'required|min:1|max:255',
+            'choice_4' => 'required|min:1|max:255',
+            'answer' => 'required|min:1|max:255',
             'score' => 'required|numeric',
             'exam_id' =>'numeric|exists:App\Models\Exam,id'
         ]);

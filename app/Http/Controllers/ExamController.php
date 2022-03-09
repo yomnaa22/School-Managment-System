@@ -20,19 +20,7 @@ class ExamController extends Controller
         return $this->apiResponse($exams);
     }
 
-    public function getAllQestions($e_id)
-    {
-
-        $exam=Exam::with('questions')->find($e_id);
-        // $exam = Exam::find($q_id)->questions;
-
-        if ($exam) {
-
-            return $this->apiResponse($exam);
-        }
-        return $this->notFoundResponse();
-
-    }
+   
 
     public function getallExam($c_id)
     {
@@ -46,6 +34,20 @@ class ExamController extends Controller
        ->get();
 
 
+
+       if ($exam) {
+            return $this->apiResponse($exam);
+        }
+
+        return $this->notFoundResponse();
+
+    }
+
+    public function getAllQestions($e_id)
+    {
+
+        $exam=Exam::with('questions')->find($e_id);
+        // $exam = Exam::find($q_id)->questions;
 
         if ($exam) {
 
@@ -72,6 +74,24 @@ class ExamController extends Controller
 
     }
 
+
+    public function showDegree($s_id,$c_id)
+    {
+
+        $degree = DB::table('student_subject_exam')
+        ->select('*')
+        ->where('student_id', $s_id)
+        ->where('course_id', $c_id)
+        ->get();
+
+        if ($degree) {
+            return response()->json($degree, 200);
+        }
+
+        return response()->json("Cannot add this course", 400);
+
+    }
+
     public function getResult($exam_id,$student_id)
     {
         $degree = DB::table('student_subject_exam')
@@ -81,13 +101,13 @@ class ExamController extends Controller
 
             ['exam_id', '=', $exam_id],
 
-    ]) ->get();
-    if ($degree) {
-    return response()->json($degree ,200);
-   }
+        ])->get()->first();
 
-return response()->json("Cannot add this course", 400);
+        if ($degree) {
+            return response()->json($degree ,200);
+        }
 
+        return response()->json("Cannot add this course", 400);
 
     }
     public function store(Request $request)

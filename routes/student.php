@@ -23,6 +23,7 @@ Route::get('/exams/questions/{c_id}',[ExamController::class, 'getallExam']);
 Route::post('/Storedegree',[ExamController::class,'Storedegree']);
 Route::get('/result/{exam_id}/{student_id}',[ExamController::class,'getResult']);
 
+//Route::get('/exam/questions/{e_id}',[ExamController::class, 'getAllQestions']);
 
 Route::get('/exams',[ExamController::class, 'index']);
 Route::get('/exams/{id}',[ExamController::class, 'show']);

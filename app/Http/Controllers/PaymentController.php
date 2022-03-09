@@ -46,10 +46,6 @@ class PaymentController extends Controller
     public function storeStripePayment(Request $request)
     {
 
-
-       
-
-
         try {
             $intentId = $request->intentId;
             $itemId = $request->itemId;
