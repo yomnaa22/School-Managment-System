@@ -233,7 +233,7 @@ class TrainerController extends Controller
             'role'=>'isTrainer',
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->guard('triners')->factory()->getTTL() * 60
+            'expires_in' => auth()->guard('triners')->factory()->getTTL() * 120
         ],200);
     }
 

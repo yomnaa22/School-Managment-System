@@ -71,6 +71,7 @@ Route::get('/courses/count',[CourseController::class,'getCount']);
 Route::get('/students/count',[StudentController::class,'getCount']);
 //get trainers count
 Route::get('/trainers/count',[TrainerController::class,'getCount']);
+
 //get categories
 Route::get('/categories', [CategoryController::class, 'index']);
 //get categories by id
@@ -90,8 +91,6 @@ Route::get('/student/studentCount/{id}', [CourseController::class, 'studentCount
 Route::get('/feedbacks', [FeedbackController::class, 'index']);
 //Route::get('/feedbacks/{id}', [FeedbackController::class, 'show']);
 // Route::delete('/feedbacks/{id}',[FeedbackController::class, 'destroy']);
-Route::get('/student/courses/{id}',[StudentController::class,'getCoursesByStudentId']);
-Route::get('/trainer/courses/{id}',[TrainerController::class,'getCoursesByTrainerId']);
 
 
 Route::post('messages', [chatController::class, 'message']);

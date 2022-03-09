@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 //get all questions by exam_id
 Route::get('/exam/questions/{e_id}',[ExamController::class, 'getAllQestions']);
 Route::get('/exams/questions/{c_id}',[ExamController::class, 'getallExam']);
+Route::get('/course/exams/{c_id}',[ExamController::class, 'getallExamOfCourse']);
+
 Route::post('/Storedegree',[ExamController::class,'Storedegree']);
 Route::get('/result/{exam_id}/{student_id}',[ExamController::class,'getResult']);
 
@@ -66,3 +68,7 @@ Route::post('/Storedegree',[ExamController::class,'Storedegree']);
 
 //show degree exam
 Route::get('/showDegree/{s_id}/{c_id}', [ExamController::class, 'showDegree']);
+
+
+Route::get('/student/courses/{id}',[StudentController::class,'getCoursesByStudentId']);
+Route::get('/trainer/courses/{id}',[TrainerController::class,'getCoursesByTrainerId']);
