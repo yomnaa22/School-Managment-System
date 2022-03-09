@@ -15,14 +15,14 @@ class feedbackSeeder extends Seeder
      */
     public function run()
     {
-    
+
 
         DB::table('feedback')->insert([
-            'name' => 'css',
-            'desc' => 'this is final exam for css',
-            'student_id' => 4,
-            'course_id' => 2,
-           
+            'name' => 'Maria',
+            'desc' => 'Thanks for this great course',
+            'student_id' => 2,
+            'course_id' => 3,
+
         ]);
     }
 }

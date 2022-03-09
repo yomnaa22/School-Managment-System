@@ -10,16 +10,13 @@ class question extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['header', 'choice_1','choice_2','choice_3','choice_4','answer','score' ];
+    protected $fillable = ['header', 'choice_1','choice_2','choice_3','choice_4','answer','score' ,'exam_id'];
 
 
     public function exam()
     {
-        return $this->belongsToMany(Exam::class);
-
-        
+        return $this->belongsTo(Exam::class);
     }
-
 
 
 }

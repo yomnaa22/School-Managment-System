@@ -17,17 +17,7 @@ class FeedbackController extends Controller
         // $feedback = feedback::get();
         return response()->json($feedback, 200);
     }
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validation = $this->validation($request);
@@ -51,12 +41,7 @@ class FeedbackController extends Controller
         return response()->json("Cannot send this feedback", 400);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\feedback  $feedback
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         $feedback = feedback::with(['course','student'])->find($id);
@@ -70,24 +55,7 @@ class FeedbackController extends Controller
         return response()->json("Not Found", 404);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\feedback  $feedback
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(feedback $feedback)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\feedback  $feedback
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request,  $id)
     {
         //
@@ -106,21 +74,16 @@ class FeedbackController extends Controller
         return response()->json("Not found", 404);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\feedback  $feedback
-     * @return \Illuminate\Http\Response
-     */
-    // public function destroy($id)
-    // {
-    //     $feedback = feedback::find($id);
-    //     if (is_null($feedback)) {
-    //         return response()->json("Record not found", 404);
-    //     }
-    //     $feedback->delete();
-    //     return response()->json(null, 204);
-    // }
+   
+    public function destroy($id)
+    {
+        $feedback = feedback::find($id);
+        if (is_null($feedback)) {
+            return response()->json("Record not found", 404);
+        }
+        $feedback->delete();
+        return response()->json(null, 204);
+    }
 
 
     public function validation($request)

@@ -26,13 +26,13 @@ class PaymentController extends Controller
             $itemDescription = $request->description;
             $itemCurrency = strtolower($request->currency);
             $buyerEmail = $request->email;
-                            
+
             \Stripe\Stripe::setApiKey(config('app.stripekey'));
-            
+
             $intent = \Stripe\PaymentIntent::create([
                 'amount' => round($itemPrice * 100),
-                'currency' => $itemCurrency,            
-                'description' => '('.$itemName.')'.' '.$itemDescription            
+                'currency' => $itemCurrency,
+                'description' => '('.$itemName.')'.' '.$itemDescription
             ]);
 
             return response(['intent' => $intent]);
@@ -45,6 +45,7 @@ class PaymentController extends Controller
 
     public function storeStripePayment(Request $request)
     {
+
         try {
             $intentId = $request->intentId;
             $itemId = $request->itemId;
@@ -53,20 +54,20 @@ class PaymentController extends Controller
             $itemPrice = $request->itemPrice;
             $buyerEmail = $request->buyerEmail;
             $itemDescription = $request->itemDescription;
-            
+
             $payment = Payment::create(
                 [
                 'intent_id' => $intentId,
                 'item_id' => $itemId,
                 'payment_option' => $paymentOption,
-                'currency' => $currency,               
-                'item_price' => $itemPrice,               
-                'buyer_email' => $buyerEmail,               
+                'currency' => $currency,
+                'item_price' => $itemPrice,
+                'buyer_email' => $buyerEmail,
                 'item_description' => $itemDescription,
-                'payment_completed' => true              
+                'payment_completed' => true
                 ]
             );
-                
+
             return response(['payment' => $payment]);
 
         } catch (Exception $e) {

@@ -1,5 +1,7 @@
 <?php
 namespace Database\Seeders;
+
+use App\Models\Student;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -19,15 +21,19 @@ class StudentSeeder extends Seeder
 
     {
         DB::table('students')->insert([
-            'fname' => 'sara',
-            'lname' => 'mohamed',
+            'fname' => 'yomna',
+            'lname' => 'hamed',
             'gender' => 'female',
-            'phone' => 125154,
-            'img' => 'yomna.jpg',
-            'email' => 'ahmed@gmail.com',
+            'phone' => 1234567892,        
+            'email' => 'yomna@gmail.com',
             'password' => Hash::make('12345678'),
-
+    
+           
         ]);
-        //
+
+        Student::factory()
+                ->count(5)
+                ->create();
+       
     }
 }

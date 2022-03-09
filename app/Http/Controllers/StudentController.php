@@ -24,25 +24,22 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         //
-        $validation = $this->validation($request);
-        if($validation instanceof Response){
-            return $validation;
-        }
 
-        $img=$request->file('img');             //bmsek el soura
-        $ext=$img->getClientOriginalExtension();   //bgeb extention
-        $image="stu -".uniqid().".$ext";            // conncat ext +name elgded
-        $img->move(public_path("uploads/students/"),$image);
+
+        // $img=$request->file('img');             //bmsek el soura
+        // $ext=$img->getClientOriginalExtension();   //bgeb extention
+        // $image="stu -".uniqid().".$ext";            // conncat ext +name elgded
+        // $img->move(public_path("uploads/students/"),$image);
 
 
         $students = Student::create([
-            'fname'=>$request->fname ,
-            'lname'=>$request->lname ,
-            'gender'=>$request->gender ,
-            'phone'=>$request->phone ,
-            'img'=>$image,
-            'email'=>$request->email ,
-            'password'=>Hash::make($request->password),
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'gender' => $request->gender,
+            'phone' => $request->phone,
+            // 'img'=>$image,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
         if ($students) {
             return $this->createdResponse($students);
@@ -55,18 +52,18 @@ class StudentController extends Controller
     {
         //
         $validation = $this->validation($request);
-        if($validation instanceof Response){
+        if ($validation instanceof Response) {
             return $validation;
         }
         // dd($request);
 
-       $students = Student::create([
-            'fname'=>$request->fname ,
-            'lname'=>$request->lname ,
-            'gender'=>$request->gender ,
-            'phone'=>$request->phone ,
-            'email'=>$request->email ,
-            'password'=>Hash::make($request->password),
+        $students = Student::create([
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'gender' => $request->gender,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
         if ($students) {
             return $this->createdResponse($students);
@@ -85,18 +82,18 @@ class StudentController extends Controller
         }
         return $this->notFoundResponse();
     }
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-        $validation=$this->apiValidation($request , [
-                'fname' => 'required|min:3|max:10',
-                'lname' => 'required|min:3|max:10',
-                'gender' => 'required|',
-                'phone' => 'required|min:10',
-                'img' => 'image|mimes:jpeg,png',
-                'email' => 'required|email',
-                'password' => 'required|min:6|',
-            ]);
-        if($validation instanceof Response){
+        $validation = $this->apiValidation($request, [
+            'fname' => 'required|min:3|max:20',
+            'lname' => 'required|min:3|max:20',
+            // 'gender' => 'required|',
+            'phone' => 'required|min:10',
+            'img' => 'image|mimes:jpeg,png',
+            // 'email' => 'required|email',
+            // 'password' => 'required|min:6|',
+        ]);
+        if ($validation instanceof Response) {
             return $validation;
         }
 
@@ -106,29 +103,27 @@ class StudentController extends Controller
         }
 
 
-        $name=$student->img;
-        if ($request->hasFile('img'))
-        {
-            if($name !== null)
-            {
-                unlink(public_path('uploads/students/'.$name));
+        $name = $student->img;
+        if ($request->hasFile('img')) {
+            if ($name !== null) {
+                unlink(public_path('uploads/students/' . $name));
             }
             //move
-        $img=$request->file('img');             //bmsek el soura
-        $ext=$img->getClientOriginalExtension();   //bgeb extention
-        $name="stu -".uniqid().".$ext";            // conncat ext +name elgded
-        $img->move(public_path("uploads/students"),$name);   //elmkan , $name elgded
+            $img = $request->file('img');             //bmsek el soura
+            $ext = $img->getClientOriginalExtension();   //bgeb extention
+            $name = "stu -" . uniqid() . ".$ext";            // conncat ext +name elgded
+            $img->move(public_path("uploads/students"), $name);   //elmkan , $name elgded
 
         }
 
         $student->update([
-            'fname'=>$request->fname ,
-            'lname'=>$request->lname ,
-            'gender'=>$request->gender ,
-            'phone'=>$request->phone ,
-            'img'=>$name,
-            'email'=>$request->email ,
-            'password'=>Hash::make($request->password),
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            // 'gender'=>$request->gender ,
+            'phone' => $request->phone,
+            'img' => $name,
+            // 'email'=>$request->email ,
+            // 'password'=>Hash::make($request->password),
         ]);
 
         if ($student) {
@@ -136,7 +131,6 @@ class StudentController extends Controller
         }
 
         $this->unKnowError();
-
     }
 
     public function destroy($id)
@@ -150,10 +144,22 @@ class StudentController extends Controller
     }
 
 
-    public function validation($request){
-        return $this->apiValidation($request , [
-            'fname' => 'required|min:3|max:10',
-            'lname' => 'required|min:3|max:10',
+    public function getCount()
+    {
+        $data = DB::table('students')->select('id')->count('id');
+        if ($data == 0)
+            return response()->json($data, 200);
+        if ($data) {
+            return response()->json($data, 200);
+        }
+        return response()->json("Not Found", 404);
+    }
+
+    public function validation($request)
+    {
+        return $this->apiValidation($request, [
+            'fname' => 'required|min:3|max:20',
+            'lname' => 'required|min:3|max:20',
             'gender' => 'required|',
             'phone' => 'required|unique:students',
             'email' => 'required|email|unique:students',
@@ -163,12 +169,12 @@ class StudentController extends Controller
 
     public function login(Request $request)
     {
-        $validator = $this->apiValidation($request , [
-            'email' => 'required|exists:students,email' ,
-            'password' => 'required|string' ,
+        $validator = $this->apiValidation($request, [
+            'email' => 'required|exists:students,email',
+            'password' => 'required|string',
         ]);
 
-        if($validator instanceof Response){
+        if ($validator instanceof Response) {
             return $validator;
         }
         $credentials = request(['email', 'password']);
@@ -176,7 +182,6 @@ class StudentController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         return $this->respondWithToken($token);
-
     }
 
 
@@ -189,9 +194,17 @@ class StudentController extends Controller
     public function logout()
     {
         auth()->guard('students')->logout();
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json('Successfully logged out');
     }
 
+    public function getCoursesByStudentId($id)
+    {
+
+        $courses = Student::with('courses')->find($id);
+        if ($courses)
+            return response()->json($courses, 200);
+        else return response()->json("No courses for this student");
+    }
 
     public function refresh()
     {
@@ -201,35 +214,33 @@ class StudentController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            // 'name'=>(Auth::guard('students')->user()->fname+" "+Auth::guard('students')->user()->lname),
+            'name' => Auth::guard('students')->user()->fname,
+            'id' => Auth::guard('students')->user()->id,
+            'role' => 'isStudent',
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->guard('students')->factory()->getTTL() * 60
+            'expires_in' => auth()->guard('students')->factory()->getTTL() * 120,
+            'id' => Auth::guard('students')->user()->id,
+            'role' => 'isStudent',
+
         ]);
     }
 
-    public function sayHello(){
+    public function sayHello()
+    {
         return response()->json('hello students');
     }
 
 
-    function get_guard(){
-        if(Auth::guard('admins')->check())
-        {return "admins";}
-        elseif(Auth::guard('students')->check())
-        {return "students";}
+    function get_guard()
+    {
+        if (Auth::guard('admins')->check()) {
+            return "admins";
+        } elseif (Auth::guard('students')->check()) {
+            return "students";
+        }
         // elseif(Auth::guard('clients')->check())
         // {return "client";}
     }
-
-
-
-
-    
-
-
-
-
-
-
-
 }
