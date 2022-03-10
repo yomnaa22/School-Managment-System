@@ -17,10 +17,17 @@ class Cors
     public function handle(Request $request, Closure $next)
     {
        
-        return $next($request)->header("Access-Control-Allow-Origin", '*')
-        ->header("Access-Control-Allow-Credentials", true)
-        ->header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-        ->header("Access-Control-Allow-Headers", 'Access-Control-Allow-Headers, Origin,Accept, Authorization, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
-
+        return $next($request)->header("Access-Control-Allow-Origin", '*');
+        header ("Access-Control-Expose-Headers: Content-Length, X-JSON");
+        header ("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
+        header ("Access-Control-Allow-Headers: Content-Type, Authorization, Accept, Accept-Language, X-Authorization");
+        header('Access-Control-Max-Age: 86400');
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            // The request is using the POST method
+            header("HTTP/1.1 200 OK");
+            return;
+        
+        }
     }
 }
