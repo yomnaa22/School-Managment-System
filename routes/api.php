@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('messages', [chatController::class, 'message']);
 //login Admin
-Route::post('login', 'App\Http\Controllers\AuthController@login');
+Route::post('login', 'App\Http\Controllers\AuthController@login')->middleware(['cors']);
 Route::post('register', 'App\Http\Controllers\AuthController@register');
 
 
