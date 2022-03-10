@@ -56,7 +56,7 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
-        'cors' => \App\Http\Middleware\Cors::class,
+       
         'studentAdmin' => \App\Http\Middleware\studentIstrainr::class,
         'isAdminIstrainr' => \App\Http\Middleware\isAdminIstrainr::class,
         'checkTrainer' => \App\Http\Middleware\checkTrainer::class,
