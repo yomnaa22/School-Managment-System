@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+
+
 
 class CategoryController extends Controller
 {
@@ -48,6 +51,14 @@ class CategoryController extends Controller
     {
         $Category = Category::find($id);
         if ($Category) {
+            $img_name = $Category->img;
+        // if ($course->hasFile('img')) {
+        if ($img_name !== null) {
+            // unlink(public_path('uploads/courses/' . $img_name));
+            $path_parts = pathinfo(basename($img_name));
+                
+            Cloudinary::destroy($path_parts['filename']);
+        }
             $Category->delete();
             return $this->deleteResponse();
         }
@@ -94,11 +105,16 @@ class CategoryController extends Controller
         if ($validation instanceof Response) {
             return $validation;
         }
+        //$image = Cloudinary::upload($request->file('img')->getRealPath())->getSecurePath();
+        $image = cloudinary()->upload($request->file('img')->getRealPath())->getSecurePath();
+     //  dd($image->public_id);
+    
+       //dd($uploadedFileUrl);
         $name = $request->name;
-        $img = $request->file('img');             //bmsek el soura
-        $ext = $img->getClientOriginalExtension();   //bgeb extention
-        $image = "cate -" . uniqid() . ".$ext";            // conncat ext +name elgded
-        $img->move(public_path("uploads/categores/"), $image);
+        // $img = $request->file('img');             //bmsek el soura
+        // $ext = $img->getClientOriginalExtension();   //bgeb extention
+        // $image = "cate -" . uniqid() . ".$ext";            // conncat ext +name elgded
+        // $img->move(public_path("uploads/categores/"), $image);
         $Categorys = Category::create([
             'name' => $name,
             'img' => $image
@@ -139,22 +155,26 @@ class CategoryController extends Controller
         if (!$Category) {
             return $this->notFoundResponse();
         }
-        $name = $Category->img;
+        $image = $Category->img;
         if ($request->hasFile('img')) {
-            if ($name !== null) {
-                unlink(public_path('uploads/categores/' . $name));
+            if ($image !== null) {
+                // unlink(public_path('uploads/categores/' . $name));
+                $path_parts = pathinfo(basename($image));
+                
+                Cloudinary::destroy($path_parts['filename']);
             }
             //move
-            $img = $request->file('img');             //bmsek el soura
-            $ext = $img->getClientOriginalExtension();   //bgeb extention
-            $name = "cate -" . uniqid() . ".$ext";            // conncat ext +name elgded
-            $img->move(public_path("uploads/categores"), $name);   //elmkan , $name elgded
-
+            // $img = $request->file('img');             //bmsek el soura
+            // $ext = $img->getClientOriginalExtension();   //bgeb extention
+            // $name = "cate -" . uniqid() . ".$ext";            // conncat ext +name elgded
+            // $img->move(public_path("uploads/categores"), $name);   //elmkan , $name elgded
+            $image = Cloudinary::upload($request->file('img')->getRealPath())->getSecurePath();
+           
         }
 
         $Category->update([
             'name' => $request->name,
-            'img' => $name,
+            'img' => $image,
             // $request->all()
         ]);
 

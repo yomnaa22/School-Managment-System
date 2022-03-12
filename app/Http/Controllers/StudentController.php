@@ -10,6 +10,8 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+
 
 class StudentController extends Controller
 {
@@ -106,13 +108,17 @@ class StudentController extends Controller
         $name = $student->img;
         if ($request->hasFile('img')) {
             if ($name !== null) {
-                unlink(public_path('uploads/students/' . $name));
+                $path_parts = pathinfo(basename($name));
+                
+            Cloudinary::destroy($path_parts['filename']);
             }
+            $name = Cloudinary::upload($request->file('img')->getRealPath())->getSecurePath();
+
             //move
-            $img = $request->file('img');             //bmsek el soura
-            $ext = $img->getClientOriginalExtension();   //bgeb extention
-            $name = "stu -" . uniqid() . ".$ext";            // conncat ext +name elgded
-            $img->move(public_path("uploads/students"), $name);   //elmkan , $name elgded
+            // $img = $request->file('img');             //bmsek el soura
+            // $ext = $img->getClientOriginalExtension();   //bgeb extention
+            // $name = "stu -" . uniqid() . ".$ext";            // conncat ext +name elgded
+            // $img->move(public_path("uploads/students"), $name);   //elmkan , $name elgded
 
         }
 
@@ -137,6 +143,14 @@ class StudentController extends Controller
     {
         $student = Student::find($id);
         if ($student) {
+            $img_name = $student->img;
+    
+        if ($img_name !== null) {
+           
+        $path_parts = pathinfo(basename($img_name));
+                
+          Cloudinary::destroy($path_parts['filename']);
+        }
             $student->delete();
             return $this->deleteResponse();
         }

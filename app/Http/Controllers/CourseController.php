@@ -13,6 +13,7 @@ use App\Mail\welcomemail;
 use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Support\Facades\Log;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class CourseController extends Controller
 {
@@ -48,10 +49,11 @@ class CourseController extends Controller
             return $validation;
         }
 
-        $img = $request->file('img');
-        $ext = $img->getClientOriginalExtension();
-        $image = "course -" . uniqid() . ".$ext";
-        $img->move(public_path("uploads/courses/"), $image);
+        // $img = $request->file('img');
+        // $ext = $img->getClientOriginalExtension();
+        // $image = "course -" . uniqid() . ".$ext";
+        // $img->move(public_path("uploads/courses/"), $image);
+        $image = cloudinary()->upload($request->file('img')->getRealPath())->getSecurePath();
 
         $course = Course::create([
             'name' => $request->name,
@@ -110,16 +112,21 @@ class CourseController extends Controller
                 // }
             }
 
-            $name = $course->img;
+            $image = $course->img;
             if ($request->hasFile('img')) {
-                if ($name !== null) {
-                    unlink(public_path('uploads/courses/' . $name));
+                if ($image !== null) {
+                    // unlink(public_path('uploads/courses/' . $name));
+                    $path_parts = pathinfo(basename($image));
+                
+                    Cloudinary::destroy($path_parts['filename']);
                 }
                 //move
-                $img = $request->file('img');             //bmsek el soura
-                $ext = $img->getClientOriginalExtension();   //bgeb extention
-                $name = "course -" . uniqid() . ".$ext";            // conncat ext +name elgded
-                $img->move(public_path("uploads/courses"), $name);   //elmkan , $name elgded
+                // $img = $request->file('img');             //bmsek el soura
+                // $ext = $img->getClientOriginalExtension();   //bgeb extention
+                // $name = "course -" . uniqid() . ".$ext";            // conncat ext +name elgded
+                // $img->move(public_path("uploads/courses"), $name);   //elmkan , $name elgded
+            $image = Cloudinary::upload($request->file('img')->getRealPath())->getSecurePath();
+
             }
             // }
             Log::alert($request->category_id);
@@ -131,7 +138,7 @@ class CourseController extends Controller
 
             $course->update([
                 'name' => $request->name,
-                'img' => $name,
+                'img' => $image,
                 'category_id' => $category_id,
                 'trainer_id' => $request->trainer_id,
                 'price' => $request->price,
@@ -155,7 +162,10 @@ class CourseController extends Controller
         $img_name = $course->img;
         // if ($course->hasFile('img')) {
         if ($img_name !== null) {
-            unlink(public_path('uploads/courses/' . $img_name));
+            // unlink(public_path('uploads/courses/' . $img_name));
+            $path_parts = pathinfo(basename($img_name));
+                
+            Cloudinary::destroy($path_parts['filename']);
         }
         return response()->json(null, 204);
         // }

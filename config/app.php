@@ -183,7 +183,11 @@ return [
         Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
 
 
-
+      
+          
+     CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider::class,
+            
+        
     ],
 
     /*
@@ -240,6 +244,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Stripe' => Cartalyst\Stripe\Laravel\Facades\Stripe::class,
+        'Cloudinary' => CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::class
 
     ],
 

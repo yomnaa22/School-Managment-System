@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class TrainerController extends Controller
 {
@@ -114,13 +115,16 @@ class TrainerController extends Controller
         {
             if($name !== null)
             {
-                unlink(public_path('uploads/trainer/'.$name));
+                $path_parts = pathinfo(basename($name));
+                
+                Cloudinary::destroy($path_parts['filename']);
             }
             //move
-        $img=$request->file('img');             //bmsek el soura
-        $ext=$img->getClientOriginalExtension();   //bgeb extention
-        $name="train -".uniqid().".$ext";            // conncat ext +name elgded
-        $img->move(public_path("uploads/trainer/"),$name);   //elmkan , $name elgded
+        // $img=$request->file('img');             //bmsek el soura
+        // $ext=$img->getClientOriginalExtension();   //bgeb extention
+        // $name="train -".uniqid().".$ext";            // conncat ext +name elgded
+        // $img->move(public_path("uploads/trainer/"),$name);   //elmkan , $name elgded
+        $name = Cloudinary::upload($request->file('img')->getRealPath())->getSecurePath();
 
         }
 
@@ -149,6 +153,17 @@ class TrainerController extends Controller
     {
         $trainer = Trainer::find($id);
         if ($trainer) {
+            $img_name = $trainer->img;
+    
+            if ($img_name !== null) {
+               
+            $path_parts = pathinfo(basename($img_name));
+                    
+              Cloudinary::destroy($path_parts['filename']);
+            }
+
+
+
             $trainer->delete();
             return $this->deleteResponse();
         }
