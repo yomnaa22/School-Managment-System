@@ -191,11 +191,14 @@ class CourseController extends Controller
             'student_id' => $request->student_id,
             'course_id' => $request->course_id,
         ]);
+        
+        $course=Course::find($request->course_id);
+        $course_name=$course->name;
         if ($enrolle) {
             // $course= DB::select("select name from courses where id = $request->course_id");
             $details = [
                 'title' => 'Congratulations',
-                'body' => "You have enrolled successfully to ",
+                'body' => "You have enrolled successfully $course_name ",
             ];
 
             $email = DB::select("select email from students where id = $request->student_id");
