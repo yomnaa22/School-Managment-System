@@ -139,8 +139,8 @@ class ContactUsController extends Controller
         return $this->apiValidation($request, [
             'email' => 'required|email',
             'name' => 'required|min:3|max:20',
-            'subject' => 'required|min:5|max:20',
-            'message' => 'required|min:10|max:100',
+            'subject' => 'required|min:5|max:50',
+            'message' => 'required|min:10|max:191',
         ]);
     }
 }
