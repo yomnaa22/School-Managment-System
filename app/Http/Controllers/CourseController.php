@@ -276,7 +276,7 @@ class CourseController extends Controller
     public function validation($request)
     {
         return $this->apiValidation($request, [
-            'name' => 'required|min:3|max:30',
+            'name' => 'required|min:3|max:50',
             // 'img' => 'required|image|mimes:jpeg,png',
             'price' => 'required',
             'category_id' => 'required|exists:App\Models\Category,id',
