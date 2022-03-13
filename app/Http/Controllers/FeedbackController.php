@@ -92,7 +92,7 @@ class FeedbackController extends Controller
             'name' => 'required|min:3',
             'course_id' => 'exists:App\Models\Course,id',
             'student_id' => 'exists:App\Models\Student,id',
-            'desc' => 'required|min:6|max:40'
+            'desc' => 'required|min:6|max:200'
         ]);
     }
 }
