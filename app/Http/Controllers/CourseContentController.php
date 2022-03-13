@@ -133,7 +133,7 @@ class CourseContentController extends Controller
     public function validation($request)
     {
         return $this->apiValidation($request, [
-            'name' => 'required|min:3|max:20',
+            'name' => 'required|min:3|max:100',
             'course_id' => 'required|exists:App\Models\Course,id',
             'content' => 'required|min:3'
         ]);
