@@ -39,7 +39,7 @@ class CategoryController extends Controller
             ->join('courses', 'categories.id', '=', 'courses.category_id')
             ->where('categories.id', '=', $id)
             ->join('trainers', 'trainers.id', '=', 'courses.trainer_id')
-            ->select( 'courses.*', 'categories.name as c_name', 'trainers.*', 'courses.img as c_img')
+            ->select( 'courses.*', 'categories.name as c_name', 'trainers.*', 'courses.img as c_img','courses.id as course_id')
             ->get();
         if ($courses) {
             return response()->json($courses, 200);
