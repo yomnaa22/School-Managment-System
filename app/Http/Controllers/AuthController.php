@@ -36,7 +36,7 @@ class AuthController extends Controller
                 'email' => 'required|string',
                 'password' => 'required|min:6'
             ]);
-        
+
 
         $admin = User::create([
             'name' => $request->name,
@@ -98,6 +98,10 @@ class AuthController extends Controller
     {
         return $this->respondWithToken(auth()->refresh());
     }
+
+  
+
+
 
     /**
      * Get the token array structure.

@@ -23,6 +23,7 @@ Route::post('/studentcourseenroll', [CourseController::class, 'course_student_en
 Route::post('messages', [chatController::class, 'message']);
 //login Admin
 Route::post('login', 'App\Http\Controllers\AuthController@login');
+Route::post('register', 'App\Http\Controllers\AuthController@register');
 
 
 //register student

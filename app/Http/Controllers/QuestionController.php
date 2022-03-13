@@ -26,6 +26,7 @@ class QuestionController extends Controller
         if($validation instanceof Response){
             return $validation;
         }
+
         //get all exam
 
        // $roles=$request->exam_id;
@@ -68,7 +69,7 @@ class QuestionController extends Controller
         if (!$question) {
             return $this->notFoundResponse();
         }
-        $roles=$request->exam_id;
+        //$roles=$request->exam_id;
         $question->update([
             'header'=>$request->header ,
             'choice_1'=>$request->choice_1 ,
@@ -76,10 +77,11 @@ class QuestionController extends Controller
             'choice_3'=>$request->choice_3 ,
             'choice_4'=>$request->choice_4 ,
             'answer'=>$request->answer ,
-            'score'=>$request->score
+            'score'=>$request->score,
+            'exam_id'=> $request->exam_id
         ]);
 
-        $question->exam()->attach($roles);
+        //$question->exam()->attach($roles);
 
         if ($question) {
             return $this->createdResponse($question);
@@ -102,12 +104,12 @@ class QuestionController extends Controller
 
     public function validation($request){
         return $this->apiValidation($request , [
-            'header' => 'required|min:3|max:30',
-            'choice_1' => 'required|min:3|max:30',
-            'choice_2' => 'required|min:3|max:30',
-            'choice_3' => 'required|min:3|max:30',
-            'choice_4' => 'required|min:3|max:30',
-            'answer' => 'required|min:3|max:30',
+            'header' => 'required|min:3|max:255',
+            'choice_1' => 'required|min:1|max:255',
+            'choice_2' => 'required|min:1|max:255',
+            'choice_3' => 'required|min:1|max:255',
+            'choice_4' => 'required|min:1|max:255',
+            'answer' => 'required|min:1|max:255',
             'score' => 'required|numeric',
             'exam_id' =>'numeric|exists:App\Models\Exam,id'
         ]);

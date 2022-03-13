@@ -15,12 +15,12 @@ class CreateStudentSubjectExamTable extends Migration
     {
         Schema::create('student_subject_exam', function (Blueprint $table) {
             // $table->id();
-            $table->integer('score');
-            $table->foreignId('course_id')->constrained()->onUpdate('cascade')->onDelete('cascade')->primary();
-            $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade')->primary();
-            $table->foreignId('exam_id')->constrained()->onUpdate('cascade')->onDelete('cascade')->primary();
+            $table->integer('degree');
+            $table->foreignId('exam_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            // $table->foreignId('exam_id')->constrained()->onUpdate('cascade')->onDelete('cascade')->primary();
 
-
+            $table->primary(['exam_id','student_id']);
             $table->timestamps();
         });
     }

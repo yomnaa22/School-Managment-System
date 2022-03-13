@@ -18,7 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 
 //get all questions by exam_id
-Route::get('/exams/questions/{e_id}',[ExamController::class, 'getallExam']);
+Route::get('/exams/questions/{c_id}',[ExamController::class, 'getallExam']);
+Route::post('/Storedegree',[ExamController::class,'Storedegree']);
+Route::get('/result/{exam_id}/{student_id}',[ExamController::class,'getResult']);
+
+Route::get('/exam/questions/{e_id}',[ExamController::class, 'getAllQestions']);
 
 Route::get('/exams',[ExamController::class, 'index']);
 Route::get('/exams/{id}',[ExamController::class, 'show']);
@@ -27,6 +31,7 @@ Route::get('/exams/{id}',[ExamController::class, 'show']);
 Route::get('/Course_content/show/{c_id}', [CourseController::class, 'showvideo']);
 
 Route::get('/questions',[QuestionController::class, 'index']);
+
 Route::get('/questions/{id}',[QuestionController::class, 'show']);
 
 
@@ -51,3 +56,10 @@ Route::get('/Course_content/{id}', [CourseContentController::class, 'show']);
 
 
 Route::post('/feedbacks', [FeedbackController::class, 'store']);
+
+
+//add degree exam
+Route::post('/Storedegree',[ExamController::class,'Storedegree']);
+
+//show degree exam
+Route::get('/showDegree/{s_id}/{c_id}', [ExamController::class, 'showDegree']);
